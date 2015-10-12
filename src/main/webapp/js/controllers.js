@@ -16,7 +16,7 @@ controllers.controller('mainController', ['$scope', function ($scope) {
 
     // Set up the scope model
     $scope.model = {
-        rooms: [],
+        buglist: [],
         selectedRoom: null,
         screen: $scope.screens.mainScreen
     };

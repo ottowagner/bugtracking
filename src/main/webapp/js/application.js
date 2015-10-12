@@ -4,4 +4,4 @@
  */
 'use strict';
 
-var application = angular.module('roommanagement', ['controllers']);
+var application = angular.module('bugtracking', ['controllers']);
