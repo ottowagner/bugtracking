@@ -1,0 +1,28 @@
+<section ng-controller="listController as listController">
+    <h2>Room Table</h2>
+    <table>
+        <tr>
+            <th>Building</th>
+            <th>Room Number</th>
+            <th>Seats</th>
+            <th>Beamer present?</th>
+        </tr>
+        <tr ng-repeat="room in model.rooms | orderBy:['building', 'roomNumber']"
+            ng-click="listController.selectRoom(room)" ng-dblclick="listController.editRoom(room)"
+            ng-class="{selectedRoom:(room == model.selectedRoom)}">
+            <td>{{room.building}}</td>
+            <td>{{room.roomNumber}}</td>
+            <td>{{room.seats}}</td>
+            <td>{{room.beamerPresent}}</td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <input type="submit" value="New Room" ng-click="listController.newRoom()"/>
+                <input type="submit" value="Edit Room" ng-click="listController.editRoom(model.selectedRoom)"
+                       ng-disabled="!model.selectedRoom"/>
+                <input type="submit" value="Delete Room" ng-click="listController.deleteRoom()"
+                       ng-disabled="!model.selectedRoom"/>
+            </td>
+        </tr>
+    </table>
+</section>
