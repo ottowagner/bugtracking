@@ -1,0 +1,28 @@
+<h2>Übersicht der Fehler</h2>
+
+<div class="alert alert-danger alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span class="sr-only">Error:</span> Bitte einloggen, um die Inhalte zu sehen!
+</div>
+
+<table class="table table-hover">
+    <tr>
+        <th></th>
+        <th>Titel</th>
+        <th>Status</th>
+        <th>Autor</th>
+        <th>Entwickler</th>
+        <th>Aktualisierungsdatum</th>
+        <th>Erstellungsdatum</th>
+    </tr>
+    <tr ng-repeat="bug in model.buglist">
+        <td>{{bug.id}}</td>
+        <td>{{bug.title}}</td>
+        <td>{{bug.state}}</td>
+        <td>{{bug.autor}}</td>
+        <td>{{bug.developer}}</td>
+        <td>{{bug.lastUpdateDate}}</td>
+        <td>{{bug.creationDate}}</td>
+    </tr>
+</table>
