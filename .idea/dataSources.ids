@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="H2 - Nak" uuid="81e6c910-6178-40ad-b9be-16f84e0e7c96">
+    <database-info product="H2" version="1.4.187 (2015-04-10)" jdbc-version="4.0" driver-name="H2 JDBC Driver" driver-version="1.4.187 (2015-04-10)">
+      <identifier-quote-string>&quot;</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact"/>
+    <schema name="PUBLIC" catalog="NAK"/>
+    <table name="COURSE" schema="PUBLIC" catalog="NAK" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfODYyM0FBQTVfRkIyQV80MUEyX0FFMDNfNzMzQzJGNjAzQURBKQ==" autoIncrement="true"/>
+      <column name="FIELD_OF_STUDY" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="LECTURER" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="NUMBER" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="TITLE" sqlType="VARCHAR" precision="100" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="CONSTRAINT_7" columns="ID"/>
+      <exported-key name="FK_GH8WQOE8K4EARKJQJQDXDGJCN" table="LECTURE" schema="PUBLIC" catalog="NAK" columns="COURSE_ID"/>
+      <exported-key name="FK_GH8WQOE8K4EARKJQJQDXDGJCN" table="LECTURE" schema="PUBLIC" catalog="NAK" columns="COURSE_ID"/>
+      <index name="UK_2HOTFM63XUGD7HFQ6PPHP8Q6T_INDEX_7" unique="true" columns="FIELD_OF_STUDY,NUMBER"/>
+    </table>
+    <table name="LECTURE" schema="PUBLIC" catalog="NAK" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfNTc5MzhEOEJfNTc1Q180QzcyXzhDQTJfN0NGQTA0NTc0RkM5KQ==" autoIncrement="true"/>
+      <column name="BEGIN" sqlType="TIMESTAMP" precision="23" scale="10" nullable="false" jdbcType="93"/>
+      <column name="END" sqlType="TIMESTAMP" precision="23" scale="10" nullable="false" jdbcType="93"/>
+      <column name="COURSE_ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="ROOM_ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="CONSTRAINT_2" columns="ID"/>
+      <foreign-key name="FK_GH8WQOE8K4EARKJQJQDXDGJCN" columns="COURSE_ID" ref-table="COURSE" ref-schema="PUBLIC" ref-catalog="NAK" ref-columns="ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <foreign-key name="FK_SFKGNJH1NAGE2LOMI6K7TN2FK" columns="ROOM_ID" ref-table="ROOM" ref-schema="PUBLIC" ref-catalog="NAK" ref-columns="ID" update-rule="1" delete-rule="1" deferrability="2"/>
+      <index name="FK_GH8WQOE8K4EARKJQJQDXDGJCN_INDEX_2" unique="false" columns="COURSE_ID"/>
+      <index name="FK_SFKGNJH1NAGE2LOMI6K7TN2FK_INDEX_2" unique="false" columns="ROOM_ID"/>
+    </table>
+    <table name="ROOM" schema="PUBLIC" catalog="NAK" type="TABLE">
+      <column name="ID" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfREQ0RkM2MkVfNEJERV80OTNDXzhCMjRfNzY4ODgxRkY2QjI0KQ==" autoIncrement="true"/>
+      <column name="BEAMERPRESENT" sqlType="BOOLEAN" precision="1" scale="0" nullable="false" jdbcType="16"/>
+      <column name="BUILDING" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="ROOM_NUMBER" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="SEATS" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="CONSTRAINT_26" columns="ID"/>
+      <index name="UK_CYU3YHP3JH13WL77F63IM1FW9_INDEX_2" unique="true" columns="BUILDING,ROOM_NUMBER"/>
+    </table>
+  </data-source>
+</component>

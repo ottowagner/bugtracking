@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="roommanagement">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>AngularJS Room Management</title>
+    <script type="application/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="application/javascript" src="js/application.js"></script>
+</head>
+<body ng-controller="mainController as mainController">
+    <h1>Angular Room Management</h1>
+    <table>
+        <tr>
+            <th>Building</th>
+            <th>Room Number</th>
+            <th>Seats</th>
+            <th>Projector present?</th>
+        </tr>
+        <tr ng-repeat="room in model.rooms">
+            <td>{{room.building}}</td>
+            <td>{{room.roomNumber}}</td>
+            <td>{{room.seats}}</td>
+            <td>{{room.beamerPresent}}</td>
+        </tr>
+    </table>
+</body>
+</html>
