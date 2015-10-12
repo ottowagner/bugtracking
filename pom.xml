@@ -5,23 +5,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.nordakademie.iaa</groupId>
-    <artifactId>roommgmt-orm</artifactId>
+    <artifactId>bugtracking</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <description>Room management application using ORM framework and console-based client</description>
+    <description>Bugtracking application</description>
     <organization>
         <name>Nordakademie gAG Elmshorn</name>
         <url>http://www.nordakademie.de</url>
     </organization>
     <developers>
         <developer>
-            <name>Stephan Anft</name>
-            <email>stephan.anft@nordakademie.de</email>
+            <name>Otto Wagner</name>
+            <email>otto.wagner@nordakademie.de</email>
         </developer>
         <developer>
-            <name>Stefan Reichert</name>
-            <email>stefan.reichert@nordakademie.de</email>
+            <name>Johan Ahrens</name>
+            <email>johan.ahrens@nordakademie.de</email>
         </developer>
     </developers>
 
