@@ -17,6 +17,10 @@ application.config(['$routeProvider',
                 templateUrl: 'partials/register.html',
                 controller: 'mainController'
             }).
+            when('/login', {
+                templateUrl: 'partials/login.html',
+                controller: 'mainController'
+            }).
             //when('/bug/:bugId', {
             //    templateUrl: 'partials/phone-detail.html',
             //    controller: 'PhoneDetailCtrl'
