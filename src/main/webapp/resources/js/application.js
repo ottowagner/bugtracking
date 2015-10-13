@@ -4,10 +4,10 @@
  */
 'use strict';
 
-var application = angular.module('bugtracking', ['ngRoute','controllers']);
+var application = angular.module('bugtracking', ['ngRoute', 'controllers']);
 
-application.config(['$routeProvider',
-    function($routeProvider) {
+application.config(['$routeProvider', '$httpProvider',
+    function ($routeProvider, $httpProvider) {
         $routeProvider.
             when('/bug', {
                 templateUrl: 'partials/bugList.html',
@@ -28,4 +28,7 @@ application.config(['$routeProvider',
             otherwise({
                 redirectTo: '/bug'
             });
+
+        //https://github.com/dsyer/spring-security-angular/tree/master/single
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);

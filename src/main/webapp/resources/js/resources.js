@@ -6,11 +6,11 @@
 
 var resources = angular.module('resources', []);
 
-resources.factory('Room', function () {
-    return function (building, roomNumber, seats, beamerPresent) {
-        this.building = building;
-        this.roomNumber = roomNumber;
-        this.seats = seats;
-        this.beamerPresent = beamerPresent;
-    };
-});
+//resources.factory('Room', function () {
+//    return function (building, roomNumber, seats, beamerPresent) {
+//        this.building = building;
+//        this.roomNumber = roomNumber;
+//        this.seats = seats;
+//        this.beamerPresent = beamerPresent;
+//    };
+//});

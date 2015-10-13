@@ -2,7 +2,7 @@
 <html ng-app="bugtracking">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>AngularJS Room Management</title>
+    <title>Bugtracking</title>
 
     <script type="application/javascript" src="resources/bower_components/angular/angular.js"></script>
     <script type="application/javascript" src="resources/bower_components/angular-route/angular-route.js"></script>
@@ -28,10 +28,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form class="navbar-form navbar-right" role="login">
 
-                    <a href="#/login" class="btn btn-default">Login</a>
-                    <a href="#/register" class="btn btn-default">Registrieren</a>
+                    <a href="#/login" class="btn btn-default" ng-show="!authenticated">Anmelden</a>
+                    <a href="#/register" class="btn btn-default" ng-show="!authenticated">Registrieren</a>
 
-                    <a href="#/bug" class="btn btn-default" aria-label="Logout">
+                    <a href="#/bug" class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="logout()">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                     </a>
 
@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <div ng-view></div>
+    <div ng-cloak ng-view></div>
 
     <div class="navbar-default navbar-fixed-bottom">
             <div class="navbar-right">

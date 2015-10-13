@@ -8,7 +8,7 @@
     <!-- Enable annotation config -->
     <context:annotation-config/>
     <mvc:annotation-driven/>
-    <context:component-scan base-package="de.nordakademie.iaa.roommgmt.controller"/>
+    <context:component-scan base-package="de.nordakademie.iaa.bugtracking.controller"/>
 
     <!-- Data source -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
@@ -23,7 +23,7 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="NakDB"/>
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="de.nordakademie.iaa.roommgmt.model"/>
+        <property name="packagesToScan" value="de.nordakademie.iaa.bugtracking.model"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
@@ -53,22 +53,27 @@
 
     <!-- AOP configuration with pointcut -->
     <aop:config>
-        <aop:pointcut id="serviceMethods" expression="execution(* de.nordakademie.iaa.roommgmt.service.*.*(..))"/>
+        <aop:pointcut id="serviceMethods" expression="execution(* de.nordakademie.iaa.bugtracking.service.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
     </aop:config>
 
     <!-- DAOs -->
-    <bean id="roomDAO" class="de.nordakademie.iaa.roommgmt.dao.RoomDAO"/>
+    <bean id="roomDAO" class="de.nordakademie.iaa.bugtracking.dao.RoomDAO"/>
 
-    <bean id="courseDAO" class="de.nordakademie.iaa.roommgmt.dao.CourseDAO"/>
+    <bean id="courseDAO" class="de.nordakademie.iaa.bugtracking.dao.CourseDAO"/>
 
-    <bean id="lectureDAO" class="de.nordakademie.iaa.roommgmt.dao.LectureDAO"/>
+    <bean id="lectureDAO" class="de.nordakademie.iaa.bugtracking.dao.LectureDAO"/>
+
+    <bean id="userDAO" class="de.nordakademie.iaa.bugtracking.dao.UserDAO"/>
 
     <!-- Services -->
-    <bean id="roomService" class="de.nordakademie.iaa.roommgmt.service.RoomServiceImpl"/>
+    <bean id="roomService" class="de.nordakademie.iaa.bugtracking.service.RoomServiceImpl"/>
 
-    <bean id="courseService" class="de.nordakademie.iaa.roommgmt.service.CourseServiceImpl"/>
+    <bean id="courseService" class="de.nordakademie.iaa.bugtracking.service.CourseServiceImpl"/>
 
-    <bean id="lectureService" class="de.nordakademie.iaa.roommgmt.service.LectureServiceImpl"/>
+    <bean id="lectureService" class="de.nordakademie.iaa.bugtracking.service.LectureServiceImpl"/>
+
+    <bean id="userService" class="de.nordakademie.iaa.bugtracking.service.UserServiceImpl"/>
+
 
 </beans>
