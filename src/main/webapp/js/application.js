@@ -39,7 +39,7 @@ application.config(['$routeProvider', '$httpProvider',
 
 application.run(['$rootScope', '$location', function ($rootScope, $location) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if ($rootScope.authenticated == false) {
+        if (!($rootScope.authenticated == true)) {
             if (next.templateUrl == "partials/login.html") {
             } else if (next.templateUrl == "partials/register.html") {
             } else {
