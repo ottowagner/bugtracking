@@ -13,32 +13,41 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         buglist: []
     };
 
-    var authenticate = function (credentials, callback) {
+    var authenticate = function (account, callback) {
 //TODO: In einen Service auslagern
 
-        var headers = credentials ? {
-            authorization: "Basic "
-            + btoa(credentials.email + ":" + credentials.password)
+        //var headers = account ? {
+        //    authorization: "Basic "
+        //    + btoa(account.username + ":" + account.password)
+        //} : {};
+        var accountData = account ? {
+            authorization: account.username + ":" + account.password
         } : {};
 
-        $http.get('rest/user', {headers: headers}).success(function (data) {
-            console.log(data);
-            if (data.id) {
-                $rootScope.authenticated = true;
-            } else {
-                $rootScope.authenticated = false;
-            }
-            callback && callback();
-        }).error(function () {
+        if(accountData.authorization){
+            $rootScope.authenticated = true;
+        }else{
             $rootScope.authenticated = false;
-            callback && callback();
-        });
+        }
+        callback && callback();
+        //$http.get('rest/user', {headers: headers}).success(function (data) {
+        //    console.log(data);
+        //    if (data.id) {
+        //        $rootScope.authenticated = true;
+        //    } else {
+        //        $rootScope.authenticated = false;
+        //    }
+        //    callback && callback();
+        //}).error(function () {
+        //    $rootScope.authenticated = false;
+        //    callback && callback();
+        //});
     }
 
-    authenticate();
-    $scope.credentials = {};
+    //authenticate();
+    $scope.account = {};
     $scope.login = function () {
-        authenticate($scope.credentials, function () {
+        authenticate($scope.account, function () {
             if ($rootScope.authenticated) {
                 $location.path("/");
                 $scope.error = false;
@@ -48,6 +57,53 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
             }
         });
     };
+
+
+    var register = function (account, callback) {
+//TODO: In einen Service auslagern
+
+        var headers = account ? {
+            authorization: "Basic "
+            + btoa(account.username + ":" + account.password)
+        } : {};
+        $rootScope.authenticated = true;
+        callback && callback();
+        //$http.post('rest/user', {headers: headers}).success(function (data) {
+        //    console.log(data);
+        //    if (data.id) {
+        //        $rootScope.authenticated = true;
+        //    } else {
+        //        $rootScope.authenticated = false;
+        //    }
+        //    callback && callback();
+        //}).error(function () {
+        //    $rootScope.authenticated = false;
+        //    callback && callback();
+        //});
+    }
+
+    $scope.register = function () {
+        register($scope.account, function () {
+            if ($rootScope.authenticated) {
+                $location.path("/");
+                $scope.error = false;
+            } else {
+                $location.path("/register");
+                $scope.error = true;
+            }
+        });
+    };
+
+    $scope.logout = function() {
+        //TODO: In einen Service auslagern
+        $http.post('logout', {}).success(function() {
+            $rootScope.authenticated = false;
+            $location.path("/login");
+        }).error(function(data) {
+            $rootScope.authenticated = false;
+        });
+    }
+
 }]);
 //
 //controllers.controller('loginController', ['$rootScope', '$scope', '$http', '$location',

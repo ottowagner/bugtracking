@@ -1,22 +1,26 @@
 <h2>Registrieren</h2>
 
-<form>
+<div class="alert alert-danger" ng-show="error">
+    There was a problem logging in. Please try again.
+</div>
+
+<form role="form" ng-submit="register()">
     <div class="form-group">
-        <label for="firstName">Vorname</label>
-        <input type="text" class="form-control" id="firstName" placeholder="Vorname">
+        <label for="firstname">Vorname</label>
+        <input type="text" class="form-control" id="firstname" placeholder="Vorname" ng-model="account.firstname" />
     </div>
     <div class="form-group">
-        <label for="lastName">Nachname</label>
-        <input type="text" class="form-control" id="lastName" placeholder="Nachname">
+        <label for="lastname">Nachname</label>
+        <input type="text" class="form-control" id="lastname" placeholder="Nachname" ng-model="account.lastname" />
     </div>
     <div class="form-group">
-        <label for="eMail">Email address</label>
-        <input type="email" class="form-control" id="eMail" placeholder="Email">
+        <label for="username">username (wird noch geändert)!:</label>
+        <input type="text" class="form-control" id="username" name="username" placeholder="Benutzername" ng-model="account.username" />
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="account.password" />
     </div>
-    <a href="#/bug" class="btn btn-default">Anmelden</a>
+    <button type="submit" class="btn btn-primary">Anmelden</button>
     <a href="#/bug" class="btn btn-default">Abbrechen</a>
 </form>

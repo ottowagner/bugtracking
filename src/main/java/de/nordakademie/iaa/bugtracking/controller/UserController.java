@@ -24,11 +24,15 @@ public class UserController {
      *
      * @return the user.
      */
+//    @RequestMapping(value = "/user", method = RequestMethod.GET)
+//    public User loadUser(@RequestBody String email) {
+//        return userService.loadUser(email);
+//    }
+
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     public Principal user(Principal user) {
         return user;
     }
-
     /**
      * Saves the given user.
      *
