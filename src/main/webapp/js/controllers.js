@@ -115,7 +115,7 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
      * Selects a bug.
      * @param selected The bug to be selected.
      */
-    this.selectBug = function (selected) {
+    $scope.selectBug = function (selected) {
         $scope.model.selectedBug = selected;
     };
 
@@ -123,7 +123,7 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
      * Show the details and Starts the editing of the bug.
      * @param selected The bug to be edited.
      */
-    this.openBug = function (selected) {
+    $scope.openBug = function (selected) {
         this.selectedBug(selected);
         console.log("openBug");
         //$scope.switchToScreen($scope.screens.editRoomScreen);
@@ -132,9 +132,10 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
     /**
      * Starts the creation of a new bug.
      */
-    this.newBug = function () {
+    $scope.createBug = function () {
+        console.log("createBug");
         $scope.model.selectedBug = new Bug();
-        console.log("newBug");
+
         //$scope.switchToScreen($scope.screens.editRoomScreen);
     };
 
@@ -142,7 +143,7 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
      * Deletes the selected bug.
      * @param selected The bug to be deleted.
      */
-    this.deleteBug = function () {
+    $scope.deleteBug = function () {
         bugService.deleteBugWithPromise($scope.model.selectedBug)
             .then(function (response) {
                 $scope.model.selectedBug = null;
@@ -167,7 +168,8 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
 }]);
 
 // Set up the form controller.
-controllers.controller('formController', ['$scope', 'Bug', 'bugService', function ($scope, Bug, bugService) {
+controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
+    console.log("formController");
     // Object containing the error messages.
     var messages = {
         errors: {
@@ -188,15 +190,15 @@ controllers.controller('formController', ['$scope', 'Bug', 'bugService', functio
     /**
      * Cancels the editing.
      */
-    this.cancel = function () {
-        //$scope.switchToScreen($scope.screens.mainScreen);
+    $scope.cancel = function () {
+        $location.path("/bugList");
     };
 
     /**
      * Saves the changes.
      * @param bugForm The form object of the room.
      */
-    this.saveRoom = function (bugForm) {
+    $scope.saveBug = function (bugForm) {
         var selected = $scope.model.selectedBug;
         var edited = $scope.formModel.formBug;
         if (bugForm.$valid && selected && edited) {
@@ -211,12 +213,14 @@ controllers.controller('formController', ['$scope', 'Bug', 'bugService', functio
                 .success(function (data, status, headers, config) {
                     if ($scope.model.bugs.indexOf(selected) === -1) {
                         $scope.model.bugs.push(data);
+                        $location.path("/bugList");
                     }
                     //$scope.switchToScreen($scope.screens.mainScreen);
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
                 });
         }
+
     };
 
     /**

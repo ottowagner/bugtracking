@@ -10,7 +10,7 @@
         <th>Aktualisierungsdatum</th>
         <th>Erstellungsdatum</th>
     </tr>
-    <tr ng-repeat="bug in model.buglist">
+    <tr ng-repeat="bug in model.bugs">
         <td>{{bug.id}}</td>
         <td>{{bug.title}}</td>
         <td>{{bug.state}}</td>
@@ -20,5 +20,4 @@
         <td>{{bug.creationDate}}</td>
     </tr>
 </table>
-
-<a href="#/createbug" class="btn btn-default">Anlegen</a>
+<a href="#/createbug" class="btn btn-default" ng-click="createBug()">Anlegen</a>
