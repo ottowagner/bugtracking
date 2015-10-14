@@ -1,23 +1,26 @@
-<h2>Übersicht der Fehler</h2>
+<div class="col-md-12">
+    <div class="page-header">
+        <h2>Fehlerübersicht</h2>
+    </div>
+    <table class="table table-hover">
+        <tr>
+            <th></th>
+            <th>Titel</th>
+            <th>Status</th>
+            <th>Autor</th>
+            <th>Entwickler</th>
+            <th>Aktualisierungsdatum</th>
+            <th>Erstellungsdatum</th>
+        </tr>
+        <tr ng-repeat="bug in model.bugs">
+            <td>{{bug.id}}</td>
+            <td>{{bug.title}}</td>
+            <td>{{bug.state}}</td>
+            <td>{{bug.autor}}</td>
+            <td>{{bug.developer}}</td>
+            <td>{{bug.lastUpdateDate}}</td>
+            <td>{{bug.creationDate}}</td>
+        </tr>
+    </table>
 
-<table class="table table-hover">
-    <tr>
-        <th></th>
-        <th>Titel</th>
-        <th>Status</th>
-        <th>Autor</th>
-        <th>Entwickler</th>
-        <th>Aktualisierungsdatum</th>
-        <th>Erstellungsdatum</th>
-    </tr>
-    <tr ng-repeat="bug in model.bugs">
-        <td>{{bug.id}}</td>
-        <td>{{bug.title}}</td>
-        <td>{{bug.state}}</td>
-        <td>{{bug.autor}}</td>
-        <td>{{bug.developer}}</td>
-        <td>{{bug.lastUpdateDate}}</td>
-        <td>{{bug.creationDate}}</td>
-    </tr>
-</table>
-<a href="#/createbug" class="btn btn-default" ng-click="createBug()">Anlegen</a>
+</div>

@@ -1,67 +1,111 @@
-<h2>Fehler anlegen</h2>
+<div class="col-md-12">
+    <div class="page-header">
+        <h2>Fehler anlegen</h2>
+    </div>
 
-<section ng-controller="formController as formController">
-<form name="bugForm" novalidate>
-    <table>
-        <tr>
-            <td><label>Titel:</label></td>
-            <td>
-                <input type="text" name="title" ng-model="formModel.formBug.title" ng-disabled="formBug.isEdit" maxlength="255" required>
-                <span class="error" ng-show="bugForm.title.$invalid" >
+    <section ng-controller="formController as formController">
+        <form class="form-horizontal" name="bugForm" novalidate>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Titel</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
+                           ng-model="formModel.formBug.title" ng-disabled="formBug.isEdit"
+                           maxlength="255" required>
+
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.title.$invalid">
                     {{formController.getErrorMessage(bugForm.title)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Status:</label></td>
-            <td>
-                <input type="text" name="state" ng-model="formModel.formBug.state" ng-disabled="formModel.isEdit" maxlength="255" required>
-                <span class="error" ng-show="bugForm.state.$invalid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Beschreibung</label>
+
+                <div class="col-sm-8">
+                    <textarea rows="8" type="text" class="form-control" id="description" name="description"
+                              placeholder="Beschreibung" ng-model="formModel.formBug.description"
+                              ng-disabled="formBug.isEdit"
+                            ></textarea>
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.description.$invalid">
+                    {{formController.getErrorMessage(bugForm.description)}}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="state" name="state"
+                           placeholder="Status - (Wird eig automatisch gesetzt)"
+                           ng-model="formModel.formBug.state" ng-disabled="formBug.isEdit"
+                           maxlength="255" required>
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.state.$invalid">
                     {{formController.getErrorMessage(bugForm.state)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Autor (ID):</label></td>
-            <td>
-                <input type="number" name="autor" ng-model="formModel.formBug.autor" ng-disabled="formModel.isEdit" maxlength="255" required>
-                <span class="error" ng-show="bugForm.autor.$invalid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Autor (ID)</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="autor" name="autor"
+                           placeholder="Autor - (Wird eig automatisch gesetzt)"
+                           ng-model="formModel.formBug.autor" ng-disabled="formBug.isEdit"
+                           maxlength="255" required>
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.autor.$invalid">
                     {{formController.getErrorMessage(bugForm.autor)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Entwickler (ID):</label></td>
-            <td>
-                <input type="number" name="developer" ng-model="formModel.formBug.developer"
-                       ng-disabled="formModel.isEdit" maxlength="255">
-                <span class="error" ng-show="bugForm.developer.$invalid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Entwickler (ID)</label>
+
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="developer" name="developer"
+                           placeholder="Entwickler  - (Wird eig automatisch gesetzt)"
+                           ng-model="formModel.formBug.developer" ng-disabled="formBug.isEdit"
+                           maxlength="255">
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.developer.$invalid">
                     {{formController.getErrorMessage(bugForm.developer)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Aktualisierungsdatum (Wird eig automatisch gesetzt):</label></td>
-            <td>
-                <input type="text" name="lastUpdateDate" ng-model="formModel.formBug.lastUpdateDate"
-                       ng-disabled="formModel.isEdit" maxlength="255">
-                <span class="error" ng-show="bugForm.lastUpdateDate.$invalid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Aktualisierungsdatum</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="lastUpdateDate" name="lastUpdateDate"
+                           placeholder="Aktualisierungsdatum - (Wird eig automatisch gesetzt)"
+                           ng-model="formModel.formBug.lastUpdateDate" ng-disabled="formBug.isEdit"
+                           maxlength="255">
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.lastUpdateDate.$invalid">
                     {{formController.getErrorMessage(bugForm.lastUpdateDate)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Erstellungsdatum (Wird eig automatisch gesetzt):</label></td>
-            <td>
-                <input type="text" name="creationDate" ng-model="formModel.formBug.creationDate" ng-disabled="formModel.isEdit" maxlength="255" required>
-                <span class="error" ng-show="bugForm.creationDate.$invalid">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="titel" class="col-sm-2 control-label">Erstellungsdatum</label>
+
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="titel" name="creationDate"
+                           placeholder="Erstellungsdatum - (Wird eig automatisch gesetzt)"
+                           ng-model="formModel.formBug.creationDate" ng-disabled="formBug.isEdit"
+                           maxlength="255" required>
+                </div>
+                <div class="error col-sm-2" ng-show="bugForm.creationDate.$invalid">
                     {{formController.getErrorMessage(bugForm.creationDate)}}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td><input type="submit" value="Save" ng-disabled="bugForm.$invalid || bugForm.$pristine" ng-click="saveBug(bugForm)"></td>
-            <td><input type="submit" value="Cancel" ng-click="cancel()"></td>
-        </tr>
-    </table>
-</form>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" class="btn btn-success" value="Anlegen"
+                           ng-disabled="bugForm.$invalid || bugForm.$pristine"
+                           ng-click="saveBug(bugForm)">
+                    <input type="submit" class="btn btn-default" value="Cancel" ng-click="cancel()">
+                </div>
+            </div>
+        </form>
+
+    </section>
+</div>

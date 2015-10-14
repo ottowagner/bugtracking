@@ -7,7 +7,7 @@
 var controllers = angular.module('controllers', ['resources', 'services']);
 
 // Set up main controller.
-controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
+controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', 'Bug', function ($rootScope, $scope, $http, $location, Bug) {
     // Set up the scope model
     $scope.model = {
         bugs: [],
@@ -95,6 +95,15 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         });
     };
 
+    /**
+     * Starts the creation of a new bug.
+     */
+    $scope.createBug = function () {
+        $scope.model.selectedBug = new Bug();
+        $location.path("/createBug");
+        //$scope.switchToScreen($scope.screens.editRoomScreen);
+    };
+
     $scope.logout = function () {
         //TODO: In einen Service auslagern
         $http.post('logout', {}).success(function () {
@@ -124,15 +133,6 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
     $scope.openBug = function (selected) {
         this.selectedBug(selected);
         console.log("openBug");
-        //$scope.switchToScreen($scope.screens.editRoomScreen);
-    };
-
-    /**
-     * Starts the creation of a new bug.
-     */
-    $scope.createBug = function () {
-        $scope.model.selectedBug = new Bug();
-
         //$scope.switchToScreen($scope.screens.editRoomScreen);
     };
 

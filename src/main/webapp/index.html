@@ -2,6 +2,8 @@
 <html ng-app="bugtracking">
 <head lang="en">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Bugtracking</title>
 
     <script type="application/javascript" src="resources/bower_components/angular/angular.js"></script>
@@ -17,37 +19,46 @@
 
 </head>
 <body ng-controller="mainController as mainController">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand">
-                    <img alt="Fehlerverfolgungssystem" class="img-responsive" src="resources/img/icon.png">
-                </a>
-            </div>
-            <p class="navbar-text">Bugtracking</p>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-right" role="login">
-
-                    <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
-                    <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
-
-                    <a href="#/login" class="btn btn-default" aria-label="Logout" ng-show="authenticated"
-                       ng-click="logout()">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                    </a>
-
-                </form>
-            </div>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">
+                <img alt="Fehlerverfolgungssystem" class="img-responsive" src="resources/img/icon.png">
+            </a>
         </div>
-    </nav>
+        <p class="navbar-text navbar-title">Bugtracking</p>
 
-    <div ng-cloak ng-view></div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <form class="navbar-form navbar-right" role="login">
 
-    <div class="navbar-default navbar-fixed-bottom">
-            <div class="navbar-right">
-                <p class="navbar-text">created by Otto Wagner, Johan Ahrens</p>
-            </div>
+                <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
+                <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
+
+                <a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated"
+                   ng-click="createBug()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </a>
+
+                <a href="#/login" class="btn btn-default" aria-label="Logout" ng-show="authenticated"
+                   ng-click="logout()">
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                </a>
+
+            </form>
+        </div>
     </div>
+</nav>
+
+
+<div id="content" class="container-fluid" ng-cloak>
+    <div class="row" ng-view></div>
+</div>
+
+<div class="navbar-default navbar-fixed-bottom">
+    <div>
+        <p class="navbar-text">created by Otto Wagner, Johan Ahrens</p>
+    </div>
+</div>
 
 </body>
 </html>
