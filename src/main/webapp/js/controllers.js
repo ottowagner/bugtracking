@@ -8,7 +8,6 @@ var controllers = angular.module('controllers', ['resources', 'services']);
 
 // Set up main controller.
 controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
-    console.log("mainController");
     // Set up the scope model
     $scope.model = {
         bugs: [],
@@ -51,7 +50,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
     $scope.login = function () {
         authenticate($scope.account, function () {
             if ($rootScope.authenticated) {
-                $location.path("/");
+                $location.path("/bugs");
                 $scope.error = false;
             } else {
                 $location.path("/login");
@@ -87,7 +86,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
     $scope.register = function () {
         register($scope.account, function () {
             if ($rootScope.authenticated) {
-                $location.path("/");
+                $location.path("/bugs");
                 $scope.error = false;
             } else {
                 $location.path("/register");
@@ -110,7 +109,6 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
 
 // Set up the list controller.
 controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
-    console.log("bugListController");
     /**
      * Selects a bug.
      * @param selected The bug to be selected.
@@ -133,7 +131,6 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
      * Starts the creation of a new bug.
      */
     $scope.createBug = function () {
-        console.log("createBug");
         $scope.model.selectedBug = new Bug();
 
         //$scope.switchToScreen($scope.screens.editRoomScreen);
@@ -169,7 +166,6 @@ controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugS
 
 // Set up the form controller.
 controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
-    console.log("formController");
     // Object containing the error messages.
     var messages = {
         errors: {
@@ -191,7 +187,7 @@ controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugServ
      * Cancels the editing.
      */
     $scope.cancel = function () {
-        $location.path("/bugList");
+        $location.path("/bugs");
     };
 
     /**
@@ -213,7 +209,7 @@ controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugServ
                 .success(function (data, status, headers, config) {
                     if ($scope.model.bugs.indexOf(selected) === -1) {
                         $scope.model.bugs.push(data);
-                        $location.path("/bugList");
+                        $location.path("/bugs");
                     }
                     //$scope.switchToScreen($scope.screens.mainScreen);
                 }).error(function (data, status, headers, config) {

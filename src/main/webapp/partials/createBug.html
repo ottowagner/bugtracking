@@ -33,7 +33,8 @@
         <tr>
             <td><label>Entwickler (ID):</label></td>
             <td>
-                <input type="number" name="developer" ng-model="formModel.formBug.developer" ng-disabled="formModel.isEdit" maxlength="255" required>
+                <input type="number" name="developer" ng-model="formModel.formBug.developer"
+                       ng-disabled="formModel.isEdit" maxlength="255">
                 <span class="error" ng-show="bugForm.developer.$invalid">
                     {{formController.getErrorMessage(bugForm.developer)}}
                 </span>
@@ -42,7 +43,8 @@
         <tr>
             <td><label>Aktualisierungsdatum (Wird eig automatisch gesetzt):</label></td>
             <td>
-                <input type="text" name="lastUpdateDate" ng-model="formModel.formBug.lastUpdateDate" ng-disabled="formModel.isEdit" maxlength="255" required>
+                <input type="text" name="lastUpdateDate" ng-model="formModel.formBug.lastUpdateDate"
+                       ng-disabled="formModel.isEdit" maxlength="255">
                 <span class="error" ng-show="bugForm.lastUpdateDate.$invalid">
                     {{formController.getErrorMessage(bugForm.lastUpdateDate)}}
                 </span>

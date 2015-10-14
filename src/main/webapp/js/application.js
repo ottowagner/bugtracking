@@ -9,7 +9,7 @@ var application = angular.module('bugtracking', ['ngRoute', 'controllers']);
 application.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $routeProvider.
-            when('/bug', {
+            when('/bugs', {
                 templateUrl: 'partials/bugList.html',
                 controller: 'bugListController'
             }).
@@ -30,9 +30,21 @@ application.config(['$routeProvider', '$httpProvider',
             //    controller: 'PhoneDetailCtrl'
             //}).
             otherwise({
-                redirectTo: '/bug'
+                redirectTo: '/login'
             });
 
         //https://github.com/dsyer/spring-security-angular/tree/master/single
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);
+
+application.run(['$rootScope', '$location', function ($rootScope, $location) {
+    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+        if ($rootScope.authenticated == false) {
+            if (next.templateUrl == "partials/login.html") {
+            } else if (next.templateUrl == "partials/register.html") {
+            } else {
+                $location.path("/login");
+            }
+        }
+    });
+}]);
