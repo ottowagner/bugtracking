@@ -11,7 +11,11 @@ application.config(['$routeProvider', '$httpProvider',
         $routeProvider.
             when('/bug', {
                 templateUrl: 'partials/bugList.html',
-                controller: 'mainController'
+                controller: 'bugListController'
+            }).
+            when('/createbug', {
+                templateUrl: 'partials/createBug.html',
+                controller: 'formController'
             }).
             when('/register', {
                 templateUrl: 'partials/register.html',

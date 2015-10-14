@@ -8,9 +8,11 @@ var controllers = angular.module('controllers', ['resources', 'services']);
 
 // Set up main controller.
 controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', function ($rootScope, $scope, $http, $location) {
+    console.log("mainController");
     // Set up the scope model
     $scope.model = {
-        buglist: []
+        bugs: [],
+        selectedBug: null
     };
 
     var authenticate = function (account, callback) {
@@ -24,9 +26,9 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
             authorization: account.username + ":" + account.password
         } : {};
 
-        if(accountData.authorization){
+        if (accountData.authorization) {
             $rootScope.authenticated = true;
-        }else{
+        } else {
             $rootScope.authenticated = false;
         }
         callback && callback();
@@ -94,150 +96,151 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         });
     };
 
-    $scope.logout = function() {
+    $scope.logout = function () {
         //TODO: In einen Service auslagern
-        $http.post('logout', {}).success(function() {
+        $http.post('logout', {}).success(function () {
             $rootScope.authenticated = false;
             $location.path("/login");
-        }).error(function(data) {
+        }).error(function (data) {
             $rootScope.authenticated = false;
         });
     }
 
 }]);
-//
-//controllers.controller('loginController', ['$rootScope', '$scope', '$http', '$location',
-//
-//]);
 
-//// Set up the list controller.
-//controllers.controller('listController', ['$scope', 'Room', 'roomService', function ($scope, Room, roomService) {
-//    /**
-//     * Selects a room.
-//     * @param selected The room to be selected.
-//     */
-//    this.selectRoom = function (selected) {
-//        $scope.model.selectedRoom = selected;
-//    };
-//
-//    /**
-//     * Starts the editing of the room.
-//     * @param selected The room to be edited.
-//     */
-//    this.editRoom = function (selected) {
-//        this.selectRoom(selected);
-//        $scope.switchToScreen($scope.screens.editRoomScreen);
-//    };
-//
-//    /**
-//     * Starts the creation of a new room.
-//     */
-//    this.newRoom = function () {
-//        $scope.model.selectedRoom = new Room('', '', 0, false);
-//        $scope.switchToScreen($scope.screens.editRoomScreen);
-//    };
-//
-//    /**
-//     * Deletes the selected room.
-//     * @param selected The room to be deleted.
-//     */
-//    this.deleteRoom = function () {
-//        roomService.deleteRoomWithPromise($scope.model.selectedRoom)
-//            .then(function (response) {
-//                $scope.model.selectedRoom = null;
-//                return roomService.listRoomsWithPromise();
-//            })
-//            .then(function (response) {
-//                $scope.model.rooms = response.data;
-//            })
-//            .error(function (data, status, headers, config) {
-//                alert("an error occured while deleting");
-//            });
-//    };
-//
-//    // List the current rooms.
-//    roomService.listRoomsWithPromise()
-//        .success(function (data, status, headers, config) {
-//            $scope.model.rooms = data;
-//        })
-//        .error(function (data, status, headers, config) {
-//            alert("an error occured while loading");
-//        });
-//}]);
-//
-//// Set up the form controller.
-//controllers.controller('formController', ['$scope', 'Room', 'roomService', function ($scope, Room, roomService) {
-//    // Object containing the error messages.
-//    var messages = {
-//        errors: {
-//            required: 'Please enter a value!',
-//            number: 'Please enter a number!',
-//            min: 'The number is smaller than the minimum allowed!',
-//            unknown: 'Please enter a valid value!'
-//        }
-//    };
-//
-//    // Set up the form model.
-//    $scope.formModel = {
-//        isEdit: $scope.model.selectedRoom.building && $scope.model.selectedRoom.roomNumber,
-//        formRoom: new Room($scope.model.selectedRoom.building, $scope.model.selectedRoom.roomNumber,
-//            $scope.model.selectedRoom.seats, $scope.model.selectedRoom.beamerPresent)
-//    };
-//
-//    /**
-//     * Cancels the editing.
-//     */
-//    this.cancel = function () {
-//        $scope.switchToScreen($scope.screens.mainScreen);
-//    };
-//
-//    /**
-//     * Saves the changes.
-//     * @param roomForm The form object of the room.
-//     */
-//    this.saveRoom = function (roomForm) {
-//        var selected = $scope.model.selectedRoom;
-//        var edited = $scope.formModel.formRoom;
-//        if (roomForm.$valid && selected && edited) {
-//            selected.building = edited.building;
-//            selected.roomNumber = edited.roomNumber;
-//            selected.seats = edited.seats;
-//            selected.beamerPresent = edited.beamerPresent;
-//            // do save data
-//            roomService.saveRoomWithPromise(selected)
-//                .success(function (data, status, headers, config) {
-//                    if ($scope.model.rooms.indexOf(selected) === -1) {
-//                        $scope.model.rooms.push(data);
-//                    }
-//                    $scope.switchToScreen($scope.screens.mainScreen);
-//                }).error(function (data, status, headers, config) {
-//                    alert("an error occured while saving");
-//                });
-//        }
-//    };
-//
-//    /**
-//     * Returns the error message for the given element.
-//     * @param element The element.
-//     * @returns a string.
-//     */
-//    this.getErrorMessage = function (element) {
-//        var message = null;
-//        if (element.$error) {
-//            if (element.$error.required) {
-//                message = messages.errors.required;
-//            }
-//            else if (element.$error.number) {
-//                message = messages.errors.number;
-//            }
-//            else if (element.$error.min) {
-//                message = messages.errors.min;
-//            }
-//            else {
-//                message = messages.errors.unknown;
-//            }
-//        }
-//        return message;
-//    };
-//
-//}]);
+// Set up the list controller.
+controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
+    console.log("bugListController");
+    /**
+     * Selects a bug.
+     * @param selected The bug to be selected.
+     */
+    this.selectBug = function (selected) {
+        $scope.model.selectedBug = selected;
+    };
+
+    /**
+     * Show the details and Starts the editing of the bug.
+     * @param selected The bug to be edited.
+     */
+    this.openBug = function (selected) {
+        this.selectedBug(selected);
+        console.log("openBug");
+        //$scope.switchToScreen($scope.screens.editRoomScreen);
+    };
+
+    /**
+     * Starts the creation of a new bug.
+     */
+    this.newBug = function () {
+        $scope.model.selectedBug = new Bug();
+        console.log("newBug");
+        //$scope.switchToScreen($scope.screens.editRoomScreen);
+    };
+
+    /**
+     * Deletes the selected bug.
+     * @param selected The bug to be deleted.
+     */
+    this.deleteBug = function () {
+        bugService.deleteBugWithPromise($scope.model.selectedBug)
+            .then(function (response) {
+                $scope.model.selectedBug = null;
+                return bugService.listBugsWithPromise();
+            })
+            .then(function (response) {
+                $scope.model.bugs = response.data;
+            })
+            .error(function (data, status, headers, config) {
+                alert("an error occured while deleting");
+            });
+    };
+
+    // List the current bugs.
+    bugService.listBugsWithPromise()
+        .success(function (data, status, headers, config) {
+            $scope.model.bugs = data;
+        })
+        .error(function (data, status, headers, config) {
+            alert("an error occured while loading");
+        });
+}]);
+
+// Set up the form controller.
+controllers.controller('formController', ['$scope', 'Bug', 'bugService', function ($scope, Bug, bugService) {
+    // Object containing the error messages.
+    var messages = {
+        errors: {
+            required: 'Please enter a value!',
+            number: 'Please enter a number!',
+            min: 'The number is smaller than the minimum allowed!',
+            unknown: 'Please enter a valid value!'
+        }
+    };
+
+    // Set up the form model.
+    $scope.formModel = {
+        isEdit: $scope.model.selectedBug.id,
+        formBug: new Bug($scope.model.selectedBug.title, $scope.model.selectedBug.state, $scope.model.selectedBug.autor,
+            $scope.model.selectedBug.developer, $scope.model.selectedBug.lastUpdateDate, $scope.model.selectedBug.creationDate)
+    };
+
+    /**
+     * Cancels the editing.
+     */
+    this.cancel = function () {
+        //$scope.switchToScreen($scope.screens.mainScreen);
+    };
+
+    /**
+     * Saves the changes.
+     * @param bugForm The form object of the room.
+     */
+    this.saveRoom = function (bugForm) {
+        var selected = $scope.model.selectedBug;
+        var edited = $scope.formModel.formBug;
+        if (bugForm.$valid && selected && edited) {
+            selected.title = edited.title;
+            selected.state = edited.state;
+            selected.autor = edited.autor;
+            selected.developer = edited.developer;
+            selected.lastUpdateDate = edited.lastUpdateDate;
+            selected.creationDate = edited.creationDate;
+            // do save data
+            bugService.saveBugWithPromise(selected)
+                .success(function (data, status, headers, config) {
+                    if ($scope.model.bugs.indexOf(selected) === -1) {
+                        $scope.model.bugs.push(data);
+                    }
+                    //$scope.switchToScreen($scope.screens.mainScreen);
+                }).error(function (data, status, headers, config) {
+                    alert("an error occured while saving");
+                });
+        }
+    };
+
+    /**
+     * Returns the error message for the given element.
+     * @param element The element.
+     * @returns a string.
+     */
+    this.getErrorMessage = function (element) {
+        var message = null;
+        if (element.$error) {
+            if (element.$error.required) {
+                message = messages.errors.required;
+            }
+            else if (element.$error.number) {
+                message = messages.errors.number;
+            }
+            else if (element.$error.min) {
+                message = messages.errors.min;
+            }
+            else {
+                message = messages.errors.unknown;
+            }
+        }
+        return message;
+    };
+
+}]);
