@@ -7,7 +7,7 @@
         There was a problem logging in. Please try again.
     </div>
 
-    <form role="form" ng-submit="register()">
+    <form role="form" ng-submit="mainCtrl.register()">
         <div class="form-group">
             <label for="firstname">Vorname</label>
             <input type="text" class="form-control" id="firstname" placeholder="Vorname" ng-model="account.firstname"/>
@@ -26,7 +26,8 @@
             <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                    ng-model="account.password"/>
         </div>
-        <button type="submit" class="btn btn-primary">Anmelden</button>
+        <button type="submit" class="btn btn-primary">Registrieren</button>
+        <!-- TODO: href anders realisieren1 -->
         <a href="#/login" class="btn btn-default">Abbrechen</a>
     </form>
 </div>

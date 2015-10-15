@@ -1,6 +1,6 @@
 /**
  * The services.
- * Created by Stephan on 18.12.2014.
+ * Created by Otto on 13.10.2015.
  */
 'use strict';
 

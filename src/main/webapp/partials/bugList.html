@@ -1,26 +1,42 @@
-<div class="col-md-12">
+<div class="col-md-12" ng-controller="listBugController as listCtrl">
     <div class="page-header">
         <h2>Fehlerübersicht</h2>
     </div>
-    <table class="table table-hover">
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
+            Sortieren
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li>Noch nicht impl.</li>
+            <li>Noch nicht impl.</li>
+            <li>Noch nicht impl.</li>
+        </ul>
+    </div>
+    <br/>
+    <table class="table table-hover bugList">
         <tr>
             <th></th>
             <th>Titel</th>
+            <th>Beschreibung</th>
             <th>Status</th>
             <th>Autor</th>
             <th>Entwickler</th>
             <th>Aktualisierungsdatum</th>
             <th>Erstellungsdatum</th>
         </tr>
-        <tr ng-repeat="bug in model.bugs">
+        <tr ng-repeat="bug in bugModel.bugs | orderBy:['id']" ng-click="listCtrl.openBug(bug)">
+            <!-- ng-click="listController.openBug(bug)" -->
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
-            <td>{{bug.state}}</td>
+            <td>{{bug.description}}</td>
+            <td format-state="{{bug.state}}"></td>
             <td>{{bug.autor}}</td>
             <td>{{bug.developer}}</td>
             <td>{{bug.lastUpdateDate}}</td>
             <td>{{bug.creationDate}}</td>
+            <!--<td><input type="submit" class="btn btn-success" value="Statuswechsel" ng-click="saveBug(bugForm)"></td>-->
         </tr>
     </table>
-
 </div>

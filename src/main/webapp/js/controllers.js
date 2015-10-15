@@ -1,18 +1,21 @@
 /**
  * The controllers.
- * Created by Stephan on 18.12.2014.
+ * Created by Otto on 12.10.2015.
  */
 'use strict';
 
 var controllers = angular.module('controllers', ['resources', 'services']);
 
-// Set up main controller.
 controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', 'Bug', function ($rootScope, $scope, $http, $location, Bug) {
-    // Set up the scope model
-    $scope.model = {
-        bugs: [],
-        selectedBug: null
+    $scope.authModel = {
+        account: []
     };
+
+    $scope.bugModel = {
+        bugs: [],
+        selectedBug: null,
+        editedBug: null
+    }
 
     var authenticate = function (account, callback) {
 //TODO: In einen Service auslagern
@@ -47,7 +50,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
 
     //authenticate();
     $scope.account = {};
-    $scope.login = function () {
+    this.login = function () {
         authenticate($scope.account, function () {
             if ($rootScope.authenticated) {
                 $location.path("/bugs");
@@ -83,7 +86,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         //});
     }
 
-    $scope.register = function () {
+    this.register = function () {
         register($scope.account, function () {
             if ($rootScope.authenticated) {
                 $location.path("/bugs");
@@ -95,120 +98,77 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         });
     };
 
+    this.logout = function () {
+        //TODO: In einen Service auslagern
+        $rootScope.authenticated = false;
+        $location.path("/login");
+        //$http.post('logout', {}).success(function () {
+        //    $rootScope.authenticated = false;
+        //    $location.path("/login");
+        //}).error(function (data) {
+        //    $rootScope.authenticated = false;
+        //    $location.path("/login");
+        //});
+    }
+
+
     /**
      * Starts the creation of a new bug.
      */
-    $scope.createBug = function () {
-        $scope.model.selectedBug = new Bug();
+    this.createBug = function () {
+        var bug = new Bug();
+        $scope.bugModel.selectedBug = bug;
+        $scope.bugModel.editedBug = new Bug(bug.id, bug.title, bug.description, bug.state, bug.autor, bug.developer, bug.lastUpdateDate, bug.creationDate);
         $location.path("/createBug");
-        //$scope.switchToScreen($scope.screens.editRoomScreen);
     };
-
-    $scope.logout = function () {
-        //TODO: In einen Service auslagern
-        $http.post('logout', {}).success(function () {
-            $rootScope.authenticated = false;
-            $location.path("/login");
-        }).error(function (data) {
-            $rootScope.authenticated = false;
-        });
-    }
-
 }]);
 
-// Set up the list controller.
-controllers.controller('bugListController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
-    /**
-     * Selects a bug.
-     * @param selected The bug to be selected.
-     */
-    $scope.selectBug = function (selected) {
-        $scope.model.selectedBug = selected;
-    };
+// Set up bug controller.
+controllers.controller('listBugController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
+
+    // List the current bugs.
+    bugService.listBugsWithPromise()
+        .success(function (data, status, headers, config) {
+            $scope.bugModel.bugs = data;
+        })
+        .error(function (data, status, headers, config) {
+            alert("an error occured while loading");
+        });
 
     /**
      * Show the details and Starts the editing of the bug.
      * @param selected The bug to be edited.
      */
-    $scope.openBug = function (selected) {
-        this.selectedBug(selected);
-        console.log("openBug");
-        //$scope.switchToScreen($scope.screens.editRoomScreen);
+    this.openBug = function (selected) {
+        $scope.bugModel.selectedBug = selected;
+        $scope.bugModel.editedBug = new Bug(selected.id, selected.title, selected.description, selected.state, selected.autor, selected.developer, selected.lastUpdateDate, selected.creationDate);
+        $location.path("/openBug");
     };
 
-    /**
-     * Deletes the selected bug.
-     * @param selected The bug to be deleted.
-     */
-    $scope.deleteBug = function () {
-        bugService.deleteBugWithPromise($scope.model.selectedBug)
-            .then(function (response) {
-                $scope.model.selectedBug = null;
-                return bugService.listBugsWithPromise();
-            })
-            .then(function (response) {
-                $scope.model.bugs = response.data;
-            })
-            .error(function (data, status, headers, config) {
-                alert("an error occured while deleting");
-            });
-    };
-
-    // List the current bugs.
-    bugService.listBugsWithPromise()
-        .success(function (data, status, headers, config) {
-            $scope.model.bugs = data;
-        })
-        .error(function (data, status, headers, config) {
-            alert("an error occured while loading");
-        });
 }]);
 
-// Set up the form controller.
-controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
-    // Object containing the error messages.
-    var messages = {
-        errors: {
-            required: 'Please enter a value!',
-            number: 'Please enter a number!',
-            min: 'The number is smaller than the minimum allowed!',
-            unknown: 'Please enter a valid value!'
-        }
-    };
 
-    // Set up the form model.
-    $scope.formModel = {
-        isEdit: $scope.model.selectedBug.id,
-        formBug: new Bug($scope.model.selectedBug.title, $scope.model.selectedBug.state, $scope.model.selectedBug.autor,
-            $scope.model.selectedBug.developer, $scope.model.selectedBug.lastUpdateDate, $scope.model.selectedBug.creationDate)
-    };
-
-    /**
-     * Cancels the editing.
-     */
-    $scope.cancel = function () {
-        $location.path("/bugs");
-    };
-
+// Set up bug controller.
+controllers.controller('editBugController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
     /**
      * Saves the changes.
      * @param bugForm The form object of the room.
      */
-    $scope.saveBug = function (bugForm) {
-        var selected = $scope.model.selectedBug;
-        var edited = $scope.formModel.formBug;
+    this.saveBug = function (bugForm) {
+        var selected = $scope.bugModel.selectedBug;
+        var edited = $scope.bugModel.editedBug;
         if (bugForm.$valid && selected && edited) {
             selected.title = edited.title;
+            selected.description = edited.description;
             selected.state = edited.state;
             selected.autor = edited.autor;
             selected.developer = edited.developer;
             selected.lastUpdateDate = edited.lastUpdateDate;
             selected.creationDate = edited.creationDate;
-            // do save data
             bugService.saveBugWithPromise(selected)
                 .success(function (data, status, headers, config) {
-                    if ($scope.model.bugs.indexOf(selected) === -1) {
-                        $scope.model.bugs.push(data);
+                    if ($scope.bugModel.bugs.indexOf(selected) === -1) {
+                        $scope.bugModel.bugs.push(data);
                         $location.path("/bugs");
                     }
                     //$scope.switchToScreen($scope.screens.mainScreen);
@@ -216,7 +176,23 @@ controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugServ
                     alert("an error occured while saving");
                 });
         }
+    };
 
+    /**
+     * go to BugList
+     */
+    this.toBugList = function () {
+        $location.path("/bugs");
+    };
+
+// Object containing the error messages.
+    var messages = {
+        errors: {
+            required: 'Please enter a value!',
+            number: 'Please enter a number!',
+            min: 'The number is smaller than the minimum allowed!',
+            unknown: 'Please enter a valid value!'
+        }
     };
 
     /**
@@ -242,5 +218,4 @@ controllers.controller('formController', ['$scope', '$location', 'Bug', 'bugServ
         }
         return message;
     };
-
 }]);

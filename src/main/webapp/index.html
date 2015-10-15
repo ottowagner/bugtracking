@@ -18,7 +18,7 @@
     <link rel="icon" type="image/png" href="resources/img/icon.png">
 
 </head>
-<body ng-controller="mainController as mainController">
+<body ng-controller="mainController as mainCtrl">
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -30,25 +30,21 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <form class="navbar-form navbar-right" role="login">
-
+                <!--TODO: href entfernen bzw. auslagern!-->
                 <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
                 <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
 
-                <a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated"
-                   ng-click="createBug()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                <a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated" ng-click="mainCtrl.createBug()">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen
                 </a>
 
-                <a href="#/login" class="btn btn-default" aria-label="Logout" ng-show="authenticated"
-                   ng-click="logout()">
-                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                <a class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="mainCtrl.logout()">
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Vor & Nachname
                 </a>
-
             </form>
         </div>
     </div>
 </nav>
-
 
 <div id="content" class="container-fluid" ng-cloak>
     <div class="row" ng-view></div>
