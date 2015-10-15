@@ -1,10 +1,9 @@
-body {
-    padding-top: 50px;
-    padding-bottom: 50px;
-}
-
 .commentBox {
     padding-bottom: 40px;
+}
+
+.hideTitle {
+    display: inline;
 }
 
 .navbar-brand {
@@ -18,4 +17,58 @@ body {
 
 .bugList tr td {
     cursor: pointer;
+}
+
+.page-header {
+    margin-top: 0px;
+}
+
+/* Large desktop */
+@media (min-width: 1200px) {
+    .hideTitle {
+        display: inline;
+    }
+
+    body {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 1200px) {
+    .hideTitle {
+        display: inline;
+    }
+
+    body {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+    .hideTitle {
+        display: none;
+    }
+
+    body {
+        padding-top: 120px;
+        padding-bottom: 50px;
+    }
+
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+    .hideTitle {
+        display: none;
+    }
+
+    body {
+        padding-top: 160px;
+        padding-bottom: 50px;
+    }
 }

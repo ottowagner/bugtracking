@@ -60,7 +60,7 @@ public class Bug implements Serializable {
         this.title = title;
     }
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 4000)
     public String getDescription() {
         return description;
     }

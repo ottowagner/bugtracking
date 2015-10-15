@@ -1,51 +1,54 @@
 <div class="col-md-12" ng-controller="editBugController as editCtrl">
     <div class="page-header">
-        <h2>{{bugModel.editedBug.title}}</h2>
-        Aktueller Status: {{bugModel.editedBug.state}}
-    </div>
-    <div class="container-fluid">
         <div class="row alert alert-warning">
             <button class="btn btn-primary" type="button" ng-click="editCtrl.toBugList()">
-                <em class="glyphicon glyphicon-step-backward"></em> Zurück
+                <em class="glyphicon glyphicon-chevron-left"></em> Zurück
             </button>
             <div class="btn-group pull-right">
-                <button class="btn btn-default" type="button">
-                    <em class="glyphicon glyphicon-align-center"></em> Folgestatus B
-                </button>
-                <button class="btn btn-default" type="button">
-                    <em class="glyphicon glyphicon-align-right"></em> Folgestatus C
-                </button>
+                <!--//TODO:Foreach folgestatus-->
+                <button class="btn btn-default" type="button" format-state="{{bugModel.editedBug.state}}"></button>
+                <button class="btn btn-default" type="button" format-state="In Bearbeitung"></button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-10">
-                <h3>
-                    Beschreibung:
-                </h3>
-                {{bugModel.editedBug.description}}
+        <h2>{{bugModel.editedBug.title}}</h2><span format-state="{{bugModel.editedBug.state}}"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="col-md-12">
+                <h4>Daten:</h4>
             </div>
-
-            <div class="col-md-2 pull-right">
+            <div class="col-md-12">
                 Entwickler: {{bugModel.editedBug.developer}}<br/>
                 Autor: {{bugModel.editedBug.autor}}<br/>
                 Letzte aktualisierung: {{bugModel.editedBug.lastUpdateDate}}<br/>
                 Erstellungsdatum: {{bugModel.editedBug.creationDate}}
             </div>
         </div>
-        <div class="panel panel-warning navbar-fixed-bottom commentBox">
-            <div class="panel-heading">
-                <h3 class="panel-title">Kommentare</h3>
+        <div class="col-md-10">
+            <div class="col-md-12">
+                <h4>Beschreibung:</h4>
             </div>
-            <div class="panel-body">
-                <div class="col-md-2">
-                    Erstellungsdatum: 01.01.blub<br/>
-                    User: Max Mustermann
-                </div>
-                <div class="col-md-10">
-                    Kommentare sind toll...<br/>
-                    Kommentare sind toll...<br/>
-                    Kommentare sind toll...<br/>
-                </div>
+            <div class="col-md-12">
+                {{bugModel.editedBug.description}}
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <div class="row panel panel-warning commentBox">
+        <div class="panel-heading">
+            <h3 class="panel-title">Kommentare</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-2">
+                Erstellungsdatum: 01.01.blub<br/>
+                User: Max Mustermann
+            </div>
+            <div class="col-md-10">
+                Kommentare sind toll...<br/>
             </div>
         </div>
     </div>

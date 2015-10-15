@@ -26,22 +26,21 @@
                 <img alt="Fehlerverfolgungssystem" class="img-responsive" src="resources/img/icon.png">
             </a>
         </div>
-        <p class="navbar-text navbar-title">Bugtracking</p>
+        <div class="hideTitle">
+            <p class="navbar-text navbar-title">Bugtracking</p>
+        </div>
+        <div class="navbar-form navbar-right">
+            <!--TODO: href entfernen bzw. auslagern!-->
+            <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
+            <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-right" role="login">
-                <!--TODO: href entfernen bzw. auslagern!-->
-                <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
-                <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
+            <a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated" ng-click="mainCtrl.createBug()">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen
+            </a>
 
-                <a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated" ng-click="mainCtrl.createBug()">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen
-                </a>
-
-                <a class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="mainCtrl.logout()">
-                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Vor & Nachname
-                </a>
-            </form>
+            <a class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="mainCtrl.logout()">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Vor & Nachname
+            </a>
         </div>
     </div>
 </nav>
