@@ -68,19 +68,15 @@ application.directive("formatState", function () {
                     break;
                 case "Behoben":
                     state = "<i class='glyphicon glyphicon-thumbs-up'></i> " + state;
-                    state = state + " 3";
                     break;
                 case "Abgelehnt":
                     state = "<i class='glyphicon glyphicon-thumbs-down'></i> " + state;
-                    state = state + " 4";
                     break;
                 case "Wiedereröffnet":
                     state = "<i class='glyphicon glyphicon-repeat'></i> " + state;
-                    state = state + " 5";
                     break;
                 case "Geschlossen":
                     state = "<i class='glyphicon glyphicon-ok'></i> " + state;
-                    state = state + " 6";
                     break;
                 case 0:
                     break;

@@ -1,30 +1,34 @@
 <div class="col-md-12" ng-controller="editBugController as editCtrl">
     <div class="page-header">
-        <div class="row alert alert-warning">
+        <div class="row alert">
             <button class="btn btn-primary" type="button" ng-click="editCtrl.toBugList()">
                 <em class="glyphicon glyphicon-chevron-left"></em> Zurück
             </button>
+
             <div class="btn-group pull-right">
+                <button class="btn btn-default" type="button">
+                    <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
+                </button>
                 <!--//TODO:Foreach folgestatus-->
-                <button class="btn btn-default" type="button" format-state="{{bugModel.editedBug.state}}"></button>
-                <button class="btn btn-default" type="button" format-state="In Bearbeitung"></button>
+                <button class="btn btn-default" type="button" format-state="Abgelehnt"></button>
+                <button class="btn btn-default" type="button" format-state="Behoben"></button>
             </div>
         </div>
         <h2>{{bugModel.editedBug.title}}</h2><span format-state="{{bugModel.editedBug.state}}"></span>
     </div>
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="col-md-12">
                 <h4>Daten:</h4>
             </div>
             <div class="col-md-12">
-                Entwickler: {{bugModel.editedBug.developer}}<br/>
-                Autor: {{bugModel.editedBug.autor}}<br/>
-                Letzte aktualisierung: {{bugModel.editedBug.lastUpdateDate}}<br/>
+                Entwickler: {{bugModel.editedBug.developer}}<br/> <br/>
+                Autor: {{bugModel.editedBug.autor}}<br/> <br/>
+                Letzte aktualisierung: {{bugModel.editedBug.lastUpdateDate}}<br/> <br/>
                 Erstellungsdatum: {{bugModel.editedBug.creationDate}}
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="col-md-12">
                 <h4>Beschreibung:</h4>
             </div>
@@ -37,19 +41,45 @@
     <br/>
     <br/>
     <br/>
+    <br/>
 
-    <div class="row panel panel-warning commentBox">
-        <div class="panel-heading">
-            <h3 class="panel-title">Kommentare</h3>
+    <div class="page-header">
+        <h4>Kommentare</h4>
+    </div>
+    <div class="col-md-12 alert alert-info">
+        <div class="col-md-3">
+            <span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span
+                format-state="{{bugModel.editedBug.state}}"></span><br/>
+            User: Max Mustermann<br/>
+            Erstellungsdatum: 02.01.2015
         </div>
-        <div class="panel-body">
-            <div class="col-md-2">
-                Erstellungsdatum: 01.01.blub<br/>
-                User: Max Mustermann
-            </div>
-            <div class="col-md-10">
-                Kommentare sind toll...<br/>
-            </div>
+        <div class="col-md-9">
+            Kommentare sind Super!<br/>
+            <small>description des Kommentars</small>
         </div>
     </div>
+    <div class="col-md-12 alert alert-info">
+        <div class="col-md-3">
+            <span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span
+                format-state="{{bugModel.editedBug.state}}"></span><br/>
+            User: Max Mustermann<br/>
+            Erstellungsdatum: 02.01.2015
+        </div>
+        <div class="col-md-9">
+            Kommentare sind Super!<br/>
+            <small>description des Kommentars</small>
+        </div>
+    </div>
+    <div class="col-md-12 alert alert-info">
+        <div class="col-md-3">
+            <span format-state="Angelegt"></span><br/>
+            User: Max Mustermann<br/>
+            Erstellungsdatum: 01.01.2015
+        </div>
+        <div class="col-md-9">
+            Kommentare sind toll...<br/>
+            <small>description des Kommentars</small>
+        </div>
+    </div>
+</div>
 </div>
