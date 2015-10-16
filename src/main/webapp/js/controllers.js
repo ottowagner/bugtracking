@@ -181,9 +181,8 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                 .success(function (data, status, headers, config) {
                     if ($scope.bugModel.bugs.indexOf(selected) === -1) {
                         $scope.bugModel.bugs.push(data);
-                        history.back()
                     }
-                    //$scope.switchToScreen($scope.screens.mainScreen);
+                    $location.path("/bugs/" + data.id);
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
                 });

@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.bugtracking.dao;
 
 import de.nordakademie.iaa.bugtracking.model.Bug;
-import de.nordakademie.iaa.bugtracking.model.Room;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,12 +43,13 @@ public class BugDAO {
      *
      * @param bug The bug to be saved.
      */
-    public void save(Bug bug) {
+    public Bug save(Bug bug) {
         if (bug.getId() == null) {
             entityManager.persist(bug);
         } else {
             entityManager.merge(bug);
         }
+        return bug;
     }
 
     /**

@@ -1,14 +1,17 @@
 <div class="col-md-12" ng-controller="editBugController as editCtrl">
     <div class="page-header">
-        <h2>Fehler anlegen</h2>
+        <h2>Fehler {{bugModel.editMode ? 'bearbeiten' : 'anlegen'}}</h2>
     </div>
-
 
     <!--<div class="form-group has-error">-->
     <!--<label class="control-label" for="inputError1">Input with error</label>-->
     <!--<input type="text" class="form-control" id="inputError1">-->
     <!--</div>-->
 
+    <!--<div ng-class="{large-video: video.large}">-->
+    <!--&lt;!&ndash; video block goes here &ndash;&gt;-->
+    <!--</div>-->
+    <!--The above basically will add a large-video css class to the div element if video.large is truthy.-->
 
     <form class="form-horizontal" name="bugForm" novalidate>
         <div class="form-group">
@@ -94,10 +97,10 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" class="btn btn-primary" value="Anlegen"
+                <input type="submit" class="btn btn-primary" value="{{bugModel.editMode ? 'Bearbeiten' : 'Anlegen'}}"
                        ng-disabled="bugForm.$invalid || bugForm.$pristine"
                        ng-click="editCtrl.saveBug(bugForm)">
-                <input type="submit" class="btn btn-default" value="Cancel" ng-click="editCtrl.toBugList()">
+                <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="editCtrl.toBugList()">
             </div>
         </div>
     </form>

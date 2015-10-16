@@ -59,29 +59,18 @@
 
     <!-- DAOs -->
     <bean id="roomDAO" class="de.nordakademie.iaa.bugtracking.dao.RoomDAO"/>
-
     <bean id="courseDAO" class="de.nordakademie.iaa.bugtracking.dao.CourseDAO"/>
-
     <bean id="lectureDAO" class="de.nordakademie.iaa.bugtracking.dao.LectureDAO"/>
-
     <bean id="userDAO" class="de.nordakademie.iaa.bugtracking.dao.UserDAO"/>
-
     <bean id="bugDAO" class="de.nordakademie.iaa.bugtracking.dao.BugDAO"/>
-
     <bean id="commentDAO" class="de.nordakademie.iaa.bugtracking.dao.CommentDAO"/>
 
     <!-- Services -->
     <bean id="roomService" class="de.nordakademie.iaa.bugtracking.service.RoomServiceImpl"/>
-
     <bean id="courseService" class="de.nordakademie.iaa.bugtracking.service.CourseServiceImpl"/>
-
     <bean id="lectureService" class="de.nordakademie.iaa.bugtracking.service.LectureServiceImpl"/>
-
     <bean id="userService" class="de.nordakademie.iaa.bugtracking.service.UserServiceImpl"/>
-
     <bean id="bugService" class="de.nordakademie.iaa.bugtracking.service.BugServiceImpl"/>
-
     <bean id="commentService" class="de.nordakademie.iaa.bugtracking.service.CommentServiceImpl"/>
-
 
 </beans>

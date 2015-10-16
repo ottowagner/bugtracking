@@ -15,10 +15,11 @@ public interface BugService {
      * Stores the given bug into the database.
      *
      * @param bug The bug to be saved.
-     * @throws EntityAlreadyPresentException if a bug with the same building/bug number
+     * @return bug The bug which was created
+     * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
      *                                       combination is already present in the database.
      */
-    void saveBug(Bug bug) throws EntityAlreadyPresentException;
+    Bug saveBug(Bug bug) throws EntityAlreadyPresentException;
 
     /**
      * List all bugs currently stored in the database.

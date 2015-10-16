@@ -19,8 +19,8 @@ public class BugServiceImpl implements BugService {
     private BugDAO bugDAO;
 
     @Override
-    public void saveBug(Bug bug) throws EntityAlreadyPresentException {
-        bugDAO.save(bug);
+    public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
+        return bugDAO.save(bug);
     }
 
     @Override

@@ -46,8 +46,8 @@ public class BugController {
      * @param bug The bug to be saved.
      */
     @RequestMapping(value = "/bugs", method = RequestMethod.PUT)
-    public void saveBug(@RequestBody Bug bug) throws Exception {
-        bugService.saveBug(bug);
+    public Bug saveBug(@RequestBody Bug bug) throws Exception {
+        return bugService.saveBug(bug);
     }
 
     /**
