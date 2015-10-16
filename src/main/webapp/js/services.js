@@ -84,8 +84,8 @@ services.service('commentService', ['$http', function ($http) {
      *        bug The bug in which the comment will be saved
      * @returns {HttpPromise}.
      */
-    this.saveCommentWithPromise = function (comment, bug) {
-        return $http.put('rest/comments', [comment, bug]);
+    this.saveCommentWithPromise = function (comment) {
+        return $http.put('rest/comments', comment);
     };
 
     ///**

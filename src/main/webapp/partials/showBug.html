@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="btn-group pull-right">
-                <button class="btn btn-default" type="button">
+                <button class="btn btn-default" type="button" ng-click="showCtrl.createComment()">
                     <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
                 </button>
                 <!--//TODO:Foreach folgestatus-->
@@ -50,39 +50,16 @@
     <div class="page-header">
         <h4>Kommentare</h4>
     </div>
-    <div class="col-md-12 alert alert-info">
+    <div ng-repeat="comment in bugModel.comments" class="col-md-12 alert alert-info">
         <div class="col-md-3">
-            <span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span
-                format-state="{{bugModel.editedBug.state}}"></span><br/>
-            User: Max Mustermann<br/>
-            Erstellungsdatum: 02.01.2015
+            <!--<span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span-->
+            <!--format-state="{{bugModel.editedBug.state}}"></span><br/>-->
+            Von: {{comment.userId}}<br/>
+            Am: {{comment.creationDate}}
         </div>
         <div class="col-md-9">
-            Kommentare sind Super!<br/>
-            <small>description des Kommentars</small>
-        </div>
-    </div>
-    <div class="col-md-12 alert alert-info">
-        <div class="col-md-3">
-            <span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span
-                format-state="{{bugModel.editedBug.state}}"></span><br/>
-            User: Max Mustermann<br/>
-            Erstellungsdatum: 02.01.2015
-        </div>
-        <div class="col-md-9">
-            Kommentare sind Super!<br/>
-            <small>description des Kommentars</small>
-        </div>
-    </div>
-    <div class="col-md-12 alert alert-info">
-        <div class="col-md-3">
-            <span format-state="Angelegt"></span><br/>
-            User: Max Mustermann<br/>
-            Erstellungsdatum: 01.01.2015
-        </div>
-        <div class="col-md-9">
-            Kommentare sind toll...<br/>
-            <small>description des Kommentars</small>
+            {{comment.title}}<br/>
+            <small>{{comment.description}}</small>
         </div>
     </div>
 </div>

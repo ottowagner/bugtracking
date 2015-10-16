@@ -30,11 +30,12 @@ resources.factory('State', function () {
 
 //Set up the Comment Factory
 resources.factory('Comment', function () {
-    return function (id, title, description, userID) {
+    return function (id, title, description, bug, userId, creationDate) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.userID = userID;
+        this.bug = bug;
+        this.userId = userId;
         this.creationDate = creationDate;
     };
 });

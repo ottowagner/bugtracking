@@ -3,7 +3,6 @@ package de.nordakademie.iaa.bugtracking.service;
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
 import de.nordakademie.iaa.bugtracking.dao.UserDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
-import de.nordakademie.iaa.bugtracking.model.User;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -26,11 +25,11 @@ public class BugServiceImpl implements BugService {
     private UserDAO userDAO;
 
     @Override
-    public Bug saveBug(Bug bug, User user) throws EntityAlreadyPresentException {
-        User newUser = userDAO.load(user.getEmail());//TODO: User muss übergeben werden,
-        bug.setAutor(newUser.getId());
+    public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
         bug.setCreationDate("01.01.2015");//TODO: Daten müssen sinnvoll angelegt werden
-        bug.setState("Angelegt"); //TODO: ENUM
+        if(bug.getState() == null){//TODO: bessere lösung implementieren...
+            bug.setState("Angelegt"); //TODO: ENUM
+        }
         return bugDAO.save(bug);
     }
 

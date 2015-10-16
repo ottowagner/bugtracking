@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.CommentDAO;
-import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 
 import javax.inject.Inject;
@@ -24,8 +23,9 @@ public class CommentServiceImpl implements CommentService {
     private BugService bugService;
 
     //    @Override
-    public void saveComment(Comment comment, Bug bug) throws EntityAlreadyPresentException {
-//        commentDAO.save(comment, bug);
+    public void saveComment(Comment comment) throws EntityAlreadyPresentException {
+        comment.setCreationDate("03.01.2015");
+        commentDAO.save(comment);
     }
 //
 //    public void createComment(Comment comment, Long bugId) throws EntityNotFoundException {

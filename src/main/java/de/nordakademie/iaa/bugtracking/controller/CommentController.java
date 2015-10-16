@@ -1,6 +1,5 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
-import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 import de.nordakademie.iaa.bugtracking.service.CommentService;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +34,10 @@ public class CommentController {
      * Saves the given comment.
      *
      * @param comment The comment to be saved.
-     * @param bug     The bug which the comment belong to.
      */
     @RequestMapping(value = "/comments", method = RequestMethod.PUT)
-    public void saveComment(@RequestBody Comment comment, Bug bug) throws Exception {
-        commentService.saveComment(comment, bug);
+    public void saveComment(@RequestBody Comment comment) throws Exception {
+        commentService.saveComment(comment);
     }
 
     /**

@@ -1,6 +1,6 @@
-<div class="col-md-12" ng-controller="editBugController as editCtrl">
+<div class="col-md-12" ng-controller="showBugController as showCtrl">
     <div class="page-header">
-        <h2>Fehler {{bugModel.editMode ? 'bearbeiten' : 'anlegen'}}</h2>
+        <h2>Kommentar anlegen</h2>
     </div>
 
     <!--<div class="form-group has-error">-->
@@ -13,20 +13,22 @@
     <!--</div>-->
     <!--The above basically will add a large-video css class to the div element if video.large is truthy.-->
 
-    <form class="form-horizontal" name="bugForm" novalidate>
-        <div class="form-group" ng-class="bugForm.title.$invalid ? 'has-error' : ''">
+    <form class="form-horizontal" name="commentForm" novalidate>
+        <div class="form-group" ng-class="commentForm.title.$invalid ? 'has-error' : ''">
             <label for="title" class="col-sm-2 control-label">Titel*</label>
+
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
-                       ng-model="bugModel.editedBug.title" maxlength="255" required>
+                       ng-model="bugModel.editedComment.title" maxlength="255" required>
             </div>
-            <span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>
+            <!--<span class="help-block" ng-show="commentForm.title.$invalid">{{showCtrl.getErrorMessage(commentForm.title)}}</span>-->
         </div>
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">Beschreibung</label>
+
             <div class="col-sm-8">
                 <textarea rows="10" type="text" class="form-control" id="description" name="description"
-                          placeholder="Beschreibung" ng-model="bugModel.editedBug.description"
+                          placeholder="Beschreibung" ng-model="bugModel.editedComment.description"
                           maxlength="4000"></textarea>
             </div>
         </div>
@@ -34,9 +36,9 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <input type="submit" class="btn btn-primary" value="{{bugModel.editMode ? 'Übernehmen' : 'Anlegen'}}"
-                       ng-disabled="bugForm.$invalid"
-                       ng-click="editCtrl.saveBug(bugForm)">
-                <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="editCtrl.toBugList()">
+                       ng-disabled="commentForm.$invalid"
+                       ng-click="showCtrl.saveComment(commentForm)">
+                <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="showCtrl.toBug()">
             </div>
         </div>
     </form>

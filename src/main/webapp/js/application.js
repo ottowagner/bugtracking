@@ -17,6 +17,10 @@ application.config(['$routeProvider', '$httpProvider',
                 templateUrl: 'partials/createBug.html',
                 controller: 'editBugController'
             }).
+            when('/bugs/:bugId/comments/create', {
+                templateUrl: 'partials/createComment.html',
+                controller: 'showBugController'
+            }).
             when('/bugs/:bugId/edit', {
                 templateUrl: 'partials/createBug.html',
                 controller: 'editBugController'
