@@ -13,13 +13,17 @@ application.config(['$routeProvider', '$httpProvider',
                 templateUrl: 'partials/bugList.html',
                 controller: 'listBugController'
             }).
-            when('/createBug', {
+            when('/bugs/create', {
                 templateUrl: 'partials/createBug.html',
                 controller: 'editBugController'
             }).
-            when('/openBug', {
-                templateUrl: 'partials/showBug.html',
+            when('/bugs/:bugId/edit', {
+                templateUrl: 'partials/createBug.html',
                 controller: 'editBugController'
+            }).
+            when('/bugs/:bugId', {
+                templateUrl: 'partials/showBug.html',
+                controller: 'showBugController'
             }).
             when('/register', {
                 templateUrl: 'partials/register.html',
@@ -52,36 +56,3 @@ application.run(['$rootScope', '$location', function ($rootScope, $location) {
         }
     });
 }]);
-
-//TODO: in eigene klasse ziehen!
-application.directive("formatState", function () {
-    return {
-        link: function (scope, element, attrs) {
-            var state = attrs["formatState"];
-
-            switch (state) {
-                case "Angelegt":
-                    state = "<i class='glyphicon glyphicon-file'></i> " + state;
-                    break;
-                case "In Bearbeitung":
-                    state = "<i class='glyphicon glyphicon-pencil'></i> " + state;
-                    break;
-                case "Behoben":
-                    state = "<i class='glyphicon glyphicon-thumbs-up'></i> " + state;
-                    break;
-                case "Abgelehnt":
-                    state = "<i class='glyphicon glyphicon-thumbs-down'></i> " + state;
-                    break;
-                case "Wiedereröffnet":
-                    state = "<i class='glyphicon glyphicon-repeat'></i> " + state;
-                    break;
-                case "Geschlossen":
-                    state = "<i class='glyphicon glyphicon-ok'></i> " + state;
-                    break;
-                case 0:
-                    break;
-            }
-            element.append(state);
-        }
-    }
-});

@@ -34,7 +34,7 @@ public interface BugService {
      * @param id The identifier.
      * @return the found entity or {@code null} if no entity was found with given identifier.
      */
-    Bug loadBug(Long id);
+    Bug loadBug(Long id) throws EntityNotFoundException;
 
     /**
      * Deletes the bug with the given id.

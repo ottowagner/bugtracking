@@ -4,18 +4,23 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Bug entity.
+ * Comment entity.
  *
  * @author Otto Wagner
  */
 @Entity
-public class Bug implements Serializable {
-    private static final long serialVersionUID = 6925248180274039277L;
-
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
+public class Comment implements Serializable {
+    private static final long serialVersionUID = 6925248180274039234L;
     /**
      * The unique identifier.
      */
     private Long id;
+
+    /**
+     * The bug which the comment belongs to.
+     */
+    private Bug bug;
 
     /**
      * The title.
@@ -27,35 +32,18 @@ public class Bug implements Serializable {
      */
     private String description;
 
-    //TODO: ENUM
-    /**
-     * The state.
-     */
-    private String state;
-
-    //TODO: Verknüpfung mit User
+    //TODO: Typ User
     /**
      * The autor.
      */
-    private Long autor;
+    private String autor;
 
-    //TODO: Verknüpfung mit User
-    /**
-     * The developer.
-     */
-    private Long developer;
-
-    //TODO: Datum muss Typ DATUM sein! oder timestamp... wie auch immer.. :P
-    /**
-     * The lastUpdateDate.
-     */
-    private String lastUpdateDate;
-
-    //TODO: Datum muss Typ DATUM sein!
     /**
      * The creationDate.
      */
     private String creationDate;
+
+    //TODO: fromState, toState
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -65,6 +53,15 @@ public class Bug implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @ManyToOne(optional = false)
+    public Bug getBug() {
+        return bug;
+    }
+
+    public void setBug(Bug bug) {
+        this.bug = bug;
     }
 
     @Column(nullable = false)
@@ -86,39 +83,12 @@ public class Bug implements Serializable {
     }
 
     @Column(nullable = false)
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    @Column(nullable = false)
-    public Long getAutor() {
+    public String getAutor() {
         return autor;
     }
 
-    public void setAutor(Long autor) {
+    public void setAutor(String autor) {
         this.autor = autor;
-    }
-
-    @Column(nullable = true)
-    public Long getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(Long developer) {
-        this.developer = developer;
-    }
-
-    @Column(nullable = true)
-    public String getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(String lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
     }
 
     @Column(nullable = false)

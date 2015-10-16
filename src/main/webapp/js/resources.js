@@ -6,6 +6,7 @@
 
 var resources = angular.module('resources', []);
 
+//Set up the Bug Factory
 resources.factory('Bug', function () {
     return function (id, title, description, state, autor, developer, lastUpdateDate, creationDate) {
         this.id = id;
@@ -19,15 +20,15 @@ resources.factory('Bug', function () {
     };
 });
 
+//Set up the State Factory
 resources.factory('State', function () {
-    //ENUM implementieren
     return function (id, name, logo) {
         this.id = id;
         this.name = name;
-        this.logo = logo;
     };
 });
 
+//Set up the Comment Factory
 resources.factory('Comment', function () {
     return function (id, title, description, userID) {
         this.id = id;
@@ -38,6 +39,7 @@ resources.factory('Comment', function () {
     };
 });
 
+//Set up the Developer Factory
 resources.factory('Developer', function () {
     return function (id, firstname, lastname, email) {
         this.id = id;
@@ -47,6 +49,7 @@ resources.factory('Developer', function () {
     };
 });
 
+//Set up the Autor Factory
 resources.factory('Autor', function () {
     return function (id, firstname, lastname, email) {
         this.id = id;

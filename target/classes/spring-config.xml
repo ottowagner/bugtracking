@@ -68,6 +68,8 @@
 
     <bean id="bugDAO" class="de.nordakademie.iaa.bugtracking.dao.BugDAO"/>
 
+    <bean id="commentDAO" class="de.nordakademie.iaa.bugtracking.dao.CommentDAO"/>
+
     <!-- Services -->
     <bean id="roomService" class="de.nordakademie.iaa.bugtracking.service.RoomServiceImpl"/>
 
@@ -78,6 +80,8 @@
     <bean id="userService" class="de.nordakademie.iaa.bugtracking.service.UserServiceImpl"/>
 
     <bean id="bugService" class="de.nordakademie.iaa.bugtracking.service.BugServiceImpl"/>
+
+    <bean id="commentService" class="de.nordakademie.iaa.bugtracking.service.CommentServiceImpl"/>
 
 
 </beans>

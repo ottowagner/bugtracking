@@ -1,9 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
-import de.nordakademie.iaa.bugtracking.dao.RoomDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
-import de.nordakademie.iaa.bugtracking.model.Room;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -31,8 +29,12 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Bug loadBug(Long id) {
-        return bugDAO.load(id);
+    public Bug loadBug(Long id) throws EntityNotFoundException {
+        Bug bug = bugDAO.load(id);
+        if (bug == null) {
+            throw new EntityNotFoundException();
+        }
+        return bug;
     }
 
     @Override

@@ -1,9 +1,7 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
 import de.nordakademie.iaa.bugtracking.model.Bug;
-import de.nordakademie.iaa.bugtracking.model.Room;
 import de.nordakademie.iaa.bugtracking.service.BugService;
-import de.nordakademie.iaa.bugtracking.service.RoomService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -30,6 +28,16 @@ public class BugController {
     @RequestMapping(value = "/bugs", method = RequestMethod.GET)
     public List<Bug> listbugs() {
         return bugService.listBugs();
+    }
+
+    /**
+     * Load the bug with the given identifier.
+     *
+     * @param id The bug's identifier.
+     */
+    @RequestMapping(value = "/bugs/{id}", method = RequestMethod.GET)
+    public Bug loadBug(@PathVariable Long id) throws Exception {
+        return bugService.loadBug(id);
     }
 
     /**

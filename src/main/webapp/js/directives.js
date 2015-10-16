@@ -6,35 +6,39 @@
 
 var directives = angular.module('directives', []);
 
+// Set up the formatState directive.
 directives.directive("formatState", function () {
+    /**
+     * Return state with glyphicon.
+     * @returns {append html code to element}.
+     */
     return {
         link: function (scope, element, attrs) {
-            var state = scope[attrs["formatState"]];
-            console.log(state);
+            var state = attrs["formatState"];
+
             switch (state) {
-                case "Anlegt":
-                    state = state + 1
+                case "Angelegt":
+                    state = "<i class='glyphicon glyphicon-file'></i> " + state;
                     break;
                 case "In Bearbeitung":
-                    state = state + 2
+                    state = "<i class='glyphicon glyphicon-pencil'></i> " + state;
                     break;
                 case "Behoben":
-                    state = state + 3
+                    state = "<i class='glyphicon glyphicon-thumbs-up'></i> " + state;
                     break;
                 case "Abgelehnt":
-                    state = state + 4
+                    state = "<i class='glyphicon glyphicon-thumbs-down'></i> " + state;
                     break;
                 case "Wiedereröffnet":
-                    state = state + 5
+                    state = "<i class='glyphicon glyphicon-repeat'></i> " + state;
                     break;
                 case "Geschlossen":
-                    state = state + 6
+                    state = "<i class='glyphicon glyphicon-ok'></i> " + state;
                     break;
                 case 0:
                     break;
             }
-            element.append(element.text(state));
-        },
-        restrict: "A"
+            element.append(state);
+        }
     }
 });
