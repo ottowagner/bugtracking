@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!-- Enable annotation config -->
@@ -59,29 +59,18 @@
 
     <!-- DAOs -->
     <bean id="roomDAO" class="de.nordakademie.iaa.bugtracking.dao.RoomDAO"/>
-
     <bean id="courseDAO" class="de.nordakademie.iaa.bugtracking.dao.CourseDAO"/>
-
     <bean id="lectureDAO" class="de.nordakademie.iaa.bugtracking.dao.LectureDAO"/>
-
     <bean id="userDAO" class="de.nordakademie.iaa.bugtracking.dao.UserDAO"/>
-
     <bean id="bugDAO" class="de.nordakademie.iaa.bugtracking.dao.BugDAO"/>
-
     <bean id="commentDAO" class="de.nordakademie.iaa.bugtracking.dao.CommentDAO"/>
 
     <!-- Services -->
     <bean id="roomService" class="de.nordakademie.iaa.bugtracking.service.RoomServiceImpl"/>
-
     <bean id="courseService" class="de.nordakademie.iaa.bugtracking.service.CourseServiceImpl"/>
-
     <bean id="lectureService" class="de.nordakademie.iaa.bugtracking.service.LectureServiceImpl"/>
-
     <bean id="userService" class="de.nordakademie.iaa.bugtracking.service.UserServiceImpl"/>
-
     <bean id="bugService" class="de.nordakademie.iaa.bugtracking.service.BugServiceImpl"/>
-
     <bean id="commentService" class="de.nordakademie.iaa.bugtracking.service.CommentServiceImpl"/>
-
 
 </beans>

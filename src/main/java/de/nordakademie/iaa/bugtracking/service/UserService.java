@@ -15,7 +15,7 @@ public interface UserService {
      * @param user The user to be saved.
      * @throws EntityAlreadyPresentException if a user with the email is already present in the database.
      */
-    void saveUser(User user) throws EntityAlreadyPresentException;
+    User saveUser(User user) throws EntityAlreadyPresentException;
 
     /**
      * Returns the room identified by the given id.

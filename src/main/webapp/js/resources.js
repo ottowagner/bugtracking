@@ -40,17 +40,7 @@ resources.factory('Comment', function () {
 });
 
 //Set up the Developer Factory
-resources.factory('Developer', function () {
-    return function (id, firstname, lastname, email) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-    };
-});
-
-//Set up the Autor Factory
-resources.factory('Autor', function () {
+resources.factory('User', function () {
     return function (id, firstname, lastname, email) {
         this.id = id;
         this.firstname = firstname;

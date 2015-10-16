@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.model.Bug;
+import de.nordakademie.iaa.bugtracking.model.User;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public interface BugService {
      * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
      *                                       combination is already present in the database.
      */
-    Bug saveBug(Bug bug) throws EntityAlreadyPresentException;
+    Bug saveBug(Bug bug, User user) throws EntityAlreadyPresentException;
 
     /**
      * List all bugs currently stored in the database.

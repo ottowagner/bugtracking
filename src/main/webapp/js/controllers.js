@@ -7,9 +7,9 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives']);
 
 // Set up the mainController controller.
-controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', 'Bug', function ($rootScope, $scope, $http, $location, Bug) {
+controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', 'authService', 'User', 'Bug', function ($rootScope, $scope, $http, $location, authService, User, Bug) {
     $scope.authModel = {
-        account: []
+        user: null
     };
 
     $scope.bugModel = {
@@ -21,8 +21,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
     }
 
     var authenticate = function (account, callback) {
-//TODO: In einen Service auslagern
-
+        //TODO: In einen Service auslagern
         //var headers = account ? {
         //    authorization: "Basic "
         //    + btoa(account.username + ":" + account.password)
@@ -53,22 +52,41 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
 
     //authenticate();
     $scope.account = {};
-    this.login = function () {
-        authenticate($scope.account, function () {
-            if ($rootScope.authenticated) {
-                $location.path("/bugs");
-                $scope.error = false;
-            } else {
-                $location.path("/login");
-                $scope.error = true;
-            }
-        });
+    this.login = function (loginForm) {
+        //TODO: Hier eig mit Sicherheit arbeiten!!!
+
+        //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
+        var user = new User();
+        user.email = loginForm.email.$modelValue;
+        user.password = loginForm.password.$modelValue;
+
+        if (loginForm.$valid && user) {
+            authService.loadUserWithPromise(user)
+                .success(function (data, status, headers, config) {
+                    $rootScope.authenticated = true;
+                    $location.path("/bugs");
+                    $scope.authModel.user = data;
+                })
+                .error(function (data, status, headers, config) {
+                    alert("an error occured while loading");
+                    $rootScope.authenticated = false;
+                    $scope.error = true;
+                });
+        }
+        //authenticate($scope.account, function () {
+        //    if ($rootScope.authenticated) {
+        //        $location.path("/bugs");
+        //        $scope.error = false;
+        //    } else {
+        //        $location.path("/login");
+        //        $scope.error = true;
+        //    }
+        //});
     };
 
 
     var register = function (account, callback) {
-//TODO: In einen Service auslagern
-
+        //TODO: Hier eig mit Sicherheit arbeiten!!!
         var headers = account ? {
             authorization: "Basic "
             + btoa(account.username + ":" + account.password)
@@ -89,21 +107,42 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         //});
     }
 
-    this.register = function () {
-        register($scope.account, function () {
-            if ($rootScope.authenticated) {
-                $location.path("/bugs");
-                $scope.error = false;
-            } else {
-                $location.path("/register");
-                $scope.error = true;
-            }
-        });
+    this.register = function (registForm) {
+        //TODO: Hier eig mit Sicherheit arbeiten!!!
+        //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
+        var user = new User();
+        user.email = registForm.email.$modelValue;
+        user.password = registForm.password.$modelValue;
+        user.firstname = registForm.firstname.$modelValue;
+        user.lastname = registForm.lastname.$modelValue;
+        if (registForm.$valid && user) {
+            authService.saveUserWithPromise(user)
+                .success(function (data, status, headers, config) {
+                    $rootScope.authenticated = true;
+                    $location.path("/bugs");
+                    $scope.authModel.user = data;
+                })
+                .error(function (data, status, headers, config) {
+                    alert("an error occured while loading");
+                    $rootScope.authenticated = false;
+                    $scope.error = true;
+                });
+        }
+        //register($scope.account, function () {
+        //    if ($rootScope.authenticated) {
+        //        $location.path("/bugs");
+        //        $scope.error = false;
+        //    } else {
+        //        $location.path("/register");
+        //        $scope.error = true;
+        //    }
+        //});
     };
 
     this.logout = function () {
-        //TODO: In einen Service auslagern
+        //TODO: Hier eig mit Sicherheit arbeiten!!!
         $rootScope.authenticated = false;
+        $scope.authModel.user = null;
         $location.path("/login");
         //$http.post('logout', {}).success(function () {
         //    $rootScope.authenticated = false;

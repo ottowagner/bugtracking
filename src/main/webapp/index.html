@@ -40,7 +40,8 @@
             </a>
 
             <a class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="mainCtrl.logout()">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> Vor & Nachname
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{authModel.user.firstname + " " +
+                authModel.user.lastname}}
             </a>
         </div>
     </div>

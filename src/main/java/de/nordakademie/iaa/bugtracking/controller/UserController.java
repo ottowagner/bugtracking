@@ -2,10 +2,12 @@ package de.nordakademie.iaa.bugtracking.controller;
 
 import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.service.UserService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import java.security.Principal;
 
 /**
  * REST controller for the user service.
@@ -24,27 +26,29 @@ public class UserController {
      *
      * @return the user.
      */
-//    @RequestMapping(value = "/user", method = RequestMethod.GET)
-//    public User loadUser(@RequestBody String email) {
-//        return userService.loadUser(email);
-//    }
-
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public Principal user(Principal user) {
-        return user;
+    //    TODO: Muss ersetzt werden (ist denke zu unsicher). Brauche ich gerade, weil wir noch keine richtige authentifikation haben
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public User loadUser(@RequestBody User user) throws Exception {
+        return userService.loadUser(user.getEmail());
     }
+//    @RequestMapping(value = "/user", method = RequestMethod.GET)
+//    public Principal user(Principal user) {
+//        return user;
+//    }
+//
+
     /**
      * Saves the given user.
      *
      * @param user The user to be saved.
      */
     @RequestMapping(value = "/user", method = RequestMethod.PUT)
-    public void saveUser(@RequestBody User user) throws Exception {
-        userService.saveUser(user);
+    public User saveUser(@RequestBody User user) throws Exception {
+        return userService.saveUser(user);
     }
 
     /**
-     * Deletes the room with the given identifier.
+     * Deletes the user with the given identifier.
      *
      * @param email The user's identifier.
      */

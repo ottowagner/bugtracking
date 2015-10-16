@@ -4,6 +4,7 @@ import de.nordakademie.iaa.bugtracking.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * The user DAO that manages all persistence functionality.
@@ -23,7 +24,9 @@ public class UserDAO {
      * @return the found entity or {@code null} if no entity was found with given identifier.
      */
     public User load(String email) {
-        return entityManager.find(User.class, email);
+//TODO: Dirty gelöst... Muss refactort werden...
+        List<User> userList = entityManager.createQuery("select user from User user where user.email = :email").setParameter("email", email).getResultList();
+        return userList.get(0);
     }
 
     /**
@@ -31,12 +34,13 @@ public class UserDAO {
      *
      * @param user The user to be saved.
      */
-    public void save(User user) {
+    public User save(User user) {
         if (user.getId() == null) {
             entityManager.persist(user);
         } else {
             entityManager.merge(user);
         }
+        return user;
     }
 
     /**

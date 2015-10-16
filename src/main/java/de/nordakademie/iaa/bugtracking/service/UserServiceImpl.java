@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
     private UserDAO userDAO;
 
     @Override
-    public void saveUser(User user) throws EntityAlreadyPresentException {
-        userDAO.save(user);
+    public User saveUser(User user) throws EntityAlreadyPresentException {
+        return userDAO.save(user);
     }
 
     @Override

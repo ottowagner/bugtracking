@@ -7,26 +7,33 @@
         There was a problem logging in. Please try again.
     </div>
 
-    <form role="form" ng-submit="mainCtrl.register()">
-        <div class="form-group">
-            <label for="firstname">Vorname</label>
-            <input type="text" class="form-control" id="firstname" placeholder="Vorname" ng-model="account.firstname"/>
+    <form role="form" name="registForm">
+        <div class="form-group" ng-class="registForm.firstname.$invalid ? 'has-error' : ''">
+            <label for="firstname" class="control-label">Vorname</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Vorname"
+                   ng-model="authModel.user.firstname" maxlength="255" required/>
+            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
         </div>
-        <div class="form-group">
-            <label for="lastname">Nachname</label>
-            <input type="text" class="form-control" id="lastname" placeholder="Nachname" ng-model="account.lastname"/>
+        <div class="form-group" ng-class="registForm.lastname.$invalid ? 'has-error' : ''">
+            <label for="lastname" class="control-label">Nachname</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname" placeholder="Nachname"
+                   ng-model="authModel.user.lastname" required/>
+            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
         </div>
-        <div class="form-group">
-            <label for="username">Benutzername (wird noch geändert)!:</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Benutzername"
-                   ng-model="account.username"/>
+        <div class="form-group" ng-class="registForm.email.$invalid ? 'has-error' : ''">
+            <label for="email" class="control-label">email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="email"
+                   ng-model="authModel.user.email" required/>
+            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
         </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
+        <div class="form-group" ng-class="registForm.password.$invalid ? 'has-error' : ''">
+            <label for="password" class="control-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                   ng-model="account.password"/>
+                   ng-model="authModel.user.password" required/>
+            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
         </div>
-        <button type="submit" class="btn btn-primary">Registrieren</button>
+        <input type="submit" class="btn btn-primary" value="Registrieren" ng-disabled="registForm.$invalid"
+               ng-click="mainCtrl.register(registForm)">
         <!-- TODO: href anders realisieren1 -->
         <a href="#/login" class="btn btn-default">Abbrechen</a>
     </form>
