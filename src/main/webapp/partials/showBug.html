@@ -27,10 +27,10 @@
                 <h4>Daten:</h4>
             </div>
             <div class="col-md-12">
-                Entwickler: {{bugModel.selectedBug.developer}}<br/> <br/>
-                Autor: {{bugModel.selectedBug.autor}}<br/> <br/>
-                Letzte aktualisierung: {{bugModel.selectedBug.lastUpdateDate}}<br/> <br/>
-                Erstellungsdatum: {{bugModel.selectedBug.creationDate}}
+                Entwickler: {{bugModel.selectedBug.developer.firstname}} {{bugModel.selectedBug.developer.lastname}}<br/> <br/>
+                Autor: {{bugModel.selectedBug.autor.firstname}} {{bugModel.selectedBug.autor.lastname}}<br/> <br/>
+                Letzte aktualisierung: {{bugModel.selectedBug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
+                Erstellungsdatum: {{bugModel.selectedBug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
             </div>
         </div>
         <div class="col-md-9">

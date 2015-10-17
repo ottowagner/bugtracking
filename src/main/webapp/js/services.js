@@ -57,14 +57,6 @@ services.service('bugService', ['$http', function ($http) {
         return $http.put('rest/bugs', bug);
     };
 
-    ///**
-    // * Deletes the given bug using an asynchronous REST call with promise.
-    // * @param bug The bug to be deleted.
-    // * @returns {HttpPromise}.
-    // */
-    //this.deleteBugWithPromise = function (bug) {
-    //	return $http.delete('rest/bugs/' + bug.id);
-    //}
 }]);
 
 // Set up the comment service.
@@ -88,12 +80,4 @@ services.service('commentService', ['$http', function ($http) {
         return $http.put('rest/comments', comment);
     };
 
-    ///**
-    // * Deletes the given bug using an asynchronous REST call with promise.
-    // * @param bug The bug to be deleted.
-    // * @returns {HttpPromise}.
-    // */
-    //this.deleteBugWithPromise = function (bug) {
-    //	return $http.delete('rest/bugs/' + bug.id);
-    //}
 }]);

@@ -2,6 +2,7 @@ package de.nordakademie.iaa.bugtracking.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Bug entity.
@@ -33,29 +34,27 @@ public class Bug implements Serializable {
      */
     private String state;
 
-    //TODO: Verknüpfung mit User
     /**
      * The autor.
      */
-    private Long autor;
+    private User autor;
 
-    //TODO: Verknüpfung mit User
     /**
      * The developer.
      */
-    private Long developer;
+    private User developer;
 
     //TODO: Datum muss Typ DATUM sein! oder timestamp... wie auch immer.. :P
     /**
      * The lastUpdateDate.
      */
-    private String lastUpdateDate;
+    private Date lastUpdateDate;
 
     //TODO: Datum muss Typ DATUM sein!
     /**
      * The creationDate.
      */
-    private String creationDate;
+    private Date creationDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -94,39 +93,41 @@ public class Bug implements Serializable {
         this.state = state;
     }
 
-    @Column(nullable = false)
-    public Long getAutor() {
+    @ManyToOne(optional = false)
+    public User getAutor() {
         return autor;
     }
 
-    public void setAutor(Long autor) {
+    public void setAutor(User autor) {
         this.autor = autor;
     }
 
-    @Column(nullable = true)
-    public Long getDeveloper() {
+    @ManyToOne(optional = true)
+    public User getDeveloper() {
         return developer;
     }
 
-    public void setDeveloper(Long developer) {
+    public void setDeveloper(User developer) {
         this.developer = developer;
     }
 
     @Column(nullable = true)
-    public String getLastUpdateDate() {
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(String lastUpdateDate) {
+    public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 
     @Column(nullable = false)
-    public String getCreationDate() {
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 }

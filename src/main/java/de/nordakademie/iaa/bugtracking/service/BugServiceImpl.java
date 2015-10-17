@@ -5,6 +5,7 @@ import de.nordakademie.iaa.bugtracking.dao.UserDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,7 +27,8 @@ public class BugServiceImpl implements BugService {
 
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
-        bug.setCreationDate("01.01.2015");//TODO: Daten müssen sinnvoll angelegt werden
+        Date creationDate = new Date();
+        bug.setCreationDate(creationDate);
         if(bug.getState() == null){//TODO: bessere lösung implementieren...
             bug.setState("Angelegt"); //TODO: ENUM
         }

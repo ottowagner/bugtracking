@@ -219,7 +219,7 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
         if (bugForm.$valid && user && selected && edited) {
             selected.title = edited.title;
             selected.description = edited.description;
-            selected.autor = user.id;
+            selected.autor = user;
             bugService.saveBugWithPromise(selected)
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + data.id);

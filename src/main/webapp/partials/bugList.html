@@ -30,10 +30,10 @@
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
             <td format-state="{{bug.state}}"></td>
-            <td>{{bug.autor}}</td>
-            <td>{{bug.developer}}</td>
-            <td>{{bug.lastUpdateDate}}</td>
-            <td>{{bug.creationDate}}</td>
+            <td>{{bug.autor.firstname}} {{bug.autor.lastname}}</td>
+            <td>{{bug.developer.firstname}} {{bug.developer.lastname}}</td>
+            <td>{{bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}</td>
+            <td>{{bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}</td>
             <!--<td><input type="submit" class="btn btn-success" value="Statuswechsel" ng-click="saveBug(bugForm)"></td>-->
         </tr>
     </table>
