@@ -10,32 +10,30 @@ application.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $routeProvider.
             when('/register', {
-                templateUrl: 'partials/register.html',
-                controller: 'mainController'
+                templateUrl: 'partials/register.html'
             }).
             when('/login', {
-                templateUrl: 'partials/login.html',
-                controller: 'mainController'
+                templateUrl: 'partials/login.html'
             }).
             when('/bugs', {
                 templateUrl: 'partials/bugList.html',
-                controller: 'listBugController'
+                controller: 'listBugController as listCtrl'
             }).
             when('/bugs/create', {
                 templateUrl: 'partials/createBug.html',
-                controller: 'editBugController'
+                controller: 'editBugController as editCtrl'
             }).
             when('/bugs/:bugId', {
                 templateUrl: 'partials/showBug.html',
-                controller: 'showBugController'
+                controller: 'showBugController as showCtrl'
             }).
             when('/bugs/:bugId/edit', {
                 templateUrl: 'partials/createBug.html',
-                controller: 'editBugController'
+                controller: 'editBugController as editCtrl'
             }).
             when('/bugs/:bugId/comments/create', {
                 templateUrl: 'partials/createComment.html',
-                controller: 'showBugController' //TODO: evtl eigener controller
+                controller: 'showBugController as showCtrl' //TODO: evtl eigener controller
             }).
             otherwise({
                 redirectTo: '/login'
