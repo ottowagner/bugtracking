@@ -75,7 +75,6 @@ services.service('commentService', ['$http', function ($http) {
      * @returns {HttpPromise}.
      */
     this.listCommentsWithPromise = function (bugId) {
-        console.log(bugId)
         return $http.get('rest/bugs/'+ bugId +'/comments');
     };
 
