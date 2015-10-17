@@ -44,7 +44,8 @@ public class CommentServiceImpl implements CommentService {
 //    }
 
     @Override
-    public List<Comment> listComments() {
+    public List<Comment> listComments(Long bugId) {
+        //TODO: Bitte nur die Comments, entsprechend der BugId zurückgeben!
         return commentDAO.findAll();
     }
 

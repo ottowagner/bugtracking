@@ -288,14 +288,13 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             alert("an error occured while loading");
         });
 
-    commentService.listCommentsWithPromise($scope.bugModel.selectedBug)
+    commentService.listCommentsWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
             $scope.bugModel.comments = data;
         })
         .error(function (data, status, headers, config) {
             alert("an error occured while loading");
         });
-
 
     this.createComment = function () {
         $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
@@ -320,7 +319,7 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
 
 // Set up the commentController.
 controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
-    $scope.bugModel = {
+    $scope.commentModel = {
         selectedBug: null,
         selectedComment: null,
         editedComment: null
@@ -329,19 +328,19 @@ controllers.controller('commentController', ['$rootScope', '$scope', '$location'
     bugService.loadBugWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
             var comment = new Comment();
-            $scope.bugModel.selectedBug = data;
-            $scope.bugModel.selectedComment = comment;
-            $scope.bugModel.editedComment = new Comment(comment.id, comment.title, comment.description);
+            $scope.commentModel.selectedBug = data;
+            $scope.commentModel.selectedComment = comment;
+            $scope.commentModel.editedComment = new Comment(comment.id, comment.title, comment.description);
         }).error(function (data, status, headers, config) {
             $location.path("/bugs/" + $routeParams.bugId);
             alert("an error occured while loading");
         })
 
     this.saveComment = function (commentForm) {
-        //var selected = $scope.bugModel.selectedComment;
-        var comment = $scope.bugModel.editedComment;
+        //var selected = $scope.commentModel.selectedComment;
+        var comment = $scope.commentModel.editedComment;
         var user = $rootScope.authModel.user;
-        var bug = $scope.bugModel.selectedBug;
+        var bug = $scope.commentModel.selectedBug;
         if (commentForm.$valid && user && comment) {
             comment.bug = bug;
             comment.autor = user.id;

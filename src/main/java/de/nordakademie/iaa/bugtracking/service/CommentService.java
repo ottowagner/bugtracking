@@ -22,10 +22,11 @@ public interface CommentService {
     /**
      * List all comments currently stored in the database.
      *
-     * @return a list of comment entities. If no comment was found an empty list is
+     * @param bugId The identifier of the bug.
+     * @return a list of comment entities of the bug. If no comment was found an empty list is
      * returned.
      */
-    List<Comment> listComments();
+    List<Comment> listComments(Long bugId);
 
     /**
      * Returns the comment identified by the given id.

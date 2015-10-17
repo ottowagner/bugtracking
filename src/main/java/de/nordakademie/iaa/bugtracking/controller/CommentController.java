@@ -25,9 +25,9 @@ public class CommentController {
      *
      * @return the list of comments.
      */
-    @RequestMapping(value = "/comments", method = RequestMethod.GET)
-    public List<Comment> listcomments() {
-        return commentService.listComments();
+    @RequestMapping(value = "/bugs/{bugId}/comments", method = RequestMethod.GET)
+    public List<Comment> listcomments(@PathVariable Long bugId) {
+        return commentService.listComments(bugId);
     }
 
     /**

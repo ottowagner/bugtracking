@@ -74,8 +74,9 @@ services.service('commentService', ['$http', function ($http) {
      * @param bug The bug in which the comment has been saved
      * @returns {HttpPromise}.
      */
-    this.listCommentsWithPromise = function (bug) {
-        return $http.get('rest/comments', bug);
+    this.listCommentsWithPromise = function (bugId) {
+        console.log(bugId)
+        return $http.get('rest/bugs/'+ bugId +'/comments');
     };
 
     /**
