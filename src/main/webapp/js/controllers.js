@@ -6,7 +6,7 @@
 
 var controllers = angular.module('controllers', ['resources', 'services', 'directives']);
 
-// Set up the mainController controller.
+// Set up the mainController.
 controllers.controller('mainController', ['$rootScope', '$scope', '$location', 'authService', 'User', function ($rootScope, $scope, $location, authService, User) {
     $rootScope.authModel = {
         //TODO: Service auslagern!
@@ -182,7 +182,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
 
 }]);
 
-// Set up the editBugController controller.
+// Set up the editBugController.
 controllers.controller('editBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'Bug', 'bugService', function ($rootScope, $scope, $location, $routeParams, Bug, bugService) {
 
     $scope.bugModel = {
@@ -271,14 +271,12 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
     };
 }]);
 
-// Set up the showBugController controller.
+// Set up the showBugController.
 controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, commentService) {
     $scope.bugModel = {
         comments: [],
         selectedBug: null,
-        editedBug: null,
-        selectedComment: null,
-        editedComment: null
+        editedBug: null
     }
 
     bugService.loadBugWithPromise($routeParams.bugId)
@@ -298,22 +296,52 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             alert("an error occured while loading");
         });
 
-    this.editBug = function () {
+
+    this.createComment = function () {
+        $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
+    };
+
+    /**
+     * go to bugList
+     */
+    this.toBugList = function () {
+        $location.path("/bugs");
+        //history.back() evtl einbauen
+    };
+
+    /**
+     * go to editBug
+     */
+    this.toEditBug = function () {
         $location.path("/bugs/" + $routeParams.bugId + "/edit");
     }
 
-    this.createComment = function () {
-        var comment = new Comment();
-        $scope.bugModel.selectedComment = comment;
-        $scope.bugModel.editedComment = new Comment(comment.id, comment.title, comment.description);
-        $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
-    };
+}]);
+
+// Set up the commentController.
+controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
+    $scope.bugModel = {
+        selectedBug: null,
+        selectedComment: null,
+        editedComment: null
+    }
+//TODO: in THEN aufteilen..
+    bugService.loadBugWithPromise($routeParams.bugId)
+        .success(function (data, status, headers, config) {
+            var comment = new Comment();
+            $scope.bugModel.selectedBug = data;
+            $scope.bugModel.selectedComment = comment;
+            $scope.bugModel.editedComment = new Comment(comment.id, comment.title, comment.description);
+        }).error(function (data, status, headers, config) {
+            $location.path("/bugs/" + $routeParams.bugId);
+            alert("an error occured while loading");
+        })
 
     this.saveComment = function (commentForm) {
         //var selected = $scope.bugModel.selectedComment;
         var comment = $scope.bugModel.editedComment;
         var user = $rootScope.authModel.user;
-        var bug = $scope.bugModel.editedBug;
+        var bug = $scope.bugModel.selectedBug;
         if (commentForm.$valid && user && comment) {
             comment.bug = bug;
             comment.autor = user.id;
@@ -327,18 +355,10 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
     };
 
     /**
-     * go to BugList
+     * go to showBug
      */
-    this.toBugList = function () {
-        $location.path("/bugs");
-        //history.back() evtl einbauen
-    };
-
-    /**
-     * go to BugList
-     */
-    this.pageBack = function () {
-        history.back()
+    this.toShowBug= function () {
+        $location.path("/bugs/" + $routeParams.bugId);
     };
 
 }]);

@@ -21,7 +21,7 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
                        ng-model="bugModel.editedComment.title" maxlength="255" required>
             </div>
-            <!--<span class="help-block" ng-show="commentForm.title.$invalid">{{showCtrl.getErrorMessage(commentForm.title)}}</span>-->
+            <!--<span class="help-block" ng-show="commentForm.title.$invalid">{{commentCtrl.getErrorMessage(commentForm.title)}}</span>-->
         </div>
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">Beschreibung</label>
@@ -37,8 +37,8 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <input type="submit" class="btn btn-primary" value="{{bugModel.editMode ? 'Übernehmen' : 'Anlegen'}}"
                        ng-disabled="commentForm.$invalid"
-                       ng-click="showCtrl.saveComment(commentForm)">
-                <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="showCtrl.pageBack()">
+                       ng-click="commentCtrl.saveComment(commentForm)">
+                <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="commentCtrl.toShowBug()">
             </div>
         </div>
     </form>
