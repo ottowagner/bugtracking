@@ -13,7 +13,7 @@ services.service('authService', ['$http', function ($http) {
      * @param user The user to be loaded.
      * @returns {HttpPromise}.
      */
-        //TODO: SICHERHEIT, nicht direkt mit dem user/password
+        //TODO: SICHERHEIT, nicht direkt mit dem user/password!
     this.loadUserWithPromise = function (user) {
         return $http.post('rest/user', user);
     }
