@@ -7,17 +7,11 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives']);
 
 // Set up the mainController controller.
-controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$location', 'authService', 'User', 'Bug', function ($rootScope, $scope, $http, $location, authService, User, Bug) {
+controllers.controller('mainController', ['$rootScope', '$scope', '$location', 'authService', 'User', function ($rootScope, $scope, $location, authService, User) {
     $rootScope.authModel = {
+        //TODO: Service auslagern!
         user: null
     };
-
-    $scope.bugModel = {
-        bugs: [],
-        editMode: null,
-        selectedBug: null,
-        editedBug: null
-    }
 
     var authenticate = function (account, callback) {
         //TODO: In einen Service auslagern
@@ -50,7 +44,7 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
     }
 
     //authenticate();
-    $scope.account = {};
+    //$scope.account = {};
     this.login = function (loginForm) {
         //TODO: Hier eig mit Sicherheit arbeiten!!!
 
@@ -152,21 +146,15 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$http', '$loc
         //});
     }
 
-
-    /**
-     * Starts the creation of a new bug.
-     */
-    this.createBug = function () {
-        var bug = new Bug();
-        $scope.bugModel.editMode = false;
-        $scope.bugModel.selectedBug = bug;
-        $scope.bugModel.editedBug = new Bug(bug.id, bug.title, bug.description, bug.state, bug.autor, bug.developer, bug.lastUpdateDate, bug.creationDate);
-        $location.path("/bugs/create");
-    };
 }]);
 
 // Set up the listBugController.
-controllers.controller('listBugController', ['$scope', '$location', 'Bug', 'bugService', function ($scope, $location, Bug, bugService) {
+controllers.controller('listBugController', ['$scope', '$location', 'bugService', function ($scope, $location, bugService) {
+
+
+    $scope.bugModel = {
+        bugs: [],
+    }
 
     // List the current bugs.
     bugService.listBugsWithPromise()
@@ -176,6 +164,13 @@ controllers.controller('listBugController', ['$scope', '$location', 'Bug', 'bugS
         .error(function (data, status, headers, config) {
             alert("an error occured while loading");
         });
+
+    /**
+     * Starts the creation of a new bug.
+     */
+    this.createBug = function () {
+        $location.path("/bugs/create");
+    };
 
     /**
      * Show the details and Starts the editing of the bug.
@@ -190,15 +185,27 @@ controllers.controller('listBugController', ['$scope', '$location', 'Bug', 'bugS
 // Set up the editBugController controller.
 controllers.controller('editBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'Bug', 'bugService', function ($rootScope, $scope, $location, $routeParams, Bug, bugService) {
 
+    $scope.bugModel = {
+        editMode: null,
+        selectedBug: null,
+        editedBug: null
+    }
+
     if ($routeParams.bugId) {
         bugService.loadBugWithPromise($routeParams.bugId)
             .success(function (data, status, headers, config) {
+                $scope.bugModel.editMode = true;
                 $scope.bugModel.selectedBug = data;
                 $scope.bugModel.editedBug = new Bug(data.id, data.title, data.description, data.state, data.autor, data.developer, data.lastUpdateDate, data.creationDate);
             }).error(function (data, status, headers, config) {
                 $location.path("/bugs");
                 alert("an error occured while loading");
             });
+    } else {
+        var bug = new Bug();
+        $scope.bugModel.editMode = false;
+        $scope.bugModel.selectedBug = bug;
+        $scope.bugModel.editedBug = new Bug(bug.id, bug.title, bug.description, bug.state, bug.autor, bug.developer, bug.lastUpdateDate, bug.creationDate);
     }
 
     /**
@@ -215,9 +222,6 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
             selected.autor = user.id;
             bugService.saveBugWithPromise(selected)
                 .success(function (data, status, headers, config) {
-                    if ($scope.bugModel.bugs.indexOf(selected) === -1) {
-                        $scope.bugModel.bugs.push(data);
-                    }
                     $location.path("/bugs/" + data.id);
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
@@ -228,7 +232,7 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
     /**
      * go to BugList
      */
-    this.toBugList = function () {
+    this.pageBack = function () {
         history.back()
     };
 
@@ -268,43 +272,38 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
 }]);
 
 // Set up the showBugController controller.
-controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'Bug', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, Bug, bugService, Comment, commentService) {
+controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, commentService) {
     $scope.bugModel = {
         comments: [],
-        editMode: null,
         selectedBug: null,
         editedBug: null,
         selectedComment: null,
         editedComment: null
     }
 
-    if ($routeParams.bugId) {
-        bugService.loadBugWithPromise($routeParams.bugId)
-            .success(function (data, status, headers, config) {
-                $scope.bugModel.selectedBug = data;
-                $scope.bugModel.editedBug = data;
-            }).error(function (data, status, headers, config) {
-                $location.path("/bugs");
-                alert("an error occured while loading");
-            });
+    bugService.loadBugWithPromise($routeParams.bugId)
+        .success(function (data, status, headers, config) {
+            $scope.bugModel.selectedBug = data;
+            $scope.bugModel.editedBug = data;
+        }).error(function (data, status, headers, config) {
+            $location.path("/bugs");
+            alert("an error occured while loading");
+        });
 
-        commentService.listCommentsWithPromise($scope.bugModel.selectedBug)
-            .success(function (data, status, headers, config) {
-                $scope.bugModel.comments = data;
-            })
-            .error(function (data, status, headers, config) {
-                alert("an error occured while loading");
-            });
-    }
+    commentService.listCommentsWithPromise($scope.bugModel.selectedBug)
+        .success(function (data, status, headers, config) {
+            $scope.bugModel.comments = data;
+        })
+        .error(function (data, status, headers, config) {
+            alert("an error occured while loading");
+        });
 
     this.editBug = function () {
-        $scope.bugModel.editMode = true;
         $location.path("/bugs/" + $routeParams.bugId + "/edit");
     }
 
     this.createComment = function () {
         var comment = new Comment();
-        $scope.bugModel.editMode = false;
         $scope.bugModel.selectedComment = comment;
         $scope.bugModel.editedComment = new Comment(comment.id, comment.title, comment.description);
         $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
@@ -320,9 +319,6 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             comment.autor = user.id;
             commentService.saveCommentWithPromise(comment)
                 .success(function (data, status, headers, config) {
-                    if ($scope.bugModel.comments.indexOf(comment) === -1) {
-                        $scope.bugModel.comments.push(data);
-                    }
                     $location.path("/bugs/" + $routeParams.bugId);
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
@@ -341,8 +337,9 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
     /**
      * go to BugList
      */
-    this.toBug = function () {
+    this.pageBack = function () {
         history.back()
     };
 
 }]);
+

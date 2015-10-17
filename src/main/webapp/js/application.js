@@ -9,26 +9,6 @@ var application = angular.module('bugtracking', ['ngRoute', 'controllers']);
 application.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $routeProvider.
-            when('/bugs', {
-                templateUrl: 'partials/bugList.html',
-                controller: 'listBugController'
-            }).
-            when('/bugs/create', {
-                templateUrl: 'partials/createBug.html',
-                controller: 'editBugController'
-            }).
-            when('/bugs/:bugId/comments/create', {
-                templateUrl: 'partials/createComment.html',
-                controller: 'showBugController'
-            }).
-            when('/bugs/:bugId/edit', {
-                templateUrl: 'partials/createBug.html',
-                controller: 'editBugController'
-            }).
-            when('/bugs/:bugId', {
-                templateUrl: 'partials/showBug.html',
-                controller: 'showBugController'
-            }).
             when('/register', {
                 templateUrl: 'partials/register.html',
                 controller: 'mainController'
@@ -37,10 +17,26 @@ application.config(['$routeProvider', '$httpProvider',
                 templateUrl: 'partials/login.html',
                 controller: 'mainController'
             }).
-            //when('/bug/:bugId', {
-            //    templateUrl: 'partials/phone-detail.html',
-            //    controller: 'PhoneDetailCtrl'
-            //}).
+            when('/bugs', {
+                templateUrl: 'partials/bugList.html',
+                controller: 'listBugController'
+            }).
+            when('/bugs/create', {
+                templateUrl: 'partials/createBug.html',
+                controller: 'editBugController'
+            }).
+            when('/bugs/:bugId', {
+                templateUrl: 'partials/showBug.html',
+                controller: 'showBugController'
+            }).
+            when('/bugs/:bugId/edit', {
+                templateUrl: 'partials/createBug.html',
+                controller: 'editBugController'
+            }).
+            when('/bugs/:bugId/comments/create', {
+                templateUrl: 'partials/createComment.html',
+                controller: 'showBugController' //TODO: evtl eigener controller
+            }).
             otherwise({
                 redirectTo: '/login'
             });
