@@ -14,7 +14,12 @@
                     <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
                 </button>
                 <!--//TODO:Foreach folgestatus-->
-                <button class="btn btn-default" type="button" ng-click="showCtrl.changeState()" >{{bugModel.bug.possibleStates.title}}</button>
+                <!--<button ng-repeat="state in bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{state.title}}</button>-->
+                <button class="btn btn-default" ng-show="bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{bugModel.bug.possibleStates.title}}</button>
+
+
+
+                <!--<button class="btn btn-default" type="button" ng-click="showCtrl.changeState()" >{{bugModel.bug.possibleStates.title}}</button>-->
                 <!--<button class="btn btn-default" type="button" format-state="Behoben"></button>-->
             </div>
         </div>

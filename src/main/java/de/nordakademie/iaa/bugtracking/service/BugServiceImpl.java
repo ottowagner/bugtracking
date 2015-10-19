@@ -26,7 +26,7 @@ public class BugServiceImpl implements BugService {
             bug.setState(stateDAO.load((long) 1));
             bug.setPossibleStates(stateDAO.load((long) 2));
         }else{
-            bug.setPossibleStates(stateDAO.load(bug.getState().getId())); // TODO: Muss ein array oder so werden & fromState ergebnisse zurückgeben!
+            bug.setPossibleStates(stateDAO.load((long) 3)); // TODO: Muss ein array oder so werden & fromState ergebnisse zurückgeben!
         }
         return bugDAO.save(bug);
     }
