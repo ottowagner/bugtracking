@@ -12,29 +12,11 @@ import java.io.Serializable;
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class User implements Serializable {
     private static final long serialVersionUID = 6925248180274039274L;
-    /**
-     * The unique identifier.
-     */
+
     private Long id;
-
-    /**
-     * The email.
-     */
     private String email;
-
-    /**
-     * The firstName.
-     */
     private String firstname;
-
-    /**
-     * The lastName.
-     */
     private String lastname;
-
-    /**
-     * The password.
-     */
     private String password;
 
     @Id

@@ -13,47 +13,14 @@ import java.util.Date;
 public class Bug implements Serializable {
     private static final long serialVersionUID = 6925248180274039277L;
 
-    /**
-     * The unique identifier.
-     */
     private Long id;
-
-    /**
-     * The title.
-     */
     private String title;
-
-    /**
-     * The description.
-     */
     private String description;
-
-    //TODO: ENUM
-    /**
-     * The state.
-     */
-    private String state;
-
-    /**
-     * The autor.
-     */
+    private State state;
+    private State possibleStates; //TODO: hier muss eine liste impl werden..
     private User autor;
-
-    /**
-     * The developer.
-     */
     private User developer;
-
-    //TODO: Datum muss Typ DATUM sein! oder timestamp... wie auch immer.. :P
-    /**
-     * The lastUpdateDate.
-     */
     private Date lastUpdateDate;
-
-    //TODO: Datum muss Typ DATUM sein!
-    /**
-     * The creationDate.
-     */
     private Date creationDate;
 
     @Id
@@ -84,13 +51,22 @@ public class Bug implements Serializable {
         this.description = description;
     }
 
-    @Column(nullable = false)
-    public String getState() {
+    @ManyToOne(optional = false)
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
+    }
+
+    @ManyToOne(optional = false)
+    public State getPossibleStates() {
+        return possibleStates;
+    }
+
+    public void setPossibleStates(State possibleStates) {
+        this.possibleStates = possibleStates;
     }
 
     @ManyToOne(optional = false)

@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
-import de.nordakademie.iaa.bugtracking.dao.UserDAO;
+import de.nordakademie.iaa.bugtracking.dao.StateDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 
 import javax.inject.Inject;
@@ -15,22 +15,18 @@ import java.util.List;
  */
 public class BugServiceImpl implements BugService {
 
-    /**
-     * The bug DAO.
-     */
     private BugDAO bugDAO;
-
-    /**
-     * The user DAO.
-     */
-    private UserDAO userDAO;
+    private StateDAO stateDAO;
 
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
         Date creationDate = new Date();
-        bug.setCreationDate(creationDate);
-        if(bug.getState() == null){//TODO: bessere lösung implementieren...
-            bug.setState("Angelegt"); //TODO: ENUM
+        if (bug.getState() == null) {//TODO: bessere lösung implementieren...
+            bug.setCreationDate(creationDate);
+            bug.setState(stateDAO.load((long) 1));
+            bug.setPossibleStates(stateDAO.load((long) 2));
+        }else{
+            bug.setPossibleStates(stateDAO.load(bug.getState().getId())); // TODO: Muss ein array oder so werden & fromState ergebnisse zurückgeben!
         }
         return bugDAO.save(bug);
     }
@@ -44,9 +40,9 @@ public class BugServiceImpl implements BugService {
     public Bug loadBug(Long id) throws EntityNotFoundException {
         Bug bug = bugDAO.load(id);
         if (bug == null) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Kein Bug mit der ID gefunden");
         }
-        return bug;
+        return bugDAO.load(id);
     }
 
     @Override
@@ -61,5 +57,10 @@ public class BugServiceImpl implements BugService {
     @Inject
     public void setBugDAO(BugDAO bugDAO) {
         this.bugDAO = bugDAO;
+    }
+
+    @Inject
+    public void setStateDAO(StateDAO stateDAO) {
+        this.stateDAO = stateDAO;
     }
 }

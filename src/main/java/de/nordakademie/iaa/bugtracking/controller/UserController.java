@@ -27,7 +27,7 @@ public class UserController {
      * @return the user.
      */
     //    TODO: Muss ersetzt werden (ist denke zu unsicher). Brauche ich gerade, weil wir noch keine richtige authentifikation haben
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
     public User loadUser(@RequestBody User user) throws Exception {
         return userService.loadUser(user.getEmail());
     }
@@ -42,7 +42,7 @@ public class UserController {
      *
      * @param user The user to be saved.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public User saveUser(@RequestBody User user) throws Exception {
         return userService.saveUser(user);
     }
@@ -52,7 +52,7 @@ public class UserController {
      *
      * @param email The user's identifier.
      */
-    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/users", method = RequestMethod.DELETE)
     public void deleteUser(@RequestBody String email) throws Exception {
         userService.deleteUser(email);
     }

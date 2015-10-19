@@ -64,6 +64,7 @@
     <bean id="userDAO" class="de.nordakademie.iaa.bugtracking.dao.UserDAO"/>
     <bean id="bugDAO" class="de.nordakademie.iaa.bugtracking.dao.BugDAO"/>
     <bean id="commentDAO" class="de.nordakademie.iaa.bugtracking.dao.CommentDAO"/>
+    <bean id="stateDAO" class="de.nordakademie.iaa.bugtracking.dao.StateDAO"/>
 
     <!-- Services -->
     <bean id="roomService" class="de.nordakademie.iaa.bugtracking.service.RoomServiceImpl"/>
@@ -72,5 +73,6 @@
     <bean id="userService" class="de.nordakademie.iaa.bugtracking.service.UserServiceImpl"/>
     <bean id="bugService" class="de.nordakademie.iaa.bugtracking.service.BugServiceImpl"/>
     <bean id="commentService" class="de.nordakademie.iaa.bugtracking.service.CommentServiceImpl"/>
+    <bean id="stateService" class="de.nordakademie.iaa.bugtracking.service.StateServiceImpl"/>
 
 </beans>

@@ -1,9 +1,11 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.CommentDAO;
+import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,31 +19,21 @@ public class CommentServiceImpl implements CommentService {
      * The comment DAO.
      */
     private CommentDAO commentDAO;
+
     /**
      * The course service.
      */
     private BugService bugService;
 
     //    @Override
-    public void saveComment(Comment comment) throws EntityAlreadyPresentException {
-        comment.setCreationDate("03.01.2015");
+    public void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException {
+        Bug bug = bugService.loadBug(bugId);;
+        Date creationDate = new Date();
+
+        comment.setBug(bug);
+        comment.setCreationDate(creationDate);
         commentDAO.save(comment);
     }
-//
-//    public void createComment(Comment comment, Long bugId) throws EntityNotFoundException {
-//        Bug bug = bugService.loadBug(bugId);
-//        if (bug == null) {
-//            throw new EntityNotFoundException("Bug not found");
-//        }
-//
-//        Comment comment = new Comment();
-//
-//        lecture.setBegin(startTime);
-//        lecture.setEnd(endTime);
-//        lecture.setCourse(course);
-//        lecture.setRoom(room);
-//        lectureDAO.save(lecture);
-//    }
 
     @Override
     public List<Comment> listComments(Long bugId) {
@@ -67,4 +59,10 @@ public class CommentServiceImpl implements CommentService {
     public void setCommentDAO(CommentDAO commentDAO) {
         this.commentDAO = commentDAO;
     }
+
+    @Inject
+    public void setBugService(BugService bugService) {
+        this.bugService = bugService;
+    }
+
 }

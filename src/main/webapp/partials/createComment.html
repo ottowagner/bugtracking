@@ -19,7 +19,7 @@
 
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
-                       ng-model="commentModel.editedComment.title" maxlength="255" required>
+                       ng-model="commentModel.comment.title" maxlength="255" required>
             </div>
             <!--<span class="help-block" ng-show="commentForm.title.$invalid">{{commentCtrl.getErrorMessage(commentForm.title)}}</span>-->
         </div>
@@ -28,7 +28,7 @@
 
             <div class="col-sm-8">
                 <textarea rows="10" type="text" class="form-control" id="description" name="description"
-                          placeholder="Beschreibung" ng-model="commentModel.editedComment.description"
+                          placeholder="Beschreibung" ng-model="commentModel.comment.description"
                           maxlength="4000"></textarea>
             </div>
         </div>

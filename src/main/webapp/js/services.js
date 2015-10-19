@@ -15,7 +15,7 @@ services.service('authService', ['$http', function ($http) {
      */
         //TODO: SICHERHEIT, nicht direkt mit dem user/password
     this.loadUserWithPromise = function (user) {
-        return $http.post('rest/user', user);
+        return $http.post('rest/users', user);
     }
 
     /**
@@ -25,7 +25,7 @@ services.service('authService', ['$http', function ($http) {
      */
         //TODO: SICHERHEIT, nicht direkt mit dem user/password
     this.saveUserWithPromise = function (user) {
-        return $http.put('rest/user', user);
+        return $http.put('rest/users', user);
     };
 }]);
 
@@ -76,8 +76,8 @@ services.service('commentService', ['$http', function ($http) {
      *        bug The bug in which the comment will be saved
      * @returns {HttpPromise}.
      */
-    this.saveCommentWithPromise = function (comment) {
-        return $http.put('rest/comments', comment);
+    this.saveCommentWithPromise = function (bugId, comment) {
+        return $http.put('rest/bugs/'+ bugId +'/comments', comment);
     };
 
 }]);

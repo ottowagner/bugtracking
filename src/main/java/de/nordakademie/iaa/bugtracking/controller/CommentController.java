@@ -35,9 +35,9 @@ public class CommentController {
      *
      * @param comment The comment to be saved.
      */
-    @RequestMapping(value = "/comments", method = RequestMethod.PUT)
-    public void saveComment(@RequestBody Comment comment) throws Exception {
-        commentService.saveComment(comment);
+    @RequestMapping(value = "/bugs/{bugId}/comments", method = RequestMethod.PUT)
+    public void saveComment(@PathVariable Long bugId, @RequestBody Comment comment) throws Exception {
+        commentService.saveComment(bugId, comment);
     }
 
     /**

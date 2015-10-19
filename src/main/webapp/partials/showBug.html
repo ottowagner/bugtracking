@@ -14,12 +14,12 @@
                     <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
                 </button>
                 <!--//TODO:Foreach folgestatus-->
-                <button class="btn btn-default" type="button" format-state="Abgelehnt"></button>
-                <button class="btn btn-default" type="button" format-state="Behoben"></button>
+                <button class="btn btn-default" type="button" ng-click="showCtrl.changeState()" >{{bugModel.bug.possibleStates.title}}</button>
+                <!--<button class="btn btn-default" type="button" format-state="Behoben"></button>-->
             </div>
         </div>
-        <h2>{{bugModel.selectedBug.title}}</h2>
-        <icon format-state="{{bugModel.selectedBug.state}}"></icon>
+        <h2>{{bugModel.bug.title}}</h2>
+        <span format-state="{{bugModel.bug.state}}"></span>state {{bugModel.bug.state.title}}
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -27,10 +27,10 @@
                 <h4>Daten:</h4>
             </div>
             <div class="col-md-12">
-                Entwickler: {{bugModel.selectedBug.developer.firstname}} {{bugModel.selectedBug.developer.lastname}}<br/> <br/>
-                Autor: {{bugModel.selectedBug.autor.firstname}} {{bugModel.selectedBug.autor.lastname}}<br/> <br/>
-                Letzte aktualisierung: {{bugModel.selectedBug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
-                Erstellungsdatum: {{bugModel.selectedBug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
+                Entwickler: {{bugModel.bug.developer.firstname}} {{bugModel.bug.developer.lastname}}<br/> <br/>
+                Autor: {{bugModel.bug.autor.firstname}} {{bugModel.bug.autor.lastname}}<br/> <br/>
+                Letzte aktualisierung: {{bugModel.bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
+                Erstellungsdatum: {{bugModel.bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
             </div>
         </div>
         <div class="col-md-9">
@@ -38,7 +38,7 @@
                 <h4>Beschreibung:</h4>
             </div>
             <div class="col-md-12">
-                {{bugModel.selectedBug.description}}
+                {{bugModel.bug.description}}
             </div>
         </div>
     </div>
@@ -54,9 +54,9 @@
     <div ng-repeat="comment in bugModel.comments" class="col-md-12 alert alert-info">
         <div class="col-md-3">
             <!--<span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span-->
-            <!--format-state="{{bugModel.selectedBug.state}}"></span><br/>-->
-            Von: {{comment.userId}}<br/>
-            Am: {{comment.creationDate}}
+            <!--format-state="{{bugModel.bug.state}}"></span><br/>-->
+            Von: {{comment.autor.firstname}} {{comment.autor.lastname}}<br/>
+            Am: {{comment.creationDate | date:'dd.MM.yyyy - HH:mm'}}
         </div>
         <div class="col-md-9">
             {{comment.title}}<br/>

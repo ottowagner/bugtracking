@@ -17,7 +17,7 @@ public interface CommentService {
      * @param comment The comment to be saved.
      * @throws EntityAlreadyPresentException if a comment with the same comment number is already present in the database.
      */
-    void saveComment(Comment comment) throws EntityAlreadyPresentException;
+    void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException;
 
     /**
      * List all comments currently stored in the database.

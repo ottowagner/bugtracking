@@ -1,2 +1,17 @@
-INSERT INTO Bug (TITLE, DESCRIPTION, STATE, AUTOR, DEVELOPER, LASTUPDATEDATE, CREATIONDATE) VALUES ('Ein neuer Fehler!', 'Hier schau mal hier ist ein BUG!', 'In Bearbeitung', 1, 1, '02.01.2015', '01.01.2015');
 INSERT INTO USER (EMAIL, FIRSTNAME, LASTNAME, PASSWORD) VALUES ('otto-wagner@gmx.net', 'Otto', 'Wagner', 'test');
+
+INSERT INTO STATE (TITLE) VALUES ('Angelegt'); -- 1
+INSERT INTO STATE (FROMSTATE, TITLE) VALUES (1,'In Bearbeitung');  -- 2
+INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2,'Behoben'); -- 3
+INSERT INTO STATE (FROMSTATE, TITLE) VALUES (3, 'Geschlossen'); -- 4
+
+-- Wenn array implementiert ist
+-- INSERT INTO STATE (TITLE) VALUES ('Angelegt'); -- 1
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (1,'In Bearbeitung');  -- 2
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (6,'In Bearbeitung');  -- 3
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2,'Behoben'); -- 4
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2, 'Abgelehnt'); -- 5
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (4, 'Wiedereröffnet'); -- 6
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (5, 'Wiedereröffnet'); -- 7
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (4, 'Geschlossen'); -- 8
+-- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (5, 'Geschlossen'); -- 9

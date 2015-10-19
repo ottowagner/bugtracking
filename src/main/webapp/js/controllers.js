@@ -275,14 +275,12 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
 controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, commentService) {
     $scope.bugModel = {
         comments: [],
-        selectedBug: null,
-        editedBug: null
-    }
+        bug: null,
+    };
 
     bugService.loadBugWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
-            $scope.bugModel.selectedBug = data;
-            $scope.bugModel.editedBug = data;
+            $scope.bugModel.bug = data;
         }).error(function (data, status, headers, config) {
             $location.path("/bugs");
             alert("an error occured while loading");
@@ -295,6 +293,18 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
         .error(function (data, status, headers, config) {
             alert("an error occured while loading");
         });
+
+    this.changeState = function () {
+        var selected = $scope.bugModel.bug;
+        selected.state = $scope.bugModel.bug.possibleStates; //TODO: gehört ins backend
+        bugService.saveBugWithPromise(selected)
+            .success(function (data, status, headers, config) {
+                $scope.bugModel.bug = data;
+            }).error(function (data, status, headers, config) {
+                alert("an error occured while saving");
+            });
+
+    };
 
     this.createComment = function () {
         $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
@@ -320,31 +330,15 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
 // Set up the commentController.
 controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
     $scope.commentModel = {
-        selectedBug: null,
-        selectedComment: null,
-        editedComment: null
-    }
-//TODO: in THEN aufteilen..
-    bugService.loadBugWithPromise($routeParams.bugId)
-        .success(function (data, status, headers, config) {
-            var comment = new Comment();
-            $scope.commentModel.selectedBug = data;
-            $scope.commentModel.selectedComment = comment;
-            $scope.commentModel.editedComment = new Comment(comment.id, comment.title, comment.description);
-        }).error(function (data, status, headers, config) {
-            $location.path("/bugs/" + $routeParams.bugId);
-            alert("an error occured while loading");
-        })
+        comment: null
+    };
 
     this.saveComment = function (commentForm) {
-        //var selected = $scope.commentModel.selectedComment;
-        var comment = $scope.commentModel.editedComment;
+        var comment = $scope.commentModel.comment;
         var user = $rootScope.authModel.user;
-        var bug = $scope.commentModel.selectedBug;
         if (commentForm.$valid && user && comment) {
-            comment.bug = bug;
-            comment.autor = user.id;
-            commentService.saveCommentWithPromise(comment)
+            comment.autor = user;
+            commentService.saveCommentWithPromise($routeParams.bugId, comment)
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + $routeParams.bugId);
                 }).error(function (data, status, headers, config) {
@@ -356,7 +350,7 @@ controllers.controller('commentController', ['$rootScope', '$scope', '$location'
     /**
      * go to showBug
      */
-    this.toShowBug= function () {
+    this.toShowBug = function () {
         $location.path("/bugs/" + $routeParams.bugId);
     };
 

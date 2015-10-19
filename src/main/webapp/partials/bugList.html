@@ -29,7 +29,7 @@
         <tr ng-repeat="bug in bugModel.bugs | orderBy:['id']" ng-click="listCtrl.openBug(bug)">
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
-            <td format-state="{{bug.state}}"></td>
+            <td format-state="{{bug.state.title}}"></td>
             <td>{{bug.autor.firstname}} {{bug.autor.lastname}}</td>
             <td>{{bug.developer.firstname}} {{bug.developer.lastname}}</td>
             <td>{{bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}</td>

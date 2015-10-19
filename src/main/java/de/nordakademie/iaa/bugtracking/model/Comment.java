@@ -2,6 +2,7 @@ package de.nordakademie.iaa.bugtracking.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Comment entity.
@@ -12,37 +13,13 @@ import java.io.Serializable;
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class Comment implements Serializable {
     private static final long serialVersionUID = 6925248180274039234L;
-    /**
-     * The unique identifier.
-     */
+
     private Long id;
-
-    /**
-     * The bug which the comment belongs to.
-     */
     private Bug bug;
-
-    /**
-     * The title.
-     */
     private String title;
-
-    /**
-     * The description.
-     */
     private String description;
-
-    //TODO: Typ User
-    /**
-     * The autor.
-     */
-    private String autor;
-
-    /**
-     * The creationDate.
-     */
-    private String creationDate;
-
+    private User autor;
+    private Date creationDate;
     //TODO: fromState, toState
 
     @Id
@@ -82,21 +59,22 @@ public class Comment implements Serializable {
         this.description = description;
     }
 
-    @Column(nullable = false)
-    public String getAutor() {
+    @ManyToOne(optional = false)
+    public User getAutor() {
         return autor;
     }
 
-    public void setAutor(String autor) {
+    public void setAutor(User autor) {
         this.autor = autor;
     }
 
     @Column(nullable = false)
-    public String getCreationDate() {
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 }

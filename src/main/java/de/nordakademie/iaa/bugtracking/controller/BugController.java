@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * REST controller for the bug service.
  *
- * @author Stephan Anft
+ * @author Otto Wagner
  */
 @RestController
 public class BugController {
