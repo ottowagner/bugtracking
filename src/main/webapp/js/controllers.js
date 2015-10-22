@@ -294,10 +294,9 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             alert("an error occured while loading");
         });
 
-    this.changeState = function () {
+    this.changeState = function (state) {
         var selected = $scope.bugModel.bug;
-        selected.state = $scope.bugModel.bug.possibleStates; //TODO: gehört ins backend
-        bugService.saveBugWithPromise(selected)
+        bugService.setBugStateWithPromise($routeParams.bugId, state)
             .success(function (data, status, headers, config) {
                 $scope.bugModel.bug = data;
             }).error(function (data, status, headers, config) {

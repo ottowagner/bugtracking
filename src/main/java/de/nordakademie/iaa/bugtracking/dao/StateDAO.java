@@ -39,6 +39,21 @@ public class StateDAO {
     }
 
     /**
+     * Returns the state identified by the given state.
+     *
+     * @param state The identifier.
+     * @return the found entity or {@code null} if no entity was found with given identifier.
+     */
+    public List<State> findByFromState(State state) {
+        //TODO: Hier übergebe ich die id.. Weiß nicht wie sinnvoll das ist! Müssen herausfinden, wie man objekte per import.sql in die db speichert!
+        //TODO: Sollte es nicht anders möglich sein, müssen wir id bereits früher benutzen und nicht das ganz objekt mitschleifen..
+        List<State> states = entityManager.createQuery(
+                "select s from State s where s.fromState = :fromState"
+        ).setParameter("fromState", state.getId()).getResultList();
+        return states;
+    }
+
+    /**
      * Stores the given state entity into the database.
      *
      * @param state The state to be saved.

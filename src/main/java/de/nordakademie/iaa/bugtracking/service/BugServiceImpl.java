@@ -3,6 +3,7 @@ package de.nordakademie.iaa.bugtracking.service;
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
 import de.nordakademie.iaa.bugtracking.dao.StateDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
+import de.nordakademie.iaa.bugtracking.model.State;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.List;
 public class BugServiceImpl implements BugService {
 
     private BugDAO bugDAO;
+    //TODO: evtl über bugservice gehen.. kp ob wir hier direkt auf die dao gehen sollten
     private StateDAO stateDAO;
 
     @Override
@@ -23,11 +25,24 @@ public class BugServiceImpl implements BugService {
         Date creationDate = new Date();
         if (bug.getState() == null) {//TODO: bessere lösung implementieren...
             bug.setCreationDate(creationDate);
-            bug.setState(stateDAO.load((long) 1));
-            bug.setPossibleStates(stateDAO.load((long) 2));
-        }else{
-            bug.setPossibleStates(stateDAO.load((long) 3)); // TODO: Muss ein array oder so werden & fromState ergebnisse zurückgeben!
+            State state = stateDAO.load((long) 1);
+            bug.setState(state);
+            bug.setPossibleStates(stateDAO.findByFromState(state));
         }
+        return bugDAO.save(bug);
+    }
+
+    @Override
+    public Bug setBugState(Long bugId, State state) throws EntityAlreadyPresentException {
+//        TODO: Prüfe ob status gesetzt werden darf!
+        Bug bug = null;
+        try {
+            bug = this.loadBug(bugId);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        bug.setState(state);
+        bug.setPossibleStates(stateDAO.findByFromState(state));
         return bugDAO.save(bug);
     }
 

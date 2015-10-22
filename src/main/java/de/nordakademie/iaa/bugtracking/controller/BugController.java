@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
 import de.nordakademie.iaa.bugtracking.model.Bug;
+import de.nordakademie.iaa.bugtracking.model.State;
 import de.nordakademie.iaa.bugtracking.service.BugService;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +49,17 @@ public class BugController {
     @RequestMapping(value = "/bugs", method = RequestMethod.PUT)
     public Bug saveBug(@RequestBody Bug bug) throws Exception {
         return bugService.saveBug(bug);
+    }
+
+
+    /**
+     * Saves the given state.
+     *
+     * @param state The bug state to be saved.
+     */
+    @RequestMapping(value = "/bugs/{bugId}", method = RequestMethod.PUT)
+    public Bug setBugState(@PathVariable Long bugId, @RequestBody State state) throws Exception {
+        return bugService.setBugState(bugId, state);
     }
 
     /**

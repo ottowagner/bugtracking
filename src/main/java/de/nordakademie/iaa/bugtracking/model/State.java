@@ -2,7 +2,6 @@ package de.nordakademie.iaa.bugtracking.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Bug entity.
@@ -19,6 +18,7 @@ public class State implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "STATE_ID")
     public Long getId() {
         return id;
     }

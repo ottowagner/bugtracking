@@ -57,6 +57,15 @@ services.service('bugService', ['$http', function ($http) {
         return $http.put('rest/bugs', bug);
     };
 
+
+    /**
+     * Saves a given bug State using an asynchronous REST call with promise.
+     * @param state The bug state to be saved.
+     * @returns {HttpPromise}.
+     */
+    this.setBugStateWithPromise = function (bugId, state) {
+        return $http.put('rest/bugs/' + bugId, state);
+    };
 }]);
 
 // Set up the comment service.

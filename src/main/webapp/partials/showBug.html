@@ -15,16 +15,12 @@
                 </button>
                 <!--//TODO:Foreach folgestatus-->
                 <!--<button ng-repeat="state in bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{state.title}}</button>-->
-                <button class="btn btn-default" ng-show="bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{bugModel.bug.possibleStates.title}}</button>
-
-
-
-                <!--<button class="btn btn-default" type="button" ng-click="showCtrl.changeState()" >{{bugModel.bug.possibleStates.title}}</button>-->
-                <!--<button class="btn btn-default" type="button" format-state="Behoben"></button>-->
+                <button ng-repeat="possibleState in bugModel.bug.possibleStates" class="btn btn-default"
+                        format-state="{{possibleState.title}}" ng-click="showCtrl.changeState(possibleState)"></button>
             </div>
         </div>
         <h2>{{bugModel.bug.title}}</h2>
-        <span format-state="{{bugModel.bug.state}}"></span>state {{bugModel.bug.state.title}}
+        <span ng-if="bugModel.bug.state" format-state="{{bugModel.bug.state.title}}"></span>
     </div>
     <div class="row">
         <div class="col-md-3">
