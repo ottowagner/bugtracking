@@ -272,15 +272,25 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
 }]);
 
 // Set up the showBugController.
-controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, commentService) {
+controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'stateService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, stateService, commentService) {
     $scope.bugModel = {
         comments: [],
+        comment: null,
         bug: null,
+        possibleToStates: null
     };
 
     bugService.loadBugWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
             $scope.bugModel.bug = data;
+        }).error(function (data, status, headers, config) {
+            $location.path("/bugs");
+            alert("an error occured while loading");
+        });
+
+    stateService.listToStatesWithPromise($routeParams.bugId)
+        .success(function (data, status, headers, config) {
+            $scope.bugModel.possibleToStates = data;
         }).error(function (data, status, headers, config) {
             $location.path("/bugs");
             alert("an error occured while loading");
@@ -294,15 +304,21 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             alert("an error occured while loading");
         });
 
-    this.changeState = function (state) {
-        var selected = $scope.bugModel.bug;
-        bugService.setBugStateWithPromise($routeParams.bugId, state)
+    this.changeState = function (toState) {
+        bugService.setBugStateWithPromise($routeParams.bugId, toState)
             .success(function (data, status, headers, config) {
                 $scope.bugModel.bug = data;
             }).error(function (data, status, headers, config) {
                 alert("an error occured while saving");
             });
-
+        //$location.path("/bugs/" + $routeParams.bugId + "/comments/create");
+        stateService.listToStatesWithPromise($routeParams.bugId)
+            .success(function (data, status, headers, config) {
+                $scope.bugModel.possibleToStates = data;
+            }).error(function (data, status, headers, config) {
+                $location.path("/bugs");
+                alert("an error occured while loading");
+            })
     };
 
     this.createComment = function () {
@@ -322,28 +338,34 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
      */
     this.toEditBug = function () {
         $location.path("/bugs/" + $routeParams.bugId + "/edit");
-    }
-
-}]);
-
-// Set up the commentController.
-controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
-    $scope.commentModel = {
-        comment: null
     };
 
     this.saveComment = function (commentForm) {
-        var comment = $scope.commentModel.comment;
+        var commentSuccesful = false;
+        var comment = $scope.bugModel.comment;
+        var toState = $scope.bugModel.toState;
+
         var user = $rootScope.authModel.user;
         if (commentForm.$valid && user && comment) {
-            comment.autor = user;
+            comment.autor = user; //TODO: BACKEND!
             commentService.saveCommentWithPromise($routeParams.bugId, comment)
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + $routeParams.bugId);
+                    commentSuccesful = true;
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
                 });
         }
+
+        //if(angular.isDefined(toState)){
+        //    bugService.setBugStateWithPromise($routeParams.bugId, toState)
+        //        .success(function (data, status, headers, config) {
+        //            $scope.bugModel.bug = data;
+        //            $scope.bugModel.toState = null;
+        //        }).error(function (data, status, headers, config) {
+        //            alert("an error occured while saving");
+        //        });
+        //}
     };
 
     /**
@@ -354,4 +376,42 @@ controllers.controller('commentController', ['$rootScope', '$scope', '$location'
     };
 
 }]);
+//
+//// Set up the commentController.
+//controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
+//    $scope.commentModel = {
+//        comment: null
+//    };
+//
+//    this.saveComment = function (commentForm) {
+//        var comment = $scope.commentModel.comment;
+//        var user = $rootScope.authModel.user;
+//        if (commentForm.$valid && user && comment) {
+//            comment.autor = user;
+//            commentService.saveCommentWithPromise($routeParams.bugId, comment)
+//                .success(function (data, status, headers, config) {
+//                    $location.path("/bugs/" + $routeParams.bugId);
+//                }).error(function (data, status, headers, config) {
+//                    alert("an error occured while saving");
+//                });
+//        }
+//    };
+//
+//    /**
+//     * go to showBug
+//     */
+//    this.toShowBug = function () {
+//        $location.path("/bugs/" + $routeParams.bugId);
+//    };
+//
+//}]);
 
+//controllers.controller('mymodalcontroller', function ($scope) {
+//    $scope.header = 'Put here your header';
+//    $scope.body = 'Put here your body';
+//    $scope.footer = 'Put here your footer';
+//
+//    $scope.myRightButton = function (bool) {
+//        alert('!!! first function call!');
+//    };
+//});

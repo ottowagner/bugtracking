@@ -8,12 +8,11 @@ var resources = angular.module('resources', []);
 
 //Set up the Bug Factory
 resources.factory('Bug', function () {
-    return function (id, title, description, state, possibleStates, autor, developer, lastUpdateDate, creationDate) {
+    return function (id, title, description, state, autor, developer, lastUpdateDate, creationDate) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.state = state;
-        this.possibleStates = possibleStates;
         this.autor = autor;
         this.developer = developer;
         this.lastUpdateDate = lastUpdateDate;

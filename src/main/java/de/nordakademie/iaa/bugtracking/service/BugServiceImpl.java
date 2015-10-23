@@ -22,12 +22,11 @@ public class BugServiceImpl implements BugService {
 
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
-        Date creationDate = new Date();
         if (bug.getState() == null) {//TODO: bessere lösung implementieren...
+            Date creationDate = new Date();
             bug.setCreationDate(creationDate);
             State state = stateDAO.load((long) 1);
             bug.setState(state);
-            bug.setPossibleStates(stateDAO.findByFromState(state));
         }
         return bugDAO.save(bug);
     }
@@ -42,7 +41,6 @@ public class BugServiceImpl implements BugService {
             e.printStackTrace();
         }
         bug.setState(state);
-        bug.setPossibleStates(stateDAO.findByFromState(state));
         return bugDAO.save(bug);
     }
 

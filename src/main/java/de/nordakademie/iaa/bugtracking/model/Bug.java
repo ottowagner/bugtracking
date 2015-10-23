@@ -2,9 +2,7 @@ package de.nordakademie.iaa.bugtracking.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Bug entity.
@@ -19,8 +17,6 @@ public class Bug implements Serializable {
     private String title;
     private String description;
     private State state;
-    //http://websystique.com/hibernate/hibernate-many-to-many-unidirectional-annotation-example/
-    private List<State> possibleStates = new ArrayList<State>();
     private User autor;
     private User developer;
     private Date lastUpdateDate;
@@ -55,25 +51,13 @@ public class Bug implements Serializable {
         this.description = description;
     }
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     public State getState() {
         return state;
     }
 
     public void setState(State state) {
         this.state = state;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "BUG_STATE",
-            joinColumns = {@JoinColumn(name = "BUG_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "STATE_ID")})
-    public List<State> getPossibleStates() {
-        return possibleStates;
-    }
-
-    public void setPossibleStates(List<State> possibleStates) {
-        this.possibleStates = possibleStates;
     }
 
     @ManyToOne(optional = false)

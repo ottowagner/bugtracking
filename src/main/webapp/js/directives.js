@@ -42,3 +42,23 @@ directives.directive("formatState", function () {
         }
     }
 });
+//
+//directives.directive('modal', function () {
+//    return {
+//        restrict: 'E',
+//        scope: {
+//            title: '=modalTitle',
+//            header: '=modalHeader',
+//            body: '=modalBody',
+//            footer: '=modalFooter',
+//            callbackbuttonleft: '&ngClickLeftButton',
+//            callbackbuttonright: '&ngClickRightButton',
+//            handler: '=lolo'
+//        },
+//        templateUrl: 'partials/modal.html',
+//        transclude: true,
+//        controller: function ($scope) {
+//            $scope.handler = 'pop';
+//        },
+//    };
+//});

@@ -90,3 +90,17 @@ services.service('commentService', ['$http', function ($http) {
     };
 
 }]);
+
+// Set up the comment service.
+services.service('stateService', ['$http', function ($http) {
+    /**
+     * Return all states for a bug using an asynchronous REST call with promise.
+     * @param bugId The bugId in which the state has been saved
+     * @returns {HttpPromise}.
+     */
+    this.listToStatesWithPromise = function (bugId) {
+        return $http.get('rest/bugs/'+ bugId +'/states');
+    };
+
+
+}]);

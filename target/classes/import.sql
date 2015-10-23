@@ -1,17 +1,24 @@
-INSERT INTO USER (EMAIL, FIRSTNAME, LASTNAME, PASSWORD) VALUES ('otto-wagner@gmx.net', 'Otto', 'Wagner', 'test');
+-- Encoding via TomCat VM Options: -Dfile.encoding=UTF-8
+-- Falls du eine andere Lösung herausfindest, gerne! :)
+-- BUGGY!!!!!
 
-INSERT INTO STATE (TITLE) VALUES ('Angelegt'); -- 1
-INSERT INTO STATE (FROMSTATE, TITLE) VALUES (1,'In Bearbeitung');  -- 2
-INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2,'Behoben'); -- 3
-INSERT INTO STATE (FROMSTATE, TITLE) VALUES (3, 'Geschlossen'); -- 4
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (1, 'Angelegt');
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (2, 'In Bearbeitung');
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (3, 'Behoben');
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (4, 'Abgelehnt');
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (5, 'Wiedereröffnet');
+INSERT INTO STATE (STATE_ID, TITLE) VALUES (6, 'Geschlossen');
 
--- Wenn array implementiert ist
--- INSERT INTO STATE (TITLE) VALUES ('Angelegt'); -- 1
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (1,'In Bearbeitung');  -- 2
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (6,'In Bearbeitung');  -- 3
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2,'Behoben'); -- 4
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (2, 'Abgelehnt'); -- 5
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (4, 'Wiedereröffnet'); -- 6
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (5, 'Wiedereröffnet'); -- 7
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (4, 'Geschlossen'); -- 8
--- INSERT INTO STATE (FROMSTATE, TITLE) VALUES (5, 'Geschlossen'); -- 9
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (1, 2); -- Angelegt->In Bearbeitung
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (2, 3); -- In Bearbeitung->Behoben
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (2, 4); -- In Bearbeitung->Abgelehnt
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (3, 5); -- Behoben->Wiedereröffnet
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (3, 6); -- Behoben->Geschlossen
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (4, 5); -- Abgelehnt->Wiedereröffnet
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (4, 6); -- Abgelehnt->Geschlossen
+insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (5, 2); -- Wiedereröffnet->In Bearbeitung
+
+INSERT INTO USER (ID, EMAIL, FIRSTNAME, LASTNAME, PASSWORD) VALUES (1, 'otto-wagner@gmx.net', 'Otto', 'Wagner', 'test');
+
+INSERT INTO BUG (BUG_ID, CREATIONDATE, DESCRIPTION, LASTUPDATEDATE, TITLE, AUTOR_ID, DEVELOPER_ID, STATE_STATE_ID) VALUES (1, '2015-10-22 21:32:26.379000000', 'Die Beschreibung des Fehlers!', NULL, 'Ein Fehler!', 1, NULL, 1);
+INSERT INTO COMMENT (ID, CREATIONDATE, DESCRIPTION, TITLE, AUTOR_ID, BUG_BUG_ID) VALUES (1, '2015-10-23 14:41:54.984000000', 'Dies ist ein Kommentar! :)', 'Ein Kommentar!', 1, 1);

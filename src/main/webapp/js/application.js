@@ -33,7 +33,7 @@ application.config(['$routeProvider', '$httpProvider',
             }).
             when('/bugs/:bugId/comments/create', {
                 templateUrl: 'partials/createComment.html',
-                controller: 'commentController as commentCtrl'
+                controller: 'showBugController as showCtrl'
             }).
             otherwise({
                 redirectTo: '/login'

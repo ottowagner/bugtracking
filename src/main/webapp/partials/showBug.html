@@ -15,13 +15,19 @@
                 </button>
                 <!--//TODO:Foreach folgestatus-->
                 <!--<button ng-repeat="state in bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{state.title}}</button>-->
-                <button ng-repeat="possibleState in bugModel.bug.possibleStates" class="btn btn-default"
-                        format-state="{{possibleState.title}}" ng-click="showCtrl.changeState(possibleState)"></button>
+                <button ng-repeat="possibleToStates in bugModel.possibleToStates" class="btn btn-default"
+                        format-state="{{possibleToStates.title}}" ng-click="showCtrl.changeState(possibleToStates)"></button>
             </div>
         </div>
         <h2>{{bugModel.bug.title}}</h2>
         <span ng-if="bugModel.bug.state" format-state="{{bugModel.bug.state.title}}"></span>
     </div>
+
+    <!--<div ng-controller="mymodalcontroller">-->
+        <!--<modal lolo="modal1" modal-body="body" modal-footer="footer" modal-header="header" data-ng-click-right-button="myRightButton()"></modal>-->
+        <!--<a href="#myModal" role="button" class="btn btn-success" data-toggle="modal">Launch Demo Modal</a>-->
+    <!--</div>-->
+
     <div class="row">
         <div class="col-md-3">
             <div class="col-md-12">
@@ -43,11 +49,6 @@
             </div>
         </div>
     </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
 
     <div class="page-header">
         <h4>Kommentare</h4>
