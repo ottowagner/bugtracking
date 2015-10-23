@@ -7,11 +7,10 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives']);
 
 // Set up the mainController.
-controllers.controller('mainController', ['$rootScope', '$scope', '$location', 'authService', 'User', function ($rootScope, $scope, $location, authService, User) {
-    $rootScope.authModel = {
-        //TODO: Service auslagern!
-        user: null
-    };
+controllers.controller('mainController', ['$scope', '$location', 'authService', 'User', function ($scope, $location, authService, User) {
+    $scope.mainModel = {
+        authenticated: authService.authenticated
+    }
 
     var authenticate = function (account, callback) {
         //TODO: In einen Service auslagern
@@ -24,10 +23,11 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
         } : {};
 
         if (accountData.authorization) {
-            $rootScope.authenticated = true;
+            authService.authenticated = true;
         } else {
-            $rootScope.authenticated = false;
+            authService.authenticated = false;
         }
+        $scope.mainModel.authenticated = authService.authenticated;
         callback && callback();
         //$http.get('rest/user', {headers: headers}).success(function (data) {
         //    console.log(data);
@@ -56,18 +56,21 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
         if (loginForm.$valid && user) {
             authService.loadUserWithPromise(user)
                 .success(function (data, status, headers, config) {
-                    $rootScope.authenticated = true;
+                    authService.authenticated = true;
+                    $scope.mainModel.authenticated = authService.authenticated;
                     $location.path("/bugs");
-                    $rootScope.authModel.user = data;
+                    authService.user = data;
                 })
                 .error(function (data, status, headers, config) {
                     alert("an error occured while loading");
-                    $rootScope.authenticated = false;
+                    authService.authenticated = false;
+                    $scope.mainModel.authenticated = authService.authenticated;
                     $scope.error = true;
                 });
+
         }
         //authenticate($scope.account, function () {
-        //    if ($rootScope.authenticated) {
+        //    if (authService.authenticated) {
         //        $location.path("/bugs");
         //        $scope.error = false;
         //    } else {
@@ -84,18 +87,19 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
             authorization: "Basic "
             + btoa(account.username + ":" + account.password)
         } : {};
-        $rootScope.authenticated = true;
+        authService.authenticated = true;
+        $scope.mainModel.authenticated = authService.authenticated;
         callback && callback();
         //$http.post('rest/user', {headers: headers}).success(function (data) {
         //    console.log(data);
         //    if (data.id) {
-        //        $rootScope.authenticated = true;
+        //        authService.authenticated = true;
         //    } else {
-        //        $rootScope.authenticated = false;
+        //        authService.authenticated = false;
         //    }
         //    callback && callback();
         //}).error(function () {
-        //    $rootScope.authenticated = false;
+        //    authService.authenticated = false;
         //    callback && callback();
         //});
     }
@@ -111,18 +115,19 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
         if (registForm.$valid && user) {
             authService.saveUserWithPromise(user)
                 .success(function (data, status, headers, config) {
-                    $rootScope.authenticated = true;
+                    authService.authenticated = true;
                     $location.path("/bugs");
-                    $rootScope.authModel.user = data;
+                    authService.user = data;
                 })
                 .error(function (data, status, headers, config) {
                     alert("an error occured while loading");
-                    $rootScope.authenticated = false;
+                    authService.authenticated = false;
                     $scope.error = true;
                 });
         }
+        $scope.mainModel.authenticated = authService.authenticated;
         //register($scope.account, function () {
-        //    if ($rootScope.authenticated) {
+        //    if (authService.authenticated) {
         //        $location.path("/bugs");
         //        $scope.error = false;
         //    } else {
@@ -134,14 +139,15 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
 
     this.logout = function () {
         //TODO: Hier eig mit Sicherheit arbeiten!!!
-        $rootScope.authenticated = false;
-        $rootScope.authModel.user = null;
+        authService.authenticated = false;
+        $scope.mainModel.authenticated = authService.authenticated;
+        authService.user = null;
         $location.path("/login");
         //$http.post('logout', {}).success(function () {
-        //    $rootScope.authenticated = false;
+        //    authService.authenticated = false;
         //    $location.path("/login");
         //}).error(function (data) {
-        //    $rootScope.authenticated = false;
+        //    authService.authenticated = false;
         //    $location.path("/login");
         //});
     }
@@ -150,10 +156,8 @@ controllers.controller('mainController', ['$rootScope', '$scope', '$location', '
 
 // Set up the listBugController.
 controllers.controller('listBugController', ['$scope', '$location', 'bugService', function ($scope, $location, bugService) {
-
-
     $scope.bugModel = {
-        bugs: [],
+        bugs: []
     }
 
     // List the current bugs.
@@ -183,7 +187,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
 }]);
 
 // Set up the editBugController.
-controllers.controller('editBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'Bug', 'bugService', function ($rootScope, $scope, $location, $routeParams, Bug, bugService) {
+controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'authService', 'Bug', 'bugService', function ($scope, $location, $routeParams,authService, Bug, bugService) {
 
     $scope.bugModel = {
         editMode: null,
@@ -215,7 +219,7 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
     this.saveBug = function (bugForm) {
         var selected = $scope.bugModel.selectedBug;
         var edited = $scope.bugModel.editedBug;
-        var user = $rootScope.authModel.user;
+        var user = authService.user;
         if (bugForm.$valid && user && selected && edited) {
             selected.title = edited.title;
             selected.description = edited.description;
@@ -272,25 +276,16 @@ controllers.controller('editBugController', ['$rootScope', '$scope', '$location'
 }]);
 
 // Set up the showBugController.
-controllers.controller('showBugController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'stateService', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, stateService, commentService) {
+controllers.controller('showBugController', ['$scope', '$location', '$routeParams', 'authService', 'bugService', 'stateService', 'commentService', 'dataService', function ($scope, $location, $routeParams, authService, bugService, stateService, commentService, dataService) {
     $scope.bugModel = {
-        comments: [],
-        comment: null,
         bug: null,
-        possibleToStates: null
+        comments: [],
+        toStates: []
     };
 
     bugService.loadBugWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
             $scope.bugModel.bug = data;
-        }).error(function (data, status, headers, config) {
-            $location.path("/bugs");
-            alert("an error occured while loading");
-        });
-
-    stateService.listToStatesWithPromise($routeParams.bugId)
-        .success(function (data, status, headers, config) {
-            $scope.bugModel.possibleToStates = data;
         }).error(function (data, status, headers, config) {
             $location.path("/bugs");
             alert("an error occured while loading");
@@ -304,21 +299,18 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
             alert("an error occured while loading");
         });
 
-    this.changeState = function (toState) {
-        bugService.setBugStateWithPromise($routeParams.bugId, toState)
-            .success(function (data, status, headers, config) {
-                $scope.bugModel.bug = data;
-            }).error(function (data, status, headers, config) {
-                alert("an error occured while saving");
-            });
-        //$location.path("/bugs/" + $routeParams.bugId + "/comments/create");
-        stateService.listToStatesWithPromise($routeParams.bugId)
-            .success(function (data, status, headers, config) {
-                $scope.bugModel.possibleToStates = data;
-            }).error(function (data, status, headers, config) {
-                $location.path("/bugs");
-                alert("an error occured while loading");
-            })
+    stateService.listToStatesWithPromise($routeParams.bugId)
+        .success(function (data, status, headers, config) {
+            $scope.bugModel.toStates = data;
+        }).error(function (data, status, headers, config) {
+            $location.path("/bugs");
+            alert("an error occured while loading");
+        });
+
+    this.toChangeState = function (state) {
+        dataService.fromState = $scope.bugModel.bug.state;
+        dataService.toState = state;
+        $location.path("/bugs/" + $routeParams.bugId + "/states/change");
     };
 
     this.createComment = function () {
@@ -340,32 +332,64 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
         $location.path("/bugs/" + $routeParams.bugId + "/edit");
     };
 
-    this.saveComment = function (commentForm) {
-        var commentSuccesful = false;
-        var comment = $scope.bugModel.comment;
-        var toState = $scope.bugModel.toState;
+    /**
+     * go to showBug
+     */
+    this.toShowBug = function () {
+        $location.path("/bugs/" + $routeParams.bugId);
+    };
 
-        var user = $rootScope.authModel.user;
+}]);
+
+// Set up the commentController.
+controllers.controller('commentController', ['$scope', '$location', '$routeParams', 'authService', 'bugService', 'commentService', 'Comment', "dataService", function ($scope, $location, $routeParams, authService, bugService, commentService, Comment, dataService) {
+    $scope.commentModel = {
+        comment: null
+    };
+
+    this.saveComment = function (commentForm) {
+        var comment = $scope.commentModel.comment;
+        var user = authService.user;
+
         if (commentForm.$valid && user && comment) {
             comment.autor = user; //TODO: BACKEND!
             commentService.saveCommentWithPromise($routeParams.bugId, comment)
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + $routeParams.bugId);
-                    commentSuccesful = true;
                 }).error(function (data, status, headers, config) {
                     alert("an error occured while saving");
                 });
         }
 
-        //if(angular.isDefined(toState)){
-        //    bugService.setBugStateWithPromise($routeParams.bugId, toState)
-        //        .success(function (data, status, headers, config) {
-        //            $scope.bugModel.bug = data;
-        //            $scope.bugModel.toState = null;
-        //        }).error(function (data, status, headers, config) {
-        //            alert("an error occured while saving");
-        //        });
-        //}
+    };
+
+    this.changeState = function (stateForm) {
+        var comment = new Comment();
+        var toState = dataService.toState;
+        comment.fromState =  dataService.fromState.title;
+        comment.toState = toState.title;
+        comment.autor = authService.user; //TODO: BACKEND!
+
+        if ($scope.commentModel.comment) {
+            comment.title = $scope.commentModel.comment.title
+            comment.description = $scope.commentModel.comment.description
+        }
+
+        commentService.saveCommentWithPromise($routeParams.bugId, comment)
+            .success(function (data, status, headers, config) {
+            }).error(function (data, status, headers, config) {
+                alert("an error occured while saving");
+            });
+        bugService.setBugStateWithPromise($routeParams.bugId, toState)
+            .success(function (data, status, headers, config) {
+            }).error(function (data, status, headers, config) {
+                alert("an error occured while saving");
+            });
+
+        $location.path("/bugs/" + $routeParams.bugId);
+
+        dataService.fromState = "";
+        dataService.toState = "";
     };
 
     /**
@@ -376,35 +400,6 @@ controllers.controller('showBugController', ['$rootScope', '$scope', '$location'
     };
 
 }]);
-//
-//// Set up the commentController.
-//controllers.controller('commentController', ['$rootScope', '$scope', '$location', '$routeParams', 'bugService', 'Comment', 'commentService', function ($rootScope, $scope, $location, $routeParams, bugService, Comment, commentService) {
-//    $scope.commentModel = {
-//        comment: null
-//    };
-//
-//    this.saveComment = function (commentForm) {
-//        var comment = $scope.commentModel.comment;
-//        var user = $rootScope.authModel.user;
-//        if (commentForm.$valid && user && comment) {
-//            comment.autor = user;
-//            commentService.saveCommentWithPromise($routeParams.bugId, comment)
-//                .success(function (data, status, headers, config) {
-//                    $location.path("/bugs/" + $routeParams.bugId);
-//                }).error(function (data, status, headers, config) {
-//                    alert("an error occured while saving");
-//                });
-//        }
-//    };
-//
-//    /**
-//     * go to showBug
-//     */
-//    this.toShowBug = function () {
-//        $location.path("/bugs/" + $routeParams.bugId);
-//    };
-//
-//}]);
 
 //controllers.controller('mymodalcontroller', function ($scope) {
 //    $scope.header = 'Put here your header';

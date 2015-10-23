@@ -1,6 +1,5 @@
 -- Encoding via TomCat VM Options: -Dfile.encoding=UTF-8
 -- Falls du eine andere Lösung herausfindest, gerne! :)
--- BUGGY!!!!!
 
 INSERT INTO STATE (STATE_ID, TITLE) VALUES (1, 'Angelegt');
 INSERT INTO STATE (STATE_ID, TITLE) VALUES (2, 'In Bearbeitung');
@@ -21,4 +20,5 @@ insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (5, 2); -- Wiedereröffn
 INSERT INTO USER (ID, EMAIL, FIRSTNAME, LASTNAME, PASSWORD) VALUES (1, 'otto-wagner@gmx.net', 'Otto', 'Wagner', 'test');
 
 INSERT INTO BUG (BUG_ID, CREATIONDATE, DESCRIPTION, LASTUPDATEDATE, TITLE, AUTOR_ID, DEVELOPER_ID, STATE_STATE_ID) VALUES (1, '2015-10-22 21:32:26.379000000', 'Die Beschreibung des Fehlers!', NULL, 'Ein Fehler!', 1, NULL, 1);
+
 INSERT INTO COMMENT (ID, CREATIONDATE, DESCRIPTION, TITLE, AUTOR_ID, BUG_BUG_ID) VALUES (1, '2015-10-23 14:41:54.984000000', 'Dies ist ein Kommentar! :)', 'Ein Kommentar!', 1, 1);

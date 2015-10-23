@@ -22,21 +22,24 @@ resources.factory('Bug', function () {
 
 //Set up the State Factory //TODO: evtl löschen
 resources.factory('State', function () {
-    return function (id, name) {
+    return function (id, title, toStates) {
         this.id = id;
         this.title = title;
+        this.toStates = toStates;
     };
 });
 
 //Set up the Comment Factory
 resources.factory('Comment', function () {
-    return function (id, title, description, bug, userId, creationDate) {
+    return function (id, title, description, bug, userId, creationDate, fromState, toState) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.bug = bug;
         this.userId = userId;
         this.creationDate = creationDate;
+        this.fromState = fromState;
+        this.toState = toState;
     };
 });
 

@@ -20,7 +20,8 @@ public class Comment implements Serializable {
     private String description;
     private User autor;
     private Date creationDate;
-    //TODO: fromState, toState
+    private String fromState;
+    private String toState;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,7 +42,7 @@ public class Comment implements Serializable {
         this.bug = bug;
     }
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     public String getTitle() {
         return title;
     }
@@ -76,5 +77,23 @@ public class Comment implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Column(nullable = true)
+    public String getFromState() {
+        return fromState;
+    }
+
+    public void setFromState(String fromState) {
+        this.fromState = fromState;
+    }
+
+    @Column(nullable = true)
+    public String getToState() {
+        return toState;
+    }
+
+    public void setToState(String toState) {
+        this.toState = toState;
     }
 }

@@ -33,7 +33,11 @@ application.config(['$routeProvider', '$httpProvider',
             }).
             when('/bugs/:bugId/comments/create', {
                 templateUrl: 'partials/createComment.html',
-                controller: 'showBugController as showCtrl'
+                controller: 'commentController as cmtCtrl'
+            }).
+            when('/bugs/:bugId/states/change', {
+                templateUrl: 'partials/changeState.html',
+                controller: 'commentController as cmtCtrl'
             }).
             otherwise({
                 redirectTo: '/login'
@@ -43,9 +47,9 @@ application.config(['$routeProvider', '$httpProvider',
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);
 
-application.run(['$rootScope', '$location', function ($rootScope, $location) {
+application.run(['$rootScope', '$location', 'authService', function ($rootScope, $location, authService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if (!($rootScope.authenticated == true)) {
+        if (!(authService.authenticated == true)) {
             if (next.templateUrl == "partials/login.html") {
             } else if (next.templateUrl == "partials/register.html") {
             } else {

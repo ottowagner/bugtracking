@@ -8,6 +8,9 @@ var services = angular.module('services', ['resources']);
 
 // Set up the auth service.
 services.service('authService', ['$http', function ($http) {
+    this.user = null;
+    this.authenticated = false;
+
     /**
      * Loads the given user using an asynchronous REST call with promise.
      * @param user The user to be loaded.
@@ -76,7 +79,7 @@ services.service('commentService', ['$http', function ($http) {
      * @returns {HttpPromise}.
      */
     this.listCommentsWithPromise = function (bugId) {
-        return $http.get('rest/bugs/'+ bugId +'/comments');
+        return $http.get('rest/bugs/' + bugId + '/comments');
     };
 
     /**
@@ -86,12 +89,12 @@ services.service('commentService', ['$http', function ($http) {
      * @returns {HttpPromise}.
      */
     this.saveCommentWithPromise = function (bugId, comment) {
-        return $http.put('rest/bugs/'+ bugId +'/comments', comment);
+        return $http.put('rest/bugs/' + bugId + '/comments', comment);
     };
 
 }]);
 
-// Set up the comment service.
+// Set up the state service.
 services.service('stateService', ['$http', function ($http) {
     /**
      * Return all states for a bug using an asynchronous REST call with promise.
@@ -99,8 +102,15 @@ services.service('stateService', ['$http', function ($http) {
      * @returns {HttpPromise}.
      */
     this.listToStatesWithPromise = function (bugId) {
-        return $http.get('rest/bugs/'+ bugId +'/states');
+        return $http.get('rest/bugs/' + bugId + '/states');
     };
-
-
 }]);
+
+// Set up the data service.
+services.service('dataService', function () {
+    var data = this;
+
+    data.fromState = "";
+    data.toState = "";
+
+});

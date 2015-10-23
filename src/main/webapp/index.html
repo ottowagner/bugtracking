@@ -31,21 +31,20 @@
         </div>
         <div class="navbar-form navbar-right">
             <!--TODO: href entfernen bzw. auslagern!-->
-            <a href="#/login" class="btn btn-default" ng-hide="authenticated">Anmelden</a>
-            <a href="#/register" class="btn btn-default" ng-hide="authenticated">Registrieren</a>
+            <a href="#/login" class="btn btn-default" ng-hide="mainModel.authenticated">Anmelden</a>
+            <a href="#/register" class="btn btn-default" ng-hide="mainModel.authenticated">Registrieren</a>
 
             <!--<a class="btn btn-default" aria-label="Anlegen" ng-show="authenticated" ng-click="mainCtrl.createBug()">-->
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen-->
             <!--</a>-->
 
-            <a class="btn btn-default" aria-label="Logout" ng-show="authenticated" ng-click="mainCtrl.logout()">
+            <a class="btn btn-default" aria-label="Logout" ng-show="mainModel.authenticated" ng-click="mainCtrl.logout()">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{authModel.user.firstname}}
                 {{authModel.user.lastname}}
             </a>
         </div>
     </div>
 </nav>
-
 <div id="content" class="container-fluid" ng-cloak>
     <div class="row" ng-view></div>
 </div>
