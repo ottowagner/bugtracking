@@ -35,7 +35,7 @@
     }
 
     body {
-        padding-top: 50px;
+        padding-top: 60px;
         padding-bottom: 50px;
     }
 }
@@ -47,20 +47,20 @@
     }
 
     body {
-        padding-top: 50px;
+        padding-top: 60px;
         padding-bottom: 50px;
     }
 
 }
 
 /* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
+@media (min-width: 481px) and (max-width: 767px) {
     .hideTitle {
         display: none;
     }
 
     body {
-        padding-top: 120px;
+        padding-top: 130px;
         padding-bottom: 50px;
     }
 
@@ -73,7 +73,7 @@
     }
 
     body {
-        padding-top: 160px;
+        padding-top: 130px;
         padding-bottom: 50px;
     }
 }

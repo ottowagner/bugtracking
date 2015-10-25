@@ -13,8 +13,6 @@
                 <button class="btn btn-default" type="button" ng-click="showCtrl.createComment()">
                     <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
                 </button>
-                <!--//TODO:Foreach folgestatus-->
-                <!--<button ng-repeat="state in bugModel.bug.possibleStates" ng-click="showCtrl.changeState()">{{state.title}}</button>-->
                 <button ng-repeat="toStates in bugModel.toStates" class="btn btn-default"
                         format-state="{{toStates.title}}" ng-click="showCtrl.toChangeState(toStates)"></button>
             </div>
@@ -22,11 +20,6 @@
         <h2>{{bugModel.bug.title}}</h2>
         <span ng-if="bugModel.bug.state" format-state="{{bugModel.bug.state.title}}"></span>
     </div>
-
-    <!--<div ng-controller="mymodalcontroller">-->
-        <!--<modal lolo="modal1" modal-body="body" modal-footer="footer" modal-header="header" data-ng-click-right-button="myRightButton()"></modal>-->
-        <!--<a href="#myModal" role="button" class="btn btn-success" data-toggle="modal">Launch Demo Modal</a>-->
-    <!--</div>-->
 
     <div class="row">
         <div class="col-md-3">
@@ -55,8 +48,6 @@
     </div>
     <div ng-repeat="comment in bugModel.comments | orderBy:'id':true" class="col-md-12 alert alert-info">
         <div class="col-md-2">
-            <!--<span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span-->
-            <!--format-state="{{bugModel.bug.state}}"></span><br/>-->
             {{comment.title}}<br /><br/>
             Autor: {{comment.autor.firstname}} {{comment.autor.lastname}}<br/>
             Am: {{comment.creationDate | date:'dd.MM.yyyy - HH:mm'}}<br/>

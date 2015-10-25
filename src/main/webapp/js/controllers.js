@@ -9,7 +9,14 @@ var controllers = angular.module('controllers', ['resources', 'services', 'direc
 // Set up the mainController.
 controllers.controller('mainController', ['$scope', '$location', 'authService', 'User', function ($scope, $location, authService, User) {
     $scope.mainModel = {
-        authenticated: authService.authenticated
+        authenticated: authService.authenticated,
+        error: "",
+        showError: false
+    };
+
+    this.closeError = function () {
+        $scope.mainModel.error = "";
+        $scope.mainModel.showError = false;
     };
 
     var authenticate = function (account, callback) {
@@ -58,7 +65,8 @@ controllers.controller('mainController', ['$scope', '$location', 'authService', 
                     authService.user = data;
                 })
                 .error(function (data, status, headers, config) {
-                    alert("an error occured while loading");
+                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                    $scope.mainModel.showError = true;
                     authService.authenticated = false;
                     $scope.mainModel.authenticated = authService.authenticated;
                     $scope.error = true;
@@ -116,7 +124,8 @@ controllers.controller('mainController', ['$scope', '$location', 'authService', 
                     authService.user = data;
                 })
                 .error(function (data, status, headers, config) {
-                    alert("an error occured while loading");
+                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                    $scope.mainModel.showError = true;
                     authService.authenticated = false;
                     $scope.error = true;
                 });
@@ -162,7 +171,8 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
             $scope.bugModel.bugs = data;
         })
         .error(function (data, status, headers, config) {
-            alert("an error occured while loading");
+            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            $scope.mainModel.showError = true;
         });
 
     /**
@@ -198,8 +208,9 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                 $scope.bugModel.selectedBug = data;
                 $scope.bugModel.editedBug = new Bug(data.id, data.title, data.description, data.state, data.autor, data.developer, data.lastUpdateDate, data.creationDate);
             }).error(function (data, status, headers, config) {
+                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                $scope.mainModel.showError = true;
                 $location.path("/bugs");
-                alert("an error occured while loading");
             });
     } else {
         var bug = new Bug();
@@ -224,7 +235,8 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + data.id);
                 }).error(function (data, status, headers, config) {
-                    alert("an error occured while saving");
+                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                    $scope.mainModel.showError = true;
                 });
         } else {
             alert("Fehler abfangen!");
@@ -285,8 +297,9 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
         .success(function (data, status, headers, config) {
             $scope.bugModel.bug = data;
         }).error(function (data, status, headers, config) {
+            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            $scope.mainModel.showError = true;
             $location.path("/bugs");
-            alert("an error occured while loading");
         });
 
     commentService.listCommentsWithPromise($routeParams.bugId)
@@ -294,15 +307,17 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
             $scope.bugModel.comments = data;
         })
         .error(function (data, status, headers, config) {
-            alert("an error occured while loading");
+            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            $scope.mainModel.showError = true;
         });
 
     stateService.listToStatesWithPromise($routeParams.bugId)
         .success(function (data, status, headers, config) {
             $scope.bugModel.toStates = data;
         }).error(function (data, status, headers, config) {
+            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            $scope.mainModel.showError = true;
             $location.path("/bugs");
-            alert("an error occured while loading");
         });
 
     this.toChangeState = function (state) {
@@ -353,8 +368,9 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
                 dataService.fromState = data.state;
                 $scope.commentModel.fromState = dataService.fromState;
             }).error(function (data, status, headers, config) {
+                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                $scope.mainModel.showError = true;
                 $location.path("/bugs");
-                alert("an error occured while loading");
             });
     }
     if (!dataService.toState && $routeParams.stateId) {
@@ -363,7 +379,8 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
                 dataService.toState = data;
                 $scope.commentModel.toState = dataService.toState;
             }).error(function (data, status, headers, config) {
-                alert("an error occured while saving");
+                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                $scope.mainModel.showError = true;
             });
     }
 
@@ -377,7 +394,8 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
                 .success(function (data, status, headers, config) {
                     $location.path("/bugs/" + $routeParams.bugId);
                 }).error(function (data, status, headers, config) {
-                    alert("an error occured while saving");
+                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                    $scope.mainModel.showError = true;
                 });
         } else {
             alert("Fehler abfangen!");
@@ -398,12 +416,14 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
         bugService.setBugStateWithPromise($routeParams.bugId, $routeParams.stateId)
             .success(function (data, status, headers, config) {
             }).error(function (data, status, headers, config) {
-                alert("an error occured while saving");
+                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                $scope.mainModel.showError = true;
             });
         commentService.saveCommentWithPromise($routeParams.bugId, comment)
             .success(function (data, status, headers, config) {
             }).error(function (data, status, headers, config) {
-                alert("an error occured while saving");
+                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                $scope.mainModel.showError = true;
             });
 
         dataService.fromState = "";
@@ -421,13 +441,3 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
     };
 
 }]);
-
-//controllers.controller('mymodalcontroller', function ($scope) {
-//    $scope.header = 'Put here your header';
-//    $scope.body = 'Put here your body';
-//    $scope.footer = 'Put here your footer';
-//
-//    $scope.myRightButton = function (bool) {
-//        alert('!!! first function call!');
-//    };
-//});

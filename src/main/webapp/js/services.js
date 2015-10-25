@@ -118,7 +118,7 @@ services.service('stateService', ['$http', function ($http) {
 // Set up the data service.
 services.service('dataService', function () {
     var data = this;
-//TODO: evtl unnötig -> Löschen
+
     data.fromState = "";
     data.toState = "";
 });
