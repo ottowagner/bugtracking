@@ -22,6 +22,15 @@ public class StateServiceImpl implements StateService {
     private BugDAO bugDAO;
 
     @Override
+    public State loadState(Long id) throws EntityNotFoundException {
+        State state = stateDAO.load(id);
+        if (state == null) {
+            throw new EntityNotFoundException("Kein Status mit der ID gefunden");
+        }
+        return state;
+    }
+
+    @Override
     public List<State> listToStates(Long bugId) throws EntityNotFoundException {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();

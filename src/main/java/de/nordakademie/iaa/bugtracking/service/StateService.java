@@ -10,15 +10,22 @@ import java.util.List;
  * @author Otto Wagner
  */
 public interface StateService {
+    //TODO: Sinnvolle Texte!
 
-//TODO: Sinnvoller text
+    /**
+     * Returns the State identified by the given id.
+     *
+     * @param id The identifier.
+     * @return the found entity or {@code null} if no entity was found with given identifier.
+     */
+    State loadState(Long id) throws EntityNotFoundException;
 
     /**
      * Returns the state identified by the given id.
      *
-     * @param bugId The identifier.
+     * @param id The identifier.
      * @return the found entity or {@code null} if no entity was found with given identifier.
      */
-    List<State> listToStates(Long bugId) throws EntityNotFoundException;
+    List<State> listToStates(Long id) throws EntityNotFoundException;
 
 }

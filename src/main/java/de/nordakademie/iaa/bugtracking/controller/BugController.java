@@ -55,11 +55,11 @@ public class BugController {
     /**
      * Saves the given state.
      *
-     * @param state The bug state to be saved.
+     * @param stateId The bug state to be saved.
      */
-    @RequestMapping(value = "/bugs/{bugId}", method = RequestMethod.PUT)
-    public Bug setBugState(@PathVariable Long bugId, @RequestBody State state) throws Exception {
-        return bugService.setBugState(bugId, state);
+    @RequestMapping(value = "/bugs/{bugId}/state/change/{stateId}", method = RequestMethod.PUT)
+    public Bug setBugState(@PathVariable Long bugId, @PathVariable Long stateId) throws Exception {
+        return bugService.setBugState(bugId, stateId);
     }
 
     /**

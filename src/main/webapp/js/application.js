@@ -35,7 +35,7 @@ application.config(['$routeProvider', '$httpProvider',
                 templateUrl: 'partials/createComment.html',
                 controller: 'commentController as cmtCtrl'
             }).
-            when('/bugs/:bugId/states/change', {
+            when('/bugs/:bugId/state/change/:stateId', {
                 templateUrl: 'partials/changeState.html',
                 controller: 'commentController as cmtCtrl'
             }).

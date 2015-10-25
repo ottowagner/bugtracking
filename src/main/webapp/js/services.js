@@ -63,11 +63,11 @@ services.service('bugService', ['$http', function ($http) {
 
     /**
      * Saves a given bug State using an asynchronous REST call with promise.
-     * @param state The bug state to be saved.
+     * @param bugId, stateId The bug state to be saved.
      * @returns {HttpPromise}.
      */
-    this.setBugStateWithPromise = function (bugId, state) {
-        return $http.put('rest/bugs/' + bugId, state);
+    this.setBugStateWithPromise = function (bugId, stateId) {
+        return $http.put('rest/bugs/' + bugId + '/state/change/' + stateId);
     };
 }]);
 
@@ -97,6 +97,15 @@ services.service('commentService', ['$http', function ($http) {
 // Set up the state service.
 services.service('stateService', ['$http', function ($http) {
     /**
+     * Loads the given bug using an asynchronous REST call with promise.
+     * @param bug The bug to be loaded.
+     * @returns {HttpPromise}.
+     */
+    this.loadStateWithPromise = function (stateId) {
+        return $http.get('rest/states/' + stateId);
+    }
+
+    /**
      * Return all states for a bug using an asynchronous REST call with promise.
      * @param bugId The bugId in which the state has been saved
      * @returns {HttpPromise}.
@@ -109,8 +118,7 @@ services.service('stateService', ['$http', function ($http) {
 // Set up the data service.
 services.service('dataService', function () {
     var data = this;
-
+//TODO: evtl unnötig -> Löschen
     data.fromState = "";
     data.toState = "";
-
 });

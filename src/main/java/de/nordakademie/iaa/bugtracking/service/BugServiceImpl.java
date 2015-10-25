@@ -32,14 +32,15 @@ public class BugServiceImpl implements BugService {
     }
 
     @Override
-    public Bug setBugState(Long bugId, State state) throws EntityAlreadyPresentException {
-//        TODO: Prüfe ob status gesetzt werden darf!
+    public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException {
+//        TODO: Prüfe ob status gesetzt werden darf!!!!! und ggf. Fehler werfen! (Es ist sonst via url möglich nicht erlaubte statuswechsle durchzuführen)
         Bug bug = null;
         try {
             bug = this.loadBug(bugId);
         } catch (EntityNotFoundException e) {
             e.printStackTrace();
         }
+        State state = stateDAO.load(stateId);
         bug.setState(state);
         return bugDAO.save(bug);
     }
@@ -55,7 +56,7 @@ public class BugServiceImpl implements BugService {
         if (bug == null) {
             throw new EntityNotFoundException("Kein Bug mit der ID gefunden");
         }
-        return bugDAO.load(id);
+        return bug;
     }
 
     @Override

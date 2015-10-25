@@ -25,12 +25,12 @@ public interface BugService {
     /**
      * Update the given bug state into the database.
      *
-     * @param state The bug state to be saved.
+     * @param stateId The stateId to be saved.
      * @return bug The bug which was updated
      * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
      *                                       combination is already present in the database.
      */
-    Bug setBugState(Long bugId, State state) throws EntityAlreadyPresentException;
+    Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException;
 
     /**
      * List all bugs currently stored in the database.
