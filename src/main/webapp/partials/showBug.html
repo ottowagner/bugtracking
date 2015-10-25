@@ -53,18 +53,18 @@
     <div class="page-header">
         <h4>Kommentare</h4>
     </div>
-    <div ng-repeat="comment in bugModel.comments" class="col-md-12 alert alert-info">
-        <div class="col-md-3">
+    <div ng-repeat="comment in bugModel.comments | orderBy:'id':true" class="col-md-12 alert alert-info">
+        <div class="col-md-2">
             <!--<span format-state="Angelegt"></span> <span class="glyphicon glyphicon-chevron-right"></span> <span-->
             <!--format-state="{{bugModel.bug.state}}"></span><br/>-->
+            {{comment.title}}<br /><br/>
             Autor: {{comment.autor.firstname}} {{comment.autor.lastname}}<br/>
             Am: {{comment.creationDate | date:'dd.MM.yyyy - HH:mm'}}<br/>
             <span ng-if="comment.fromState" format-state="{{comment.fromState}}">Von: </span> <br/>
             <span ng-if="comment.toState" format-state="{{comment.toState}}">Auf: </span>
         </div>
-        <div class="col-md-9">
-            {{comment.title}}<br/>
-            <small>{{comment.description}}</small>
+        <div class="col-md-10">
+            <pre class="description" ng-if="comment.description">{{comment.description}}</pre>
         </div>
     </div>
 </div>

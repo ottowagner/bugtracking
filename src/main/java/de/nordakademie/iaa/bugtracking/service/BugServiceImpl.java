@@ -3,6 +3,7 @@ package de.nordakademie.iaa.bugtracking.service;
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
 import de.nordakademie.iaa.bugtracking.dao.StateDAO;
 import de.nordakademie.iaa.bugtracking.model.Bug;
+import de.nordakademie.iaa.bugtracking.model.Comment;
 import de.nordakademie.iaa.bugtracking.model.State;
 
 import javax.inject.Inject;
@@ -20,15 +21,52 @@ public class BugServiceImpl implements BugService {
     //TODO: evtl über bugservice gehen.. kp ob wir hier direkt auf die dao gehen sollten
     private StateDAO stateDAO;
 
+    private CommentService commentService;
+
     @Override
-    public Bug saveBug(Bug bug) throws EntityAlreadyPresentException {
-        if (bug.getState() == null) {//TODO: bessere lösung implementieren...
+    public Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException {
+        Bug savedBug = null;
+        Comment comment = new Comment();
+        StringBuffer description = new StringBuffer();
+
+        //TODO: bessere lösung implementieren...
+        if (bug.getState() == null) {
             Date creationDate = new Date();
             bug.setCreationDate(creationDate);
             State state = stateDAO.load((long) 1);
             bug.setState(state);
+
+            savedBug =  bugDAO.save(bug);
+
+            description.append("Titel: \n");
+            description.append(bug.getTitle());
+            if(bug.getDescription() != null) {
+                description.append("\nBeschreibung: \n");
+                description.append(bug.getDescription());
+            }
+            comment.setTitle("Fehler wurde angelegt");
+            comment.setDescription(description.toString());
+        }else{
+            Bug oldBug = bugDAO.load(bug.getId());
+            if(!bug.getTitle().equals(oldBug.getTitle())){
+                description.append("Titel wurde bearbeitet: \n");
+                description.append(bug.getTitle());
+            }
+            if(bug.getDescription() == null && oldBug.getDescription() != null) {
+                description.append("\nBeschreibung wurde gelöscht");
+            }else if(bug.getDescription() != null && !bug.getDescription().equals(oldBug.getDescription())) {
+                description.append("\nBeschreibung wurde bearbeitet: \n");
+                description.append(bug.getDescription());
+            }
+
+            savedBug = bugDAO.save(bug);
+            comment.setTitle("Fehler wurde bearbeitet");
+            comment.setDescription(description.toString());
         }
-        return bugDAO.save(bug);
+        comment.setAutor(bug.getAutor());
+        commentService.saveComment(bug.getId(),comment);
+
+        return savedBug;
     }
 
     @Override
@@ -76,5 +114,10 @@ public class BugServiceImpl implements BugService {
     @Inject
     public void setStateDAO(StateDAO stateDAO) {
         this.stateDAO = stateDAO;
+    }
+
+    @Inject
+    public void setCommentService(CommentService commentService) {
+        this.commentService = commentService;
     }
 }

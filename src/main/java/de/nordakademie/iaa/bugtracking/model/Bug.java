@@ -42,7 +42,7 @@ public class Bug implements Serializable {
         this.title = title;
     }
 
-    @Column(nullable = true, length = 4000)
+    @Column(nullable = true, length = 1000) //da bei Kommentare die Description verwendet und max größe 4000 festgelegt wurde.
     public String getDescription() {
         return description;
     }

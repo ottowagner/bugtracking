@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.bugtracking.dao;
 
+import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 
 import javax.persistence.EntityManager;
@@ -23,9 +24,8 @@ public class CommentDAO {
      * @return a list of Comment entities. If no comment was found an empty list is
      * returned.
      */
-    @SuppressWarnings("unchecked")
-    public List<Comment> findAll() {
-        return entityManager.createQuery("select comment from Comment comment").getResultList();
+    public List<Comment> findAllByBug(Bug bug) {
+        return entityManager.createQuery("select comment from Comment comment Where comment.bug = :bug").setParameter("bug", bug).getResultList();
     }
 
     /**

@@ -26,7 +26,7 @@ public interface CommentService {
      * @return a list of comment entities of the bug. If no comment was found an empty list is
      * returned.
      */
-    List<Comment> listComments(Long bugId);
+    List<Comment> listComments(Long bugId) throws EntityNotFoundException;
 
     /**
      * Returns the comment identified by the given id.

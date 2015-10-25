@@ -2,6 +2,11 @@
     padding-bottom: 40px;
 }
 
+.description {
+    background-color: transparent;
+    border: 0px;
+}
+
 .hideTitle {
     display: inline;
 }

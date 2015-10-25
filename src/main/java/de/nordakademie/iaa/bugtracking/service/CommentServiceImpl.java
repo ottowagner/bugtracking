@@ -27,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
 
     //    @Override
     public void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException {
-        Bug bug = bugService.loadBug(bugId);;
+        Bug bug = bugService.loadBug(bugId);
         Date creationDate = new Date();
 
         comment.setBug(bug);
@@ -36,9 +36,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> listComments(Long bugId) {
-        //TODO: Bitte nur die Comments, entsprechend der BugId zurückgeben!
-        return commentDAO.findAll();
+    public List<Comment> listComments(Long bugId) throws EntityNotFoundException {
+        Bug bug = bugService.loadBug(bugId);
+
+        return commentDAO.findAllByBug(bug);
     }
 
     @Override
