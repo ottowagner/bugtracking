@@ -20,6 +20,10 @@
     font-size: 18px;
 }
 
+.bugList tr a {
+    cursor: pointer;
+}
+
 .bugList tr td {
     cursor: pointer;
 }

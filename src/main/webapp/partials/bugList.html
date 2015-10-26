@@ -3,29 +3,64 @@
         <h2>Fehlerübersicht</h2>
     </div>
     <div class="col-md-12">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="true">
-            Sortieren
-            <span class="caret"></span>
-        </button>
-
-        <a class="btn btn-default pull-right" aria-label="Anlegen" ng-click="listCtrl.createBug()">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-default" ng-class="hideClosed ? 'active' : ''" ng-click="hideClosed = !hideClosed">
+                Filter: <span format-state="Geschlossen"></span>
+            </button>
+        </div>
+        <div class="form-group col-md-8">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"> </span></span>
+                <input type="text" id="search"  class="form-control" ng-model="searchString" placeholder="Suchen" />
+            </div>
+        </div>
+        <a class="btn btn-default pull-right btn-primary" aria-label="Anlegen" ng-click="listCtrl.createBug()">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen
         </a>
     </div>
+
     <br/>
     <br/>
-    <table class="table table-hover bugList">
+
+    <table class="col-md-12 table table-hover bugList">
         <tr>
-            <th>#</th>
-            <th>Titel</th>
-            <th>Status</th>
-            <th>Autor</th>
-            <th>Entwickler</th>
-            <th>Aktualisierungsdatum</th>
-            <th>Erstellungsdatum</th>
+            <th><a ng-click="sortType = 'id'; sortReverse = !sortReverse">
+                Nummer
+                <span ng-show="sortType == 'id' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'id' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'title'; sortReverse = !sortReverse">
+                Titel
+                <span ng-show="sortType == 'title' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'title' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'state'; sortReverse = !sortReverse">
+                Status
+                <span ng-show="sortType == 'state' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'state' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'autor'; sortReverse = !sortReverse">
+                Autor
+                <span ng-show="sortType == 'autor' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'autor' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'developer'; sortReverse = !sortReverse">
+                Entwickler
+                <span ng-show="sortType == 'developer' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'developer' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'lastUpdateDate'; sortReverse = !sortReverse">
+                Aktualisierungsdatum
+                <span ng-show="sortType == 'lastUpdateDate' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'lastUpdateDate' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="sortType = 'creationDate'; sortReverse = !sortReverse">
+                Erstellungsdatum
+                <span ng-show="sortType == 'creationDate' && !sortReverse" class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="sortType == 'creationDate' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
         </tr>
-        <tr ng-repeat="bug in bugModel.bugs | orderBy:['id']" ng-click="listCtrl.openBug(bug)">
+        <tr ng-repeat="bug in bugModel.bugs | orderBy:sortType:sortReverse | tableFilter:searchString:hideClosed" ng-click="listCtrl.openBug(bug)">
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
             <td format-state="{{bug.state.title}}"></td>
@@ -33,7 +68,6 @@
             <td>{{bug.developer.firstname}} {{bug.developer.lastname}}</td>
             <td>{{bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}</td>
             <td>{{bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}</td>
-            <!--<td><input type="submit" class="btn btn-success" value="Statuswechsel" ng-click="saveBug(bugForm)"></td>-->
         </tr>
     </table>
 </div>

@@ -18,9 +18,8 @@ import java.util.List;
 public class BugServiceImpl implements BugService {
 
     private BugDAO bugDAO;
-    //TODO: evtl über bugservice gehen.. kp ob wir hier direkt auf die dao gehen sollten
     private StateDAO stateDAO;
-
+//TODO: Service muss weg.. Die Frontend-Schicht arbeitet nur mit den Services, DAOs werden nur Spring-intern von den Service-Klassen verwendet.
     private CommentService commentService;
 
     @Override

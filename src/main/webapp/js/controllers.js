@@ -4,7 +4,7 @@
  */
 'use strict';
 
-var controllers = angular.module('controllers', ['resources', 'services', 'directives']);
+var controllers = angular.module('controllers', ['resources', 'services', 'directives', 'filters']);
 
 // Set up the mainController.
 controllers.controller('mainController', ['$scope', '$location', 'authService', 'User', function ($scope, $location, authService, User) {
@@ -164,6 +164,9 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
     $scope.bugModel = {
         bugs: []
     };
+
+    $scope.sortType     = 'id';
+    $scope.sortReverse  = false;
 
     // List the current bugs.
     bugService.listBugsWithPromise()
