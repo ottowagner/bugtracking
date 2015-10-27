@@ -1,14 +1,23 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
 import de.nordakademie.iaa.bugtracking.model.User;
+import de.nordakademie.iaa.bugtracking.security.EntryPointUnauthorizedHandler;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.security.krb5.Credentials;
 
 import javax.inject.Inject;
+import java.util.Arrays;
 
 /**
  * REST controller for the user service.
@@ -32,10 +41,32 @@ public class UserController {
     public User loadUser(@RequestBody User user) throws Exception {
         return userService.loadUser(user.getEmail());
     }
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
     public boolean userExists(@RequestBody String eMail) throws EntityNotFoundException {
         return userService.userExists(eMail);
     }
+
+    @RequestMapping(value = "/users/login", method = RequestMethod.POST)
+    @PreAuthorize("permitAll")
+    public boolean login(@RequestBody UsernamePasswordCredentials credentials) throws Exception {
+        String name = credentials.getUserName();
+        String password = credentials.getPassword();
+        User user;
+
+        if(name != null) {
+            user = userService.loadUser(name);
+
+            if (password != null) {
+                if (user.getPassword().equals(password)) {
+                    return true;
+                }
+            }
+            throw new Exception("Falsches Passwort");
+        }
+        throw new Exception("Benutzer nicht vorhanden");
+
+    }
+
 
 
     /**
