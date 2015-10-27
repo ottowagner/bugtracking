@@ -3,8 +3,10 @@ package de.nordakademie.iaa.bugtracking.controller;
 import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
+import javassist.bytecode.ByteArray;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -47,7 +49,7 @@ public class UserController {
             user = userService.loadUser(eMail);
 
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user.getEmail(), user.getPassword());
-            if (credentialsString.equals(credentials.toString())) {
+            if (credentialsString.equals(credentials.toString().getBytes())) {
                 return true;
             }
             throw new Exception("Falsches Passwort");
