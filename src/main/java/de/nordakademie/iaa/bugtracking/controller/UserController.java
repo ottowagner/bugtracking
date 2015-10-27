@@ -3,13 +3,9 @@ package de.nordakademie.iaa.bugtracking.controller;
 import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
-import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 
@@ -44,23 +40,19 @@ public class UserController {
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
     @PreAuthorize("permitAll")
-    public boolean login(@RequestBody Credentials credentials) throws Exception {
-        String name = ((UsernamePasswordCredentials) credentials).getUserName();
-        String password = credentials.getPassword();
+    public boolean login(@RequestParam(value="email", required = true) String eMail, @RequestParam(value="credentials", required = true) String credentialsString) throws Exception {
+
         User user;
+        if (eMail != null) {
+            user = userService.loadUser(eMail);
 
-        if (name != null) {
-            user = userService.loadUser(name);
-
-            if (password != null) {
-                if (user.getPassword().equals(password)) {
-                    return true;
-                }
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user.getEmail(), user.getPassword());
+            if (credentialsString.equals(credentials.toString())) {
+                return true;
             }
             throw new Exception("Falsches Passwort");
         }
         throw new Exception("Benutzer nicht vorhanden");
-
     }
 
 
