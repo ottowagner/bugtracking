@@ -3,6 +3,7 @@ package de.nordakademie.iaa.bugtracking.controller;
 import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
+import org.apache.http.auth.Credentials;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,8 +44,8 @@ public class UserController {
 
     @RequestMapping(value = "/users/login", method = RequestMethod.POST)
     @PreAuthorize("permitAll")
-    public boolean login(@RequestBody UsernamePasswordCredentials credentials) throws Exception {
-        String name = credentials.getUserName();
+    public boolean login(@RequestBody Credentials credentials) throws Exception {
+        String name = ((UsernamePasswordCredentials) credentials).getUserName();
         String password = credentials.getPassword();
         User user;
 
