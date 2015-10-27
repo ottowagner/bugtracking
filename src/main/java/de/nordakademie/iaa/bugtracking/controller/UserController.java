@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
 import de.nordakademie.iaa.bugtracking.model.User;
+import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +32,11 @@ public class UserController {
     public User loadUser(@RequestBody User user) throws Exception {
         return userService.loadUser(user.getEmail());
     }
-//    @RequestMapping(value = "/user", method = RequestMethod.GET)
-//    public Principal user(Principal user) {
-//        return user;
-//    }
-//
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public boolean userExists(@RequestBody String eMail) throws EntityNotFoundException {
+        return userService.userExists(eMail);
+    }
+
 
     /**
      * Saves the given user.

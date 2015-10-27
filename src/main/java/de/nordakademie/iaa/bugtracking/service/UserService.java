@@ -33,4 +33,10 @@ public interface UserService {
      */
     void deleteUser(String email) throws EntityNotFoundException;
 
+    /**
+     *
+     * @param eMail
+     */
+    boolean userExists(String eMail) throws EntityNotFoundException ;
+
 }
