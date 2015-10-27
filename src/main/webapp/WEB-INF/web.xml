@@ -3,16 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:/spring-config.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
     <servlet>
-        <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+        <servlet-name>mvc-dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:/spring-config.xml</param-value>
-        </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>Spring MVC Dispatcher Servlet</servlet-name>
+        <servlet-name>mvc-dispatcher</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 </web-app>
