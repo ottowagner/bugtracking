@@ -49,7 +49,7 @@ public class UserController {
             user = userService.loadUser(eMail);
 
             UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user.getEmail(), user.getPassword());
-            if (credentialsString.equals(credentials.toString().getBytes())) {
+            if (credentialsString.equals(Base64.encode(credentials.toString().getBytes()))) {
                 return true;
             }
             throw new Exception("Falsches Passwort");
