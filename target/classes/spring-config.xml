@@ -9,6 +9,7 @@
     <context:annotation-config/>
     <mvc:annotation-driven/>
     <context:component-scan base-package="de.nordakademie.iaa.bugtracking.controller"/>
+    <context:component-scan base-package="de.nordakademie.iaa.bugtracking.security"/>
 
     <!-- Data source -->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"

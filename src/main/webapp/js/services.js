@@ -19,7 +19,7 @@ services.service('authService', ['$http', function ($http) {
         //TODO: SICHERHEIT, nicht direkt mit dem user/password
     this.loadUserWithPromise = function (user) {
         return $http.post('rest/users', user);
-    }
+    };
 
     /**
      * Saves a given user using an asynchronous REST call with promise.
@@ -31,6 +31,54 @@ services.service('authService', ['$http', function ($http) {
         return $http.put('rest/users', user);
     };
 }]);
+
+services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
+    this.loginWithPromise = function (user) {
+        return $http({
+            url: 'login',
+            params: {username: user.email, password: user.password},
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+
+        //return $http.post("login", "username=" + user.email +
+        //    "&password=" + user.password, {
+        //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        //} ).then(function(data) {
+        //    alert("login successful");
+        //    localStorage.setItem("session", {});
+        //}, function(data) {
+        //    alert("error logging in");
+        //});
+    };
+
+    this.logout = function () {
+        localStorage.removeItem("session");
+    };
+
+    this.isLoggedIn = function () {
+        return localStorage.getItem("session") !== null;
+    };
+
+}]);
+
+services.service('userService', ['$http', function ($http) {
+
+    this.saveUserWithPromise = function (user) {
+        return $http.put('rest/users', user);
+    };
+    //service.getAccountById = function(accountId) {
+    //    var Account = $resource("/basic-web-app/rest/accounts/:paramAccountId");
+    //    return Account.get({paramAccountId:accountId}).$promise;
+    //};
+
+    this.userExistsWithPromise = function (eMail) {
+        console.log(eMail);
+        return $http.post('rest/users', eMail);
+    };
+
+}]);
+
 
 // Set up the bug service.
 services.service('bugService', ['$http', function ($http) {
@@ -103,7 +151,7 @@ services.service('stateService', ['$http', function ($http) {
      */
     this.loadStateWithPromise = function (stateId) {
         return $http.get('rest/states/' + stateId);
-    }
+    };
 
     /**
      * Return all states for a bug using an asynchronous REST call with promise.

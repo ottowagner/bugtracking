@@ -7,7 +7,7 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives', 'filters']);
 
 // Set up the mainController.
-controllers.controller('mainController', ['$scope', '$location', 'authService', 'User', function ($scope, $location, authService, User) {
+controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'authService', 'User', function ($scope, $location, userService, sessionService, authService, User) {
     $scope.mainModel = {
         authenticated: authService.authenticated,
         error: "",
@@ -19,142 +19,190 @@ controllers.controller('mainController', ['$scope', '$location', 'authService', 
         $scope.mainModel.showError = false;
     };
 
-    var authenticate = function (account, callback) {
-        //TODO: In einen Service auslagern
-        //var headers = account ? {
-        //    authorization: "Basic "
-        //    + btoa(account.username + ":" + account.password)
-        //} : {};
-        var accountData = account ? {
-            authorization: account.username + ":" + account.password
-        } : {};
-
-        authService.authenticated = accountData.authorization ? true : false;
-        $scope.mainModel.authenticated = authService.authenticated;
-        callback && callback();
-        //$http.get('rest/user', {headers: headers}).success(function (data) {
-        //    console.log(data);
-        //    if (data.id) {
-        //        $rootScope.authenticated = true;
-        //    } else {
-        //        $rootScope.authenticated = false;
-        //    }
-        //    callback && callback();
-        //}).error(function () {
-        //    $rootScope.authenticated = false;
-        //    callback && callback();
-        //});
-    };
-
-    //authenticate();
-    //$scope.account = {};
     this.login = function (loginForm) {
-        //TODO: Hier eig mit Sicherheit arbeiten!!!
-
-        //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
         var user = new User();
         user.email = loginForm.email.$modelValue;
         user.password = loginForm.password.$modelValue;
 
-        if (loginForm.$valid && user) {
-            authService.loadUserWithPromise(user)
-                .success(function (data, status, headers, config) {
-                    authService.authenticated = true;
-                    $scope.mainModel.authenticated = authService.authenticated;
-                    $location.path("/bugs");
-                    authService.user = data;
-                })
-                .error(function (data, status, headers, config) {
-                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
-                    $scope.mainModel.showError = true;
-                    authService.authenticated = false;
-                    $scope.mainModel.authenticated = authService.authenticated;
-                    $scope.error = true;
-                });
-
-        }
-        //authenticate($scope.account, function () {
-        //    if (authService.authenticated) {
-        //        $location.path("/bugs");
-        //        $scope.error = false;
-        //    } else {
-        //        $location.path("/login");
-        //        $scope.error = true;
-        //    }
-        //});
-    };
-
-
-    var register = function (account, callback) {
-        //TODO: Hier eig mit Sicherheit arbeiten!!!
-        var headers = account ? {
-            authorization: "Basic "
-            + btoa(account.username + ":" + account.password)
-        } : {};
-        authService.authenticated = true;
-        $scope.mainModel.authenticated = authService.authenticated;
-        callback && callback();
-        //$http.post('rest/user', {headers: headers}).success(function (data) {
-        //    console.log(data);
-        //    if (data.id) {
-        //        authService.authenticated = true;
-        //    } else {
-        //        authService.authenticated = false;
-        //    }
-        //    callback && callback();
-        //}).error(function () {
-        //    authService.authenticated = false;
-        //    callback && callback();
-        //});
+        userService.userExistsWithPromise(user.email)
+            .success(function (data, status, headers, config) {
+                sessionService.loginWithPromise(user)
+                    .success(function (data, status, headers, config) {
+                        localStorage.setItem("session", {});
+                        $location.path("/bugs");
+                    }).error(function (data, status, headers, config) {
+                        $scope.mainModel.error = "Session kacke";
+                        $scope.mainModel.showError = true;
+                    });
+            }).error(function (data, status, headers, config) {
+                $scope.mainModel.error = "Benutzer nicht vorhanden";
+                $scope.mainModel.showError = true;
+            });
     };
 
     this.register = function (registForm) {
-        //TODO: Hier eig mit Sicherheit arbeiten!!!
-        //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
         var user = new User();
         user.email = registForm.email.$modelValue;
         user.password = registForm.password.$modelValue;
         user.firstname = registForm.firstname.$modelValue;
         user.lastname = registForm.lastname.$modelValue;
         if (registForm.$valid && user) {
-            authService.saveUserWithPromise(user)
+            userService.saveUserWithPromise(user)
                 .success(function (data, status, headers, config) {
-                    authService.authenticated = true;
-                    $location.path("/bugs");
-                    authService.user = data;
+                    sessionService.loginWithPromise(user)
+                        .success(function (data, status, headers, config) {
+                            localStorage.setItem("session", {});
+                            $location.path("/bugs");
+                        }).error(function (data, status, headers, config) {
+                            $scope.mainModel.error = "Session kacke";
+                            $scope.mainModel.showError = true;
+                        });
                 })
                 .error(function (data, status, headers, config) {
                     $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
                     $scope.mainModel.showError = true;
-                    authService.authenticated = false;
                     $scope.error = true;
                 });
         }
-        $scope.mainModel.authenticated = authService.authenticated;
-        //register($scope.account, function () {
-        //    if (authService.authenticated) {
-        //        $location.path("/bugs");
-        //        $scope.error = false;
-        //    } else {
-        //        $location.path("/register");
-        //        $scope.error = true;
-        //    }
-        //});
     };
-
+    //
+    //var authenticate = function (account, callback) {
+    //    //TODO: In einen Service auslagern
+    //    //var headers = account ? {
+    //    //    authorization: "Basic "
+    //    //    + btoa(account.username + ":" + account.password)
+    //    //} : {};
+    //    var accountData = account ? {
+    //        authorization: account.username + ":" + account.password
+    //    } : {};
+    //
+    //    authService.authenticated = accountData.authorization ? true : false;
+    //    $scope.mainModel.authenticated = authService.authenticated;
+    //    callback && callback();
+    //    //$http.get('rest/user', {headers: headers}).success(function (data) {
+    //    //    console.log(data);
+    //    //    if (data.id) {
+    //    //        $rootScope.authenticated = true;
+    //    //    } else {
+    //    //        $rootScope.authenticated = false;
+    //    //    }
+    //    //    callback && callback();
+    //    //}).error(function () {
+    //    //    $rootScope.authenticated = false;
+    //    //    callback && callback();
+    //    //});
+    //};
+    //
+    ////authenticate();
+    ////$scope.account = {};
+    //this.login = function (loginForm) {
+    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
+    //
+    //    //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
+    //    var user = new User();
+    //    user.email = loginForm.email.$modelValue;
+    //    user.password = loginForm.password.$modelValue;
+    //
+    //    if (loginForm.$valid && user) {
+    //        authService.loadUserWithPromise(user)
+    //            .success(function (data, status, headers, config) {
+    //                authService.authenticated = true;
+    //                $scope.mainModel.authenticated = authService.authenticated;
+    //                $location.path("/bugs");
+    //                authService.user = data;
+    //            })
+    //            .error(function (data, status, headers, config) {
+    //                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+    //                $scope.mainModel.showError = true;
+    //                authService.authenticated = false;
+    //                $scope.mainModel.authenticated = authService.authenticated;
+    //                $scope.error = true;
+    //            });
+    //
+    //    }
+    //    //authenticate($scope.account, function () {
+    //    //    if (authService.authenticated) {
+    //    //        $location.path("/bugs");
+    //    //        $scope.error = false;
+    //    //    } else {
+    //    //        $location.path("/login");
+    //    //        $scope.error = true;
+    //    //    }
+    //    //});
+    //};
+    //
+    //
+    //var register = function (account, callback) {
+    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
+    //    var headers = account ? {
+    //        authorization: "Basic "
+    //        + btoa(account.username + ":" + account.password)
+    //    } : {};
+    //    authService.authenticated = true;
+    //    $scope.mainModel.authenticated = authService.authenticated;
+    //    callback && callback();
+    //    //$http.post('rest/user', {headers: headers}).success(function (data) {
+    //    //    console.log(data);
+    //    //    if (data.id) {
+    //    //        authService.authenticated = true;
+    //    //    } else {
+    //    //        authService.authenticated = false;
+    //    //    }
+    //    //    callback && callback();
+    //    //}).error(function () {
+    //    //    authService.authenticated = false;
+    //    //    callback && callback();
+    //    //});
+    //};
+    //
+    //this.register = function (registForm) {
+    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
+    //    //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
+    //    var user = new User();
+    //    user.email = registForm.email.$modelValue;
+    //    user.password = registForm.password.$modelValue;
+    //    user.firstname = registForm.firstname.$modelValue;
+    //    user.lastname = registForm.lastname.$modelValue;
+    //    if (registForm.$valid && user) {
+    //        authService.saveUserWithPromise(user)
+    //            .success(function (data, status, headers, config) {
+    //                authService.authenticated = true;
+    //                $location.path("/bugs");
+    //                authService.user = data;
+    //            })
+    //            .error(function (data, status, headers, config) {
+    //                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+    //                $scope.mainModel.showError = true;
+    //                authService.authenticated = false;
+    //                $scope.error = true;
+    //            });
+    //    }
+    //    $scope.mainModel.authenticated = authService.authenticated;
+    //    //register($scope.account, function () {
+    //    //    if (authService.authenticated) {
+    //    //        $location.path("/bugs");
+    //    //        $scope.error = false;
+    //    //    } else {
+    //    //        $location.path("/register");
+    //    //        $scope.error = true;
+    //    //    }
+    //    //});
+    //};
+    //
     this.logout = function () {
-        //TODO: Hier eig mit Sicherheit arbeiten!!!
-        authService.authenticated = false;
-        $scope.mainModel.authenticated = authService.authenticated;
-        authService.user = null;
-        $location.path("/login");
-        //$http.post('logout', {}).success(function () {
-        //    authService.authenticated = false;
-        //    $location.path("/login");
-        //}).error(function (data) {
-        //    authService.authenticated = false;
-        //    $location.path("/login");
-        //});
+        ////TODO: Hier eig mit Sicherheit arbeiten!!!
+        //authService.authenticated = false;
+        //$scope.mainModel.authenticated = authService.authenticated;
+        //authService.user = null;
+        //$location.path("/login");
+        ////$http.post('logout', {}).success(function () {
+        ////    authService.authenticated = false;
+        ////    $location.path("/login");
+        ////}).error(function (data) {
+        ////    authService.authenticated = false;
+        ////    $location.path("/login");
+        ////});
+        sessionService.logout();
     }
 
 }]);
@@ -165,8 +213,8 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
         bugs: []
     };
 
-    $scope.sortType     = 'id';
-    $scope.sortReverse  = false;
+    $scope.sortType = 'id';
+    $scope.sortReverse = false;
 
     // List the current bugs.
     bugService.listBugsWithPromise()
@@ -364,7 +412,7 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
         fromState: dataService.fromState,
         toState: dataService.toState
     };
-
+//TODO: Prüfe ob im dataService richtige bugnr und statenr steht, sonst lade diese!
     if (!dataService.fromState) {
         bugService.loadBugWithPromise($routeParams.bugId)
             .success(function (data, status, headers, config) {

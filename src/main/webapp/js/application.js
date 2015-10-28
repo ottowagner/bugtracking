@@ -40,21 +40,21 @@ application.config(['$routeProvider', '$httpProvider',
                 controller: 'commentController as cmtCtrl'
             }).
             otherwise({
-                redirectTo: '/login'
+                redirectTo: '/bugs'
             });
 
         //https://github.com/dsyer/spring-security-angular/tree/master/single
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);
 
-application.run(['$rootScope', '$location', 'authService', function ($rootScope, $location, authService) {
-    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if (!(authService.authenticated == true)) {
-            if (next.templateUrl == "partials/login.html") {
-            } else if (next.templateUrl == "partials/register.html") {
-            } else {
-                $location.path("/login");
-            }
-        }
-    });
-}]);
+//application.run(['$rootScope', '$location', 'authService', function ($rootScope, $location, authService) {
+//    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+//        if (!(authService.authenticated == true)) {
+//            if (next.templateUrl == "partials/login.html") {
+//            } else if (next.templateUrl == "partials/register.html") {
+//            } else {
+//                $location.path("/login");
+//            }
+//        }
+//    });
+//}]);

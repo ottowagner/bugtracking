@@ -36,14 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
-                .and()
+                    .authenticationEntryPoint(unauthorizedHandler)
+                    .and()
                 .formLogin()
-                .successHandler(authSuccess)
-                .failureHandler(authFailure)
+                    .successHandler(authSuccess)
+                    .failureHandler(authFailure)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**")
-                .permitAll();
+                    .antMatchers("/**")
+                        .permitAll();
     }
 }

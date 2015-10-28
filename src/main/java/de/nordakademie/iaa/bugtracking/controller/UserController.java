@@ -40,42 +40,15 @@ public class UserController {
         return userService.userExists(eMail);
     }
 
-    @RequestMapping(value = "/users/login", method = RequestMethod.POST)
-    @PreAuthorize("permitAll")
-    public boolean login(@RequestParam(value="email", required = true) String eMail, @RequestParam(value="credentials", required = true) String credentialsString) throws Exception {
-
-        User user;
-        if (eMail != null) {
-            user = userService.loadUser(eMail);
-
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(user.getEmail(), user.getPassword());
-            if (credentialsString.equals(Base64.encode(credentials.toString().getBytes()))) {
-                return true;
-            }
-            throw new Exception("Falsches Passwort");
-        }
-        throw new Exception("Benutzer nicht vorhanden");
-    }
-
-
     /**
      * Saves the given user.
      *
      * @param user The user to be saved.
      */
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
+    @PreAuthorize("permitAll")
     public User saveUser(@RequestBody User user) throws Exception {
         return userService.saveUser(user);
-    }
-
-    /**
-     * Deletes the user with the given identifier.
-     *
-     * @param email The user's identifier.
-     */
-    @RequestMapping(value = "/users", method = RequestMethod.DELETE)
-    public void deleteUser(@RequestBody String email) throws Exception {
-        userService.deleteUser(email);
     }
 
     @Inject
