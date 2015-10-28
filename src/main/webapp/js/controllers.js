@@ -24,19 +24,20 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
         user.email = loginForm.email.$modelValue;
         user.password = loginForm.password.$modelValue;
         userService.userExistsWithPromise(user.email)
-            .success(function (userData, status, headers, config) {
+            .success(function (userData) {
                 sessionService.loginWithPromise(user)
-                    .success(function (data, status, headers, config) {
+                    .success(function () {
                         sessionService.user = userData;
                         localStorage.setItem("session", {});
                         $scope.mainModel.authenticated = sessionService.isLoggedIn();
                         $location.path("/bugs");
-                    }).error(function (data, status, headers, config) {
-                        $scope.mainModel.error = "Session kacke";
+                    }).error(function (data) {
+                        console.log(data);
+                        $scope.mainModel.error = data;
                         $scope.mainModel.showError = true;
                     });
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "Benutzer nicht vorhanden";
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
             });
     };
@@ -49,20 +50,20 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
         user.lastname = registForm.lastname.$modelValue;
         if (registForm.$valid && user) {
             userService.saveUserWithPromise(user)
-                .success(function (userData, status, headers, config) {
+                .success(function (userData) {
                     sessionService.loginWithPromise(user)
-                        .success(function (data, status, headers, config) {
+                        .success(function () {
                             sessionService.user = userData;
                             localStorage.setItem("session", {});
                             $scope.mainModel.authenticated = sessionService.isLoggedIn();
                             $location.path("/bugs");
-                        }).error(function (data, status, headers, config) {
-                            $scope.mainModel.error = "Session kacke";
+                        }).error(function (data) {
+                            $scope.mainModel.error = data;
                             $scope.mainModel.showError = true;
                         });
                 })
-                .error(function (data, status, headers, config) {
-                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                .error(function (data) {
+                    $scope.mainModel.error = data;
                     $scope.mainModel.showError = true;
                     $scope.error = true;
                 });
@@ -87,11 +88,11 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
 
     // List the current bugs.
     bugService.listBugsWithPromise()
-        .success(function (data, status, headers, config) {
+        .success(function (data) {
             $scope.bugModel.bugs = data;
         })
-        .error(function (data, status, headers, config) {
-            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+        .error(function (data) {
+            $scope.mainModel.error = data;
             $scope.mainModel.showError = true;
         });
 
@@ -123,12 +124,12 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
 
     if ($routeParams.bugId) {
         bugService.loadBugWithPromise($routeParams.bugId)
-            .success(function (data, status, headers, config) {
+            .success(function (data) {
                 $scope.bugModel.editMode = true;
                 $scope.bugModel.selectedBug = data;
                 $scope.bugModel.editedBug = new Bug(data.id, data.title, data.description, data.state, data.autor, data.developer, data.lastUpdateDate, data.creationDate);
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
                 $location.path("/bugs");
             });
@@ -153,10 +154,10 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
             selected.description = edited.description;
             selected.autor = user;
             bugService.saveBugWithPromise(selected)
-                .success(function (data, status, headers, config) {
+                .success(function (data) {
                     $location.path("/bugs/" + data.id);
-                }).error(function (data, status, headers, config) {
-                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                }).error(function (data) {
+                    $scope.mainModel.error = data;
                     $scope.mainModel.showError = true;
                 });
         } else {
@@ -215,28 +216,28 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
     };
 
     bugService.loadBugWithPromise($routeParams.bugId)
-        .success(function (data, status, headers, config) {
+        .success(function (data) {
             $scope.bugModel.bug = data;
-        }).error(function (data, status, headers, config) {
-            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+        }).error(function (data) {
+            $scope.mainModel.error = data;
             $scope.mainModel.showError = true;
             $location.path("/bugs");
         });
 
     commentService.listCommentsWithPromise($routeParams.bugId)
-        .success(function (data, status, headers, config) {
+        .success(function (data) {
             $scope.bugModel.comments = data;
         })
-        .error(function (data, status, headers, config) {
-            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+        .error(function (data) {
+            $scope.mainModel.error = data;
             $scope.mainModel.showError = true;
         });
 
     stateService.listToStatesWithPromise($routeParams.bugId)
-        .success(function (data, status, headers, config) {
+        .success(function (data) {
             $scope.bugModel.toStates = data;
-        }).error(function (data, status, headers, config) {
-            $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+        }).error(function (data) {
+            $scope.mainModel.error = data;
             $scope.mainModel.showError = true;
             $location.path("/bugs");
         });
@@ -285,22 +286,22 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
 //TODO: Prüfe ob im dataService richtige bugnr und statenr steht, sonst lade diese!
     if (!dataService.fromState) {
         bugService.loadBugWithPromise($routeParams.bugId)
-            .success(function (data, status, headers, config) {
+            .success(function (data) {
                 dataService.fromState = data.state;
                 $scope.commentModel.fromState = dataService.fromState;
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
                 $location.path("/bugs");
             });
     }
     if (!dataService.toState && $routeParams.stateId) {
         stateService.loadStateWithPromise($routeParams.stateId)
-            .success(function (data, status, headers, config) {
+            .success(function (data) {
                 dataService.toState = data;
                 $scope.commentModel.toState = dataService.toState;
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
             });
     }
@@ -312,10 +313,10 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
         if (commentForm.$valid && user && comment) {
             comment.autor = user; //TODO: BACKEND!
             commentService.saveCommentWithPromise($routeParams.bugId, comment)
-                .success(function (data, status, headers, config) {
+                .success(function (data) {
                     $location.path("/bugs/" + $routeParams.bugId);
-                }).error(function (data, status, headers, config) {
-                    $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+                }).error(function (data) {
+                    $scope.mainModel.error = data;
                     $scope.mainModel.showError = true;
                 });
         } else {
@@ -335,15 +336,15 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
         }
 
         bugService.setBugStateWithPromise($routeParams.bugId, $routeParams.stateId)
-            .success(function (data, status, headers, config) {
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            .success(function (data) {
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
             });
         commentService.saveCommentWithPromise($routeParams.bugId, comment)
-            .success(function (data, status, headers, config) {
-            }).error(function (data, status, headers, config) {
-                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
+            .success(function (data) {
+            }).error(function (data) {
+                $scope.mainModel.error = data;
                 $scope.mainModel.showError = true;
             });
 

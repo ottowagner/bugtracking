@@ -15,7 +15,7 @@ import java.util.List;
  */
 @RestController
 public class BugController {
-
+//https://dzone.com/articles/exception-handling-spring-rest
     /**
      * The bug service.
      */
