@@ -24,10 +24,10 @@
     <!--<property name="suffix" value=".jsp"/>-->
 <!--</bean>-->
 
-<security:global-method-security pre-post-annotations="enabled">
-    <security:protect-pointcut expression="execution(* de.nordakademie.iaa.bugtracking.controller.*.*(..))"
-                               access="ROLE_DUMMY"/>
-</security:global-method-security>
+<!--<security:global-method-security pre-post-annotations="enabled">-->
+    <!--<security:protect-pointcut expression="execution(* de.nordakademie.iaa.bugtracking.controller.*.*(..))"-->
+                               <!--access="ROLE_DUMMY"/>-->
+<!--</security:global-method-security>-->
 
 
 </beans>

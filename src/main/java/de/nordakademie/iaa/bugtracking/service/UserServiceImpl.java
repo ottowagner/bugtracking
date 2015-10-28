@@ -36,15 +36,6 @@ public class UserServiceImpl implements UserService {
         userDAO.delete(user);
     }
 
-    @Override
-    public boolean userExists(String eMail)  throws EntityNotFoundException{
-        User user = loadUser(eMail);
-        if (user == null) {
-            throw new EntityNotFoundException("Benutzer existiert nicht");
-        }
-        return true;
-    }
-
     @Inject
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;

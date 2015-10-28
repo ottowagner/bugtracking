@@ -7,9 +7,9 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives', 'filters']);
 
 // Set up the mainController.
-controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'authService', 'User', function ($scope, $location, userService, sessionService, authService, User) {
+controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'User', function ($scope, $location, userService, sessionService, User) {
     $scope.mainModel = {
-        authenticated: authService.authenticated,
+        authenticated: sessionService.isLoggedIn(),
         error: "",
         showError: false
     };
@@ -23,12 +23,13 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
         var user = new User();
         user.email = loginForm.email.$modelValue;
         user.password = loginForm.password.$modelValue;
-
         userService.userExistsWithPromise(user.email)
-            .success(function (data, status, headers, config) {
+            .success(function (userData, status, headers, config) {
                 sessionService.loginWithPromise(user)
                     .success(function (data, status, headers, config) {
+                        sessionService.user = userData;
                         localStorage.setItem("session", {});
+                        $scope.mainModel.authenticated = sessionService.isLoggedIn();
                         $location.path("/bugs");
                     }).error(function (data, status, headers, config) {
                         $scope.mainModel.error = "Session kacke";
@@ -48,10 +49,12 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
         user.lastname = registForm.lastname.$modelValue;
         if (registForm.$valid && user) {
             userService.saveUserWithPromise(user)
-                .success(function (data, status, headers, config) {
+                .success(function (userData, status, headers, config) {
                     sessionService.loginWithPromise(user)
                         .success(function (data, status, headers, config) {
+                            sessionService.user = userData;
                             localStorage.setItem("session", {});
+                            $scope.mainModel.authenticated = sessionService.isLoggedIn();
                             $location.path("/bugs");
                         }).error(function (data, status, headers, config) {
                             $scope.mainModel.error = "Session kacke";
@@ -65,144 +68,10 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 });
         }
     };
-    //
-    //var authenticate = function (account, callback) {
-    //    //TODO: In einen Service auslagern
-    //    //var headers = account ? {
-    //    //    authorization: "Basic "
-    //    //    + btoa(account.username + ":" + account.password)
-    //    //} : {};
-    //    var accountData = account ? {
-    //        authorization: account.username + ":" + account.password
-    //    } : {};
-    //
-    //    authService.authenticated = accountData.authorization ? true : false;
-    //    $scope.mainModel.authenticated = authService.authenticated;
-    //    callback && callback();
-    //    //$http.get('rest/user', {headers: headers}).success(function (data) {
-    //    //    console.log(data);
-    //    //    if (data.id) {
-    //    //        $rootScope.authenticated = true;
-    //    //    } else {
-    //    //        $rootScope.authenticated = false;
-    //    //    }
-    //    //    callback && callback();
-    //    //}).error(function () {
-    //    //    $rootScope.authenticated = false;
-    //    //    callback && callback();
-    //    //});
-    //};
-    //
-    ////authenticate();
-    ////$scope.account = {};
-    //this.login = function (loginForm) {
-    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
-    //
-    //    //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
-    //    var user = new User();
-    //    user.email = loginForm.email.$modelValue;
-    //    user.password = loginForm.password.$modelValue;
-    //
-    //    if (loginForm.$valid && user) {
-    //        authService.loadUserWithPromise(user)
-    //            .success(function (data, status, headers, config) {
-    //                authService.authenticated = true;
-    //                $scope.mainModel.authenticated = authService.authenticated;
-    //                $location.path("/bugs");
-    //                authService.user = data;
-    //            })
-    //            .error(function (data, status, headers, config) {
-    //                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
-    //                $scope.mainModel.showError = true;
-    //                authService.authenticated = false;
-    //                $scope.mainModel.authenticated = authService.authenticated;
-    //                $scope.error = true;
-    //            });
-    //
-    //    }
-    //    //authenticate($scope.account, function () {
-    //    //    if (authService.authenticated) {
-    //    //        $location.path("/bugs");
-    //    //        $scope.error = false;
-    //    //    } else {
-    //    //        $location.path("/login");
-    //    //        $scope.error = true;
-    //    //    }
-    //    //});
-    //};
-    //
-    //
-    //var register = function (account, callback) {
-    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
-    //    var headers = account ? {
-    //        authorization: "Basic "
-    //        + btoa(account.username + ":" + account.password)
-    //    } : {};
-    //    authService.authenticated = true;
-    //    $scope.mainModel.authenticated = authService.authenticated;
-    //    callback && callback();
-    //    //$http.post('rest/user', {headers: headers}).success(function (data) {
-    //    //    console.log(data);
-    //    //    if (data.id) {
-    //    //        authService.authenticated = true;
-    //    //    } else {
-    //    //        authService.authenticated = false;
-    //    //    }
-    //    //    callback && callback();
-    //    //}).error(function () {
-    //    //    authService.authenticated = false;
-    //    //    callback && callback();
-    //    //});
-    //};
-    //
-    //this.register = function (registForm) {
-    //    //TODO: Hier eig mit Sicherheit arbeiten!!!
-    //    //TODO:BÖSE! Aber muss sowieso überarbeitet werden... Security..
-    //    var user = new User();
-    //    user.email = registForm.email.$modelValue;
-    //    user.password = registForm.password.$modelValue;
-    //    user.firstname = registForm.firstname.$modelValue;
-    //    user.lastname = registForm.lastname.$modelValue;
-    //    if (registForm.$valid && user) {
-    //        authService.saveUserWithPromise(user)
-    //            .success(function (data, status, headers, config) {
-    //                authService.authenticated = true;
-    //                $location.path("/bugs");
-    //                authService.user = data;
-    //            })
-    //            .error(function (data, status, headers, config) {
-    //                $scope.mainModel.error = "ein Fehler bein laden! -- Hier muss ein Text ausn Backend angezeigt werden";
-    //                $scope.mainModel.showError = true;
-    //                authService.authenticated = false;
-    //                $scope.error = true;
-    //            });
-    //    }
-    //    $scope.mainModel.authenticated = authService.authenticated;
-    //    //register($scope.account, function () {
-    //    //    if (authService.authenticated) {
-    //    //        $location.path("/bugs");
-    //    //        $scope.error = false;
-    //    //    } else {
-    //    //        $location.path("/register");
-    //    //        $scope.error = true;
-    //    //    }
-    //    //});
-    //};
-    //
+
     this.logout = function () {
-        ////TODO: Hier eig mit Sicherheit arbeiten!!!
-        //authService.authenticated = false;
-        //$scope.mainModel.authenticated = authService.authenticated;
-        //authService.user = null;
-        //$location.path("/login");
-        ////$http.post('logout', {}).success(function () {
-        ////    authService.authenticated = false;
-        ////    $location.path("/login");
-        ////}).error(function (data) {
-        ////    authService.authenticated = false;
-        ////    $location.path("/login");
-        ////});
         sessionService.logout();
+        $scope.mainModel.authenticated = sessionService.isLoggedIn();
     }
 
 }]);
@@ -244,7 +113,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
 }]);
 
 // Set up the editBugController.
-controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'authService', 'Bug', 'bugService', function ($scope, $location, $routeParams, authService, Bug, bugService) {
+controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'sessionService', 'Bug', 'bugService', function ($scope, $location, $routeParams, sessionService, Bug, bugService) {
 
     $scope.bugModel = {
         editMode: null,
@@ -277,7 +146,8 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
     this.saveBug = function (bugForm) {
         var selected = $scope.bugModel.selectedBug;
         var edited = $scope.bugModel.editedBug;
-        var user = authService.user;
+        var user = sessionService.user;
+
         if (bugForm.$valid && user && selected && edited) {
             selected.title = edited.title;
             selected.description = edited.description;
@@ -337,7 +207,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
 }]);
 
 // Set up the showBugController.
-controllers.controller('showBugController', ['$scope', '$location', '$routeParams', 'authService', 'bugService', 'stateService', 'commentService', 'dataService', function ($scope, $location, $routeParams, authService, bugService, stateService, commentService, dataService) {
+controllers.controller('showBugController', ['$scope', '$location', '$routeParams', 'bugService', 'stateService', 'commentService', 'dataService', function ($scope, $location, $routeParams, bugService, stateService, commentService, dataService) {
     $scope.bugModel = {
         bug: null,
         comments: [],
@@ -406,7 +276,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
 }]);
 
 // Set up the commentController.
-controllers.controller('commentController', ['$scope', '$location', '$routeParams', 'authService', 'bugService', 'commentService', 'Comment', "dataService", 'stateService', function ($scope, $location, $routeParams, authService, bugService, commentService, Comment, dataService, stateService) {
+controllers.controller('commentController', ['$scope', '$location', '$routeParams', 'sessionService', 'bugService', 'commentService', 'Comment', "dataService", 'stateService', function ($scope, $location, $routeParams, sessionService, bugService, commentService, Comment, dataService, stateService) {
     $scope.commentModel = {
         comment: null,
         fromState: dataService.fromState,
@@ -437,7 +307,7 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
 
     this.saveComment = function (commentForm) {
         var comment = $scope.commentModel.comment;
-        var user = authService.user;
+        var user = sessionService.user;
 
         if (commentForm.$valid && user && comment) {
             comment.autor = user; //TODO: BACKEND!
@@ -457,7 +327,7 @@ controllers.controller('commentController', ['$scope', '$location', '$routeParam
         var comment = new Comment();
         comment.fromState = dataService.fromState.title; //TODO: evtl im backend prüfen
         comment.toState = dataService.toState.title; //TODO: evtl im backend prüfen
-        comment.autor = authService.user; //TODO: BACKEND!
+        comment.autor = sessionService.user; //TODO: BACKEND!
 
         if ($scope.commentModel.comment) {
             comment.title = $scope.commentModel.comment.title;

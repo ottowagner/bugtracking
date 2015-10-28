@@ -6,33 +6,10 @@
 
 var services = angular.module('services', ['resources']);
 
-// Set up the auth service.
-services.service('authService', ['$http', function ($http) {
-    this.user = null;
-    this.authenticated = false;
-
-    /**
-     * Loads the given user using an asynchronous REST call with promise.
-     * @param user The user to be loaded.
-     * @returns {HttpPromise}.
-     */
-        //TODO: SICHERHEIT, nicht direkt mit dem user/password
-    this.loadUserWithPromise = function (user) {
-        return $http.post('rest/users', user);
-    };
-
-    /**
-     * Saves a given user using an asynchronous REST call with promise.
-     * @param user The user to be saved.
-     * @returns {HttpPromise}.
-     */
-        //TODO: SICHERHEIT, nicht direkt mit dem user/password
-    this.saveUserWithPromise = function (user) {
-        return $http.put('rest/users', user);
-    };
-}]);
-
+// Set up the session service.
 services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
+    this.user = null;
+
     this.loginWithPromise = function (user) {
         return $http({
             url: 'login',
@@ -40,16 +17,6 @@ services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
-
-        //return $http.post("login", "username=" + user.email +
-        //    "&password=" + user.password, {
-        //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        //} ).then(function(data) {
-        //    alert("login successful");
-        //    localStorage.setItem("session", {});
-        //}, function(data) {
-        //    alert("error logging in");
-        //});
     };
 
     this.logout = function () {
@@ -62,23 +29,25 @@ services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
 
 }]);
 
+// Set up the user service.
 services.service('userService', ['$http', function ($http) {
-
     this.saveUserWithPromise = function (user) {
         return $http.put('rest/users', user);
     };
-    //service.getAccountById = function(accountId) {
-    //    var Account = $resource("/basic-web-app/rest/accounts/:paramAccountId");
-    //    return Account.get({paramAccountId:accountId}).$promise;
-    //};
+
+    this.getUserWithPromise = function(eMail) {
+        return $http({
+            url: 'rest/users',
+            params: {email: eMail},
+            method: 'GET'
+        });
+    };
 
     this.userExistsWithPromise = function (eMail) {
-        console.log(eMail);
         return $http.post('rest/users', eMail);
     };
 
 }]);
-
 
 // Set up the bug service.
 services.service('bugService', ['$http', function ($http) {
