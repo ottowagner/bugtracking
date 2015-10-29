@@ -6,36 +6,63 @@
 
 var filters = angular.module('filters', []);
 
-// Set up the formatState directive.
-filters.filter("tableFilter", function () {
+// Set up the tableFilter.
+filters.filter("bugListFilter", ['$filter', function ($filter) {
     /**
      * @returns filtered data.
      */
-    return function(data,searchString,hideClosed){
+    return function (data, searchString, hideClosed) {
         var output = [];
 
-        if(!!searchString && !!hideClosed){
+        var checkString = function (position) {
+            var id = data[position].id.toString();
+            var title = data[position].title.toLowerCase();
+            var state = data[position].state.title.toLowerCase();
+            var autor = (data[position].autor.firstname + " " + data[position].autor.lastname).toLowerCase();
+            var developer = !!data[position].developer ? (data[position].developer.firstname + " " + data[position].developer.lastname).toLowerCase() : "";
+            var creationDate = $filter('date')(data[i].creationDate, 'dd.MM.yyyy - HH:mm');
+            var lastUpdateDate = !!data[position].lastUpdateDate ? $filter('date')(data[position].lastUpdateDate, 'dd.MM.yyyy - HH:mm') : "";
+
+            if (id.indexOf(searchString) !== -1) {
+                return true;
+            } else if (title.indexOf(searchString) !== -1) {
+                return true;
+            } else if (state.indexOf(searchString) !== -1) {
+                return true;
+            } else if (autor.indexOf(searchString) !== -1) {
+                return true;
+            } else if (developer.indexOf(searchString) !== -1) {
+                return true;
+            } else if (creationDate.indexOf(searchString) !== -1) {
+                return true;
+            } else if (lastUpdateDate.indexOf(searchString) !== -1) {
+                return true;
+            } else {
+                return false;
+            }
+        };
+
+        if (!!searchString && !!hideClosed) {
             searchString = searchString.toLowerCase();
-            for(var i = 0;i<data.length; i++){
-                if(data[i].title.toLowerCase().indexOf(searchString) !== -1){
-                    output.push(data[i]);
-                }else if(data[i].state.title.toLowerCase().indexOf(searchString) !== -1){
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].state.title.toLowerCase() == "geschlossen") {
+                    continue;
+                } else if (checkString(i)) {
                     output.push(data[i]);
                 }
             }
-            //TODO: entferne geschlosssen mehr logik einbauen.. zb auch datum filtern
-        } else if(!!searchString){
+        } else if (!!searchString) {
             searchString = searchString.toLowerCase();
-            for(var i = 0;i<data.length; i++){
-                if(data[i].title.toLowerCase().indexOf(searchString) !== -1){
-                    output.push(data[i]);
-                }else if(data[i].state.title.toLowerCase().indexOf(searchString) !== -1){
+            for (var i = 0; i < data.length; i++) {
+                if (checkString(i)) {
                     output.push(data[i]);
                 }
             }
-        } else if(!!hideClosed){
-            for(var i = 0;i<data.length; i++){
-                if(data[i].state.title.toLowerCase().indexOf("geschlossen") === -1){
+        } else if (!!hideClosed) {
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].state.title.toLowerCase() == "geschlossen") {
+                    continue;
+                } else {
                     output.push(data[i]);
                 }
             }
@@ -43,5 +70,6 @@ filters.filter("tableFilter", function () {
             output = data;
         }
         return output;
-    }
-});
+    };
+
+}]);

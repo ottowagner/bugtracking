@@ -60,7 +60,7 @@
                 <span ng-show="sortType == 'creationDate' && sortReverse" class="glyphicon glyphicon-chevron-up"></span>
             </a></th>
         </tr>
-        <tr ng-repeat="bug in bugModel.bugs | orderBy:sortType:sortReverse | tableFilter:searchString:hideClosed" ng-click="listCtrl.openBug(bug)">
+        <tr ng-repeat="bug in bugModel.bugs | orderBy:sortType:sortReverse | bugListFilter:searchString:hideClosed" ng-click="listCtrl.openBug(bug)">
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
             <td format-state="{{bug.state.title}}"></td>
