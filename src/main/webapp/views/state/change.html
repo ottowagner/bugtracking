@@ -6,6 +6,7 @@
     <form class="form-horizontal" name="stateForm" novalidate>
         <div class="form-group">
             <label class="col-sm-2 control-label">Statuswechsel</label>
+
             <div class="col-sm-8">
                 <p class="form-control-static">{{commentModel.fromState.title}} -> {{commentModel.toState.title}}</p>
             </div>
@@ -18,7 +19,6 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
                        ng-model="commentModel.comment.title" maxlength="255">
             </div>
-            <!--<span class="help-block" ng-show="stateForm.title.$invalid">{{cmtCtrl.getErrorMessage(stateForm.title)}}</span>-->
         </div>
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">Beschreibung</label>
@@ -34,7 +34,7 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <input type="submit" class="btn btn-primary" value="Status wechseln"
                        ng-disabled="stateForm.$invalid"
-                       ng-click="cmtCtrl.changeState(stateForm)">
+                       ng-click="cmtCtrl.changeStateWithComment(stateForm)">
                 <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="cmtCtrl.toShowBug()">
             </div>
         </div>

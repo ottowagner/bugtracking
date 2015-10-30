@@ -9,6 +9,8 @@ var filters = angular.module('filters', []);
 // Set up the tableFilter.
 filters.filter("bugListFilter", ['$filter', function ($filter) {
     /**
+     * @params data The bugList dataArray,
+     *         searchString The searchString which we want to find, hideClosed To hide State "Closed"
      * @returns filtered data.
      */
     return function (data, searchString, hideClosed) {
@@ -19,9 +21,17 @@ filters.filter("bugListFilter", ['$filter', function ($filter) {
             var title = data[position].title.toLowerCase();
             var state = data[position].state.title.toLowerCase();
             var autor = (data[position].autor.firstname + " " + data[position].autor.lastname).toLowerCase();
-            var developer = !!data[position].developer ? (data[position].developer.firstname + " " + data[position].developer.lastname).toLowerCase() : "";
+
+            var developer = "";
+            if (!!data[position].developer) {
+                developer = (data[position].developer.firstname + " " + data[position].developer.lastname).toLowerCase();
+            }
             var creationDate = $filter('date')(data[i].creationDate, 'dd.MM.yyyy - HH:mm');
-            var lastUpdateDate = !!data[position].lastUpdateDate ? $filter('date')(data[position].lastUpdateDate, 'dd.MM.yyyy - HH:mm') : "";
+
+            var lastUpdateDate = "";
+            if (!!data[position].lastUpdateDate) {
+                var lastUpdateDate = $filter('date')(data[position].lastUpdateDate, 'dd.MM.yyyy - HH:mm');
+            }
 
             if (id.indexOf(searchString) !== -1) {
                 return true;

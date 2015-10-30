@@ -1,39 +1,32 @@
 <div class="col-md-12">
     <div class="page-header">
-        <h2>Fehler {{bugModel.editMode ? 'bearbeiten' : 'anlegen'}}</h2>
+        <h2>Fehler {{editBugModel.editMode ? 'bearbeiten' : 'anlegen'}}</h2>
     </div>
-
-    <!--<div class="form-group has-error">-->
-    <!--<label class="control-label" for="inputError1">Input with error</label>-->
-    <!--<input type="text" class="form-control" id="inputError1">-->
-    <!--</div>-->
-
-    <!--<div ng-class="{large-video: video.large}">-->
-    <!--&lt;!&ndash; video block goes here &ndash;&gt;-->
-    <!--</div>-->
-    <!--The above basically will add a large-video css class to the div element if video.large is truthy.-->
 
     <form class="form-horizontal" name="bugForm" novalidate>
         <div class="form-group" ng-class="bugForm.title.$invalid ? 'has-error' : ''">
             <label for="title" class="col-sm-2 control-label">Titel*</label>
+
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
-                       ng-model="bugModel.editedBug.title" maxlength="255" required>
+                       ng-model="editBugModel.editedBug.title" maxlength="255" required>
+                <span class="help-block"
+                      ng-show="bugForm.title.$invalid">{{mainCtrl.getErrorMessage(bugForm.title)}}</span>
             </div>
-            <span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>
         </div>
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">Beschreibung</label>
+
             <div class="col-sm-8">
                 <textarea rows="10" type="text" class="form-control" id="description" name="description"
-                          placeholder="Beschreibung" ng-model="bugModel.editedBug.description"
-                          maxlength="4000"></textarea>
+                          placeholder="Beschreibung" ng-model="editBugModel.editedBug.description"
+                          maxlength="1000"></textarea>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" class="btn btn-primary" value="{{bugModel.editMode ? 'Übernehmen' : 'Anlegen'}}"
+                <input type="submit" class="btn btn-primary" value="{{editBugModel.editMode ? 'Übernehmen' : 'Anlegen'}}"
                        ng-disabled="bugForm.$invalid"
                        ng-click="editCtrl.saveBug(bugForm)">
                 <input type="submit" class="btn btn-default" value="Abbrechen" ng-click="editCtrl.pageBack()">

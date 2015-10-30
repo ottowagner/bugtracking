@@ -7,15 +7,17 @@
     <form role="form" name="loginForm" ng-submit="mainCtrl.login(loginForm)" novalidate>
         <div class="form-group" ng-class="loginForm.email.$invalid ? 'has-error' : ''">
             <label for="email" class="control-label">Email</label>
-            <input type="text" class="form-control" id="email" name="email" placeholder="Email"
+            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
                    ng-model="authModel.user.email" maxlength="255" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block"
+                  ng-show="loginForm.email.$invalid">{{mainCtrl.getErrorMessage(loginForm.email)}}</span>
+
         </div>
         <div class="form-group" ng-class="loginForm.password.$invalid ? 'has-error' : ''">
             <label for="password" class="control-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                    ng-model="authModel.user.password" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block" ng-show="loginForm.password.$invalid">{{mainCtrl.getErrorMessage(loginForm.password)}}</span>
         </div>
         <button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Einloggen</button>
     </form>

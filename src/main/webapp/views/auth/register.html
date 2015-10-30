@@ -8,29 +8,30 @@
             <label for="firstname" class="control-label">Vorname</label>
             <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Vorname"
                    ng-model="authModel.user.firstname" maxlength="255" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block" ng-show="registForm.firstname.$invalid">{{mainCtrl.getErrorMessage(registForm.firstname)}}</span>
         </div>
         <div class="form-group" ng-class="registForm.lastname.$invalid ? 'has-error' : ''">
             <label for="lastname" class="control-label">Nachname</label>
             <input type="lastname" class="form-control" id="lastname" name="lastname" placeholder="Nachname"
                    ng-model="authModel.user.lastname" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block" ng-show="registForm.lastname.$invalid">{{mainCtrl.getErrorMessage(registForm.lastname)}}</span>
         </div>
         <div class="form-group" ng-class="registForm.email.$invalid ? 'has-error' : ''">
-            <label for="email" class="control-label">email</label>
+            <label for="email" class="control-label">Email</label>
             <input type="email" class="form-control" id="email" name="email" placeholder="email"
                    ng-model="authModel.user.email" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block"
+                  ng-show="registForm.email.$invalid">{{mainCtrl.getErrorMessage(registForm.email)}}</span>
         </div>
         <div class="form-group" ng-class="registForm.password.$invalid ? 'has-error' : ''">
             <label for="password" class="control-label">Password</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="Password"
                    ng-model="authModel.user.password" required/>
-            <!--<span class="help-block" ng-show="bugForm.title.$invalid">{{editCtrl.getErrorMessage(bugForm.title)}}</span>-->
+            <span class="help-block" ng-show="registForm.password.$invalid">{{mainCtrl.getErrorMessage(registForm.password)}}</span>
         </div>
         <input type="submit" class="btn btn-primary" value="Registrieren" ng-disabled="registForm.$invalid"
                ng-click="mainCtrl.register(registForm)">
-        <!-- TODO: href anders realisieren1 -->
+
         <a href="#/login" class="btn btn-default">Abbrechen</a>
     </form>
 </div>

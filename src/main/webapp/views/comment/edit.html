@@ -3,16 +3,6 @@
         <h2>Kommentar anlegen</h2>
     </div>
 
-    <!--<div class="form-group has-error">-->
-    <!--<label class="control-label" for="inputError1">Input with error</label>-->
-    <!--<input type="text" class="form-control" id="inputError1">-->
-    <!--</div>-->
-
-    <!--<div ng-class="{large-video: video.large}">-->
-    <!--&lt;!&ndash; video block goes here &ndash;&gt;-->
-    <!--</div>-->
-    <!--The above basically will add a large-video css class to the div element if video.large is truthy.-->
-
     <form class="form-horizontal" name="commentForm" novalidate>
         <div class="form-group" ng-class="commentForm.title.$invalid ? 'has-error' : ''">
             <label for="title" class="col-sm-2 control-label">Titel*</label>
@@ -21,7 +11,8 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Titel"
                        ng-model="commentModel.comment.title" maxlength="255" required>
             </div>
-            <!--<span class="help-block" ng-show="commentForm.title.$invalid">{{cmtCtrl.getErrorMessage(commentForm.title)}}</span>-->
+            <span class="help-block"
+                  ng-show="commentForm.title.$invalid">{{mainCtrl.getErrorMessage(commentForm.title)}}</span>
         </div>
         <div class="form-group">
             <label for="description" class="col-sm-2 control-label">Beschreibung</label>

@@ -10,7 +10,7 @@ var directives = angular.module('directives', []);
 directives.directive("formatState", function () {
     /**
      * Return state with glyphicon.
-     * @returns {append html code to element}.
+     * @returns append html code to element.
      */
     return {
         link: function (scope, element, attrs) {

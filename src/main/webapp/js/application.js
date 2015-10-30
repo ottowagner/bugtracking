@@ -10,33 +10,33 @@ application.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $routeProvider.
             when('/register', {
-                templateUrl: 'partials/register.html'
+                templateUrl: 'views/auth/register.html'
             }).
             when('/login', {
-                templateUrl: 'partials/login.html'
+                templateUrl: 'views/auth/login.html'
             }).
             when('/bugs', {
-                templateUrl: 'partials/bugList.html',
+                templateUrl: 'views/bug/list.html',
                 controller: 'listBugController as listCtrl'
             }).
             when('/bugs/create', {
-                templateUrl: 'partials/createBug.html',
+                templateUrl: 'views/bug/edit.html',
                 controller: 'editBugController as editCtrl'
             }).
             when('/bugs/:bugId', {
-                templateUrl: 'partials/showBug.html',
+                templateUrl: 'views/bug/show.html',
                 controller: 'showBugController as showCtrl'
             }).
             when('/bugs/:bugId/edit', {
-                templateUrl: 'partials/createBug.html',
+                templateUrl: 'views/bug/edit.html',
                 controller: 'editBugController as editCtrl'
             }).
             when('/bugs/:bugId/comments/create', {
-                templateUrl: 'partials/createComment.html',
+                templateUrl: 'views/comment/edit.html',
                 controller: 'commentController as cmtCtrl'
             }).
             when('/bugs/:bugId/state/change/:stateId', {
-                templateUrl: 'partials/changeState.html',
+                templateUrl: 'views/state/change.html',
                 controller: 'commentController as cmtCtrl'
             }).
             otherwise({
@@ -46,15 +46,18 @@ application.config(['$routeProvider', '$httpProvider',
         //https://github.com/dsyer/spring-security-angular/tree/master/single
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);
-
-//application.run(['$rootScope', '$location', 'authService', function ($rootScope, $location, authService) {
+//
+//application.run(['$rootScope', '$location', '$scope', 'authService', function ($rootScope, $location, $scope, authService) {
 //    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-//        if (!(authService.authenticated == true)) {
-//            if (next.templateUrl == "partials/login.html") {
-//            } else if (next.templateUrl == "partials/register.html") {
-//            } else {
-//                $location.path("/login");
-//            }
+//        if ($scope.mainModel.showError == true) {
+//            $scope.mainModel.showError = false;
 //        }
+//        //if (!(authService.authenticated == true)) {
+//        //    if (next.templateUrl == "partials/login.html") {
+//        //    } else if (next.templateUrl == "partials/register.html") {
+//        //    } else {
+//        //        $location.path("/login");
+//        //    }
+//        //}
 //    });
 //}]);
