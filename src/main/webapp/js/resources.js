@@ -21,15 +21,6 @@ resources.factory('Bug', function () {
     };
 });
 
-//Set up the State Factory //TODO: evtl löschen
-resources.factory('State', function () {
-    return function (id, title, toStates) {
-        this.id = id;
-        this.title = title;
-        this.toStates = toStates;
-    };
-});
-
 //Set up the Comment Factory
 resources.factory('Comment', function () {
     return function (id, title, description, bug, userId, creationDate, fromState, toState) {
@@ -44,7 +35,7 @@ resources.factory('Comment', function () {
     };
 });
 
-//Set up the Developer Factory
+//Set up the User Factory
 resources.factory('User', function () {
     return function (id, firstname, lastname, email) {
         this.id = id;

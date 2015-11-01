@@ -13,12 +13,12 @@
                 <button class="btn btn-default" type="button" ng-click="showCtrl.createComment()">
                     <em class="glyphicon glyphicon-comment"></em> Kommentar anlegen
                 </button>
-                <button ng-repeat="toStates in bugModel.toStates" class="btn btn-default"
+                <button ng-repeat="toStates in showBugModel.toStates" class="btn btn-default"
                         format-state="{{toStates.title}}" ng-click="showCtrl.toChangeState(toStates)"></button>
             </div>
         </div>
-        <h2>{{bugModel.bug.title}}</h2>
-        <span ng-if="bugModel.bug.state" format-state="{{bugModel.bug.state.title}}"></span>
+        <h2>{{showBugModel.bug.title}}</h2>
+        <span ng-if="showBugModel.bug.state" format-state="{{showBugModel.bug.state.title}}"></span>
     </div>
 
     <div class="row">
@@ -27,10 +27,10 @@
                 <h4>Daten:</h4>
             </div>
             <div class="col-md-12">
-                Entwickler: {{bugModel.bug.developer.firstname}} {{bugModel.bug.developer.lastname}}<br/> <br/>
-                Autor: {{bugModel.bug.autor.firstname}} {{bugModel.bug.autor.lastname}}<br/> <br/>
-                Letzte aktualisierung: {{bugModel.bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
-                Erstellungsdatum: {{bugModel.bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
+                Entwickler: {{showBugModel.bug.developer.firstname}} {{showBugModel.bug.developer.lastname}}<br/> <br/>
+                Autor: {{showBugModel.bug.autor.firstname}} {{showBugModel.bug.autor.lastname}}<br/> <br/>
+                Letzte aktualisierung: {{showBugModel.bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
+                Erstellungsdatum: {{showBugModel.bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
             </div>
         </div>
         <div class="col-md-9">
@@ -38,23 +38,24 @@
                 <h4>Beschreibung:</h4>
             </div>
             <div class="col-md-12">
-                {{bugModel.bug.description}}
+                {{showBugModel.bug.description}}
             </div>
         </div>
     </div>
+    <br/>
 
     <div class="page-header">
         <h4>Kommentare</h4>
     </div>
-    <div ng-repeat="comment in bugModel.comments | orderBy:'id':true" class="col-md-12 alert alert-info">
+    <div ng-repeat="comment in showBugModel.comments | orderBy:'id':true" class="col-md-12 alert alert-info">
         <div class="col-md-2">
-            {{comment.title}}<br /><br/>
             Autor: {{comment.autor.firstname}} {{comment.autor.lastname}}<br/>
             Am: {{comment.creationDate | date:'dd.MM.yyyy - HH:mm'}}<br/>
             <span ng-if="comment.fromState" format-state="{{comment.fromState}}">Von: </span> <br/>
             <span ng-if="comment.toState" format-state="{{comment.toState}}">Auf: </span>
         </div>
         <div class="col-md-10">
+            {{comment.title}}
             <pre class="description" ng-if="comment.description">{{comment.description}}</pre>
         </div>
     </div>

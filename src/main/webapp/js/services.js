@@ -6,33 +6,15 @@
 
 var services = angular.module('services', ['resources']);
 
-// Set up the auth service.
-services.service('authService', ['$http', function ($http) {
+// Set up the session service.
+services.service('sessionService', ['$http', function ($http) {
     this.user = null;
-    this.authenticated = false;
 
     /**
-     * Loads the given user using an asynchronous REST call with promise.
-     * @param user The user to be loaded.
+     * Login the giving user using an asynchronous REST call with promise.
+     * @param user The User to be login.
      * @returns {HttpPromise}.
      */
-        //TODO: SICHERHEIT, nicht direkt mit dem user/password
-    this.loadUserWithPromise = function (user) {
-        return $http.post('rest/users', user);
-    };
-
-    /**
-     * Saves a given user using an asynchronous REST call with promise.
-     * @param user The user to be saved.
-     * @returns {HttpPromise}.
-     */
-        //TODO: SICHERHEIT, nicht direkt mit dem user/password
-    this.saveUserWithPromise = function (user) {
-        return $http.put('rest/users', user);
-    };
-}]);
-
-services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
     this.loginWithPromise = function (user) {
         return $http({
             url: 'login',
@@ -40,19 +22,13 @@ services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
-
-        //return $http.post("login", "username=" + user.email +
-        //    "&password=" + user.password, {
-        //    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        //} ).then(function(data) {
-        //    alert("login successful");
-        //    localStorage.setItem("session", {});
-        //}, function(data) {
-        //    alert("error logging in");
-        //});
     };
 
-    this.logout = function () {
+    this.setLogIn = function () {
+        localStorage.setItem("session", {});
+    };
+
+    this.logOut = function () {
         localStorage.removeItem("session");
     };
 
@@ -62,28 +38,31 @@ services.service('sessionService', ['$http', function ($http) { //TODO: base64?!
 
 }]);
 
+// Set up the user service.
 services.service('userService', ['$http', function ($http) {
-
+    /**
+     * Saves the giving user using an asynchronous REST call with promise.
+     * @param user The User to be saved.
+     * @returns {HttpPromise}.
+     */
     this.saveUserWithPromise = function (user) {
         return $http.put('rest/users', user);
     };
-    //service.getAccountById = function(accountId) {
-    //    var Account = $resource("/basic-web-app/rest/accounts/:paramAccountId");
-    //    return Account.get({paramAccountId:accountId}).$promise;
-    //};
 
-    this.userExistsWithPromise = function (eMail) {
-        console.log(eMail);
+    /**
+     * Return a user identified with the giving eMail by using an asynchronous REST call with promise.
+     * @param eMail The eMail of the User to be loaded.
+     * @returns {HttpPromise}.
+     */
+    this.getUserWithPromise = function (eMail) {
         return $http.post('rest/users', eMail);
     };
-
 }]);
-
 
 // Set up the bug service.
 services.service('bugService', ['$http', function ($http) {
     /**
-     * Return all bug using an asynchronous REST call with promise.
+     * Return all bugs using an asynchronous REST call with promise.
      * @returns {HttpPromise}.
      */
     this.listBugsWithPromise = function () {
@@ -92,12 +71,12 @@ services.service('bugService', ['$http', function ($http) {
 
     /**
      * Loads the given bug using an asynchronous REST call with promise.
-     * @param bug The bug to be loaded.
+     * @param bugId The bugId of the bug to be loaded.
      * @returns {HttpPromise}.
      */
     this.loadBugWithPromise = function (bugId) {
         return $http.get('rest/bugs/' + bugId);
-    }
+    };
 
     /**
      * Saves a given bug using an asynchronous REST call with promise.
@@ -110,8 +89,8 @@ services.service('bugService', ['$http', function ($http) {
 
 
     /**
-     * Saves a given bug State using an asynchronous REST call with promise.
-     * @param bugId, stateId The bug state to be saved.
+     * Set a given bug State using an asynchronous REST call with promise.
+     * @params bugId The bugId of the bug, stateId The stateId of the state to be saved.
      * @returns {HttpPromise}.
      */
     this.setBugStateWithPromise = function (bugId, stateId) {
@@ -122,8 +101,8 @@ services.service('bugService', ['$http', function ($http) {
 // Set up the comment service.
 services.service('commentService', ['$http', function ($http) {
     /**
-     * Return all comment for a bug using an asynchronous REST call with promise.
-     * @param bug The bug in which the comment has been saved
+     * Return all comments for a bug using an asynchronous REST call with promise.
+     * @param bugId The bugId of the bug where the comment has been saved
      * @returns {HttpPromise}.
      */
     this.listCommentsWithPromise = function (bugId) {
@@ -133,7 +112,7 @@ services.service('commentService', ['$http', function ($http) {
     /**
      * Saves a given comment using an asynchronous REST call with promise.
      * @param comment The comment to be saved.
-     *        bug The bug in which the comment will be saved
+     *        bug The bug where the comment will be saved
      * @returns {HttpPromise}.
      */
     this.saveCommentWithPromise = function (bugId, comment) {
@@ -145,8 +124,8 @@ services.service('commentService', ['$http', function ($http) {
 // Set up the state service.
 services.service('stateService', ['$http', function ($http) {
     /**
-     * Loads the given bug using an asynchronous REST call with promise.
-     * @param bug The bug to be loaded.
+     * Loads the state using an asynchronous REST call with promise.
+     * @param stateId The stateId of the state to be loaded.
      * @returns {HttpPromise}.
      */
     this.loadStateWithPromise = function (stateId) {
@@ -154,7 +133,7 @@ services.service('stateService', ['$http', function ($http) {
     };
 
     /**
-     * Return all states for a bug using an asynchronous REST call with promise.
+     * Return all possible toStates for a bug using an asynchronous REST call with promise.
      * @param bugId The bugId in which the state has been saved
      * @returns {HttpPromise}.
      */
@@ -162,11 +141,3 @@ services.service('stateService', ['$http', function ($http) {
         return $http.get('rest/bugs/' + bugId + '/states');
     };
 }]);
-
-// Set up the data service.
-services.service('dataService', function () {
-    var data = this;
-
-    data.fromState = "";
-    data.toState = "";
-});

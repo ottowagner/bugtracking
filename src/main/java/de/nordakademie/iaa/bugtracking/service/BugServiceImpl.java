@@ -19,7 +19,7 @@ public class BugServiceImpl implements BugService {
 
     private BugDAO bugDAO;
     private StateDAO stateDAO;
-//TODO: Service muss weg.. Die Frontend-Schicht arbeitet nur mit den Services, DAOs werden nur Spring-intern von den Service-Klassen verwendet.
+    //TODO: Service muss weg.. Die Frontend-Schicht arbeitet nur mit den Services, DAOs werden nur Spring-intern von den Service-Klassen verwendet.
     private CommentService commentService;
 
     @Override
@@ -35,25 +35,25 @@ public class BugServiceImpl implements BugService {
             State state = stateDAO.load((long) 1);
             bug.setState(state);
 
-            savedBug =  bugDAO.save(bug);
+            savedBug = bugDAO.save(bug);
 
             description.append("Titel: \n");
             description.append(bug.getTitle());
-            if(bug.getDescription() != null) {
+            if (bug.getDescription() != null) {
                 description.append("\nBeschreibung: \n");
                 description.append(bug.getDescription());
             }
             comment.setTitle("Fehler wurde angelegt");
             comment.setDescription(description.toString());
-        }else{
+        } else {
             Bug oldBug = bugDAO.load(bug.getId());
-            if(!bug.getTitle().equals(oldBug.getTitle())){
+            if (!bug.getTitle().equals(oldBug.getTitle())) {
                 description.append("Titel wurde bearbeitet: \n");
                 description.append(bug.getTitle());
             }
-            if(bug.getDescription() == null && oldBug.getDescription() != null) {
+            if (bug.getDescription() == null && oldBug.getDescription() != null) {
                 description.append("\nBeschreibung wurde gelöscht");
-            }else if(bug.getDescription() != null && !bug.getDescription().equals(oldBug.getDescription())) {
+            } else if (bug.getDescription() != null && !bug.getDescription().equals(oldBug.getDescription())) {
                 description.append("\nBeschreibung wurde bearbeitet: \n");
                 description.append(bug.getDescription());
             }
@@ -63,7 +63,7 @@ public class BugServiceImpl implements BugService {
             comment.setDescription(description.toString());
         }
         comment.setAutor(bug.getAutor());
-        commentService.saveComment(bug.getId(),comment);
+        commentService.saveComment(bug.getId(), comment);
 
         return savedBug;
     }
@@ -72,6 +72,7 @@ public class BugServiceImpl implements BugService {
     public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException {
 //        TODO: Prüfe ob status gesetzt werden darf!!!!! und ggf. Fehler werfen! (Es ist sonst via url möglich nicht erlaubte statuswechsle durchzuführen)
         Bug bug = null;
+        Date updateDate = new Date();
         try {
             bug = this.loadBug(bugId);
         } catch (EntityNotFoundException e) {
@@ -79,6 +80,13 @@ public class BugServiceImpl implements BugService {
         }
         State state = stateDAO.load(stateId);
         bug.setState(state);
+//        TODO: Setze bearbeiter, wenn statuswechsel auf In Bearbeitung, sonst entferne bearbeiter!
+        if (state.getTitle().equals("In Bearbeitung")) { //IF geht vllt noch besser...
+            bug.setDeveloper(bug.getAutor()); //DER Autor wurde hier nur zum test gesetzt! MUSS WEG!
+        } else {
+            bug.setDeveloper(null);
+        }
+        bug.setLastUpdateDate(updateDate);
         return bugDAO.save(bug);
     }
 

@@ -1,0 +1,89 @@
+<div class="col-md-12">
+    <div class="page-header">
+        <h2>Fehlerübersicht</h2>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <button type="button" class="btn btn-default" ng-class="hideClosed ? 'active' : ''"
+                    ng-click="hideClosed = !hideClosed">
+                Filter: <span format-state="Geschlossen"></span>
+            </button>
+        </div>
+        <div class="form-group col-md-8">
+            <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-search"> </span></span>
+                <input type="text" id="search" class="form-control" ng-model="searchString" placeholder="Suchen"/>
+            </div>
+        </div>
+        <a class="btn btn-default pull-right btn-primary" aria-label="Anlegen" ng-click="listCtrl.createBug()">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Fehler anlegen
+        </a>
+    </div>
+
+    <br/>
+    <br/>
+
+    <table class="col-md-12 table table-hover bugList">
+        <tr>
+            <th><a ng-click="listCtrl.sortBy('id')">
+                Nummer
+                <span ng-show="listBugModel.sortType == 'id' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'id' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('title')">
+                Titel
+                <span ng-show="listBugModel.sortType == 'title' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'title' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('state.title')">
+                Status
+                <span ng-show="listBugModel.sortType == 'state' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'state' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('autor')">
+                Autor
+                <span ng-show="listBugModel.sortType == 'autor' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'autor' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('developer')">
+                Entwickler
+                <span ng-show="listBugModel.sortType == 'developer' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'developer' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('lastUpdateDate')">
+                Aktualisierungsdatum
+                <span ng-show="listBugModel.sortType == 'lastUpdateDate' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'lastUpdateDate' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+            <th><a ng-click="listCtrl.sortBy('creationDate')">
+                Erstellungsdatum
+                <span ng-show="listBugModel.sortType == 'creationDate' && !listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-down"></span>
+                <span ng-show="listBugModel.sortType == 'creationDate' && listBugModel.sortReverse"
+                      class="glyphicon glyphicon-chevron-up"></span>
+            </a></th>
+        </tr>
+        <tr ng-repeat="bug in listBugModel.bugs | orderBy:listBugModel.sortType:listBugModel.sortReverse | bugListFilter:searchString:hideClosed"
+            ng-click="listCtrl.openBug(bug)">
+            <td>{{bug.id}}</td>
+            <td>{{bug.title}}</td>
+            <td format-state="{{bug.state.title}}"></td>
+            <td>{{bug.autor.firstname}} {{bug.autor.lastname}}</td>
+            <td>{{bug.developer.firstname}} {{bug.developer.lastname}}</td>
+            <td>{{bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}</td>
+            <td>{{bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}</td>
+        </tr>
+    </table>
+</div>

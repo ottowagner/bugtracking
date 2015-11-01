@@ -31,6 +31,7 @@ public class CommentServiceImpl implements CommentService {
         Date creationDate = new Date();
 
         comment.setBug(bug);
+        comment.setAutor(bug.getAutor()); //TODO: load logged User!
         comment.setCreationDate(creationDate);
         commentDAO.save(comment);
     }

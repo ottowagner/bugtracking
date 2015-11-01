@@ -28,16 +28,10 @@ public class UserController {
      *
      * @return the user.
      */
-    //    TODO: Muss ersetzt werden (ist denke zu unsicher). Brauche ich gerade, weil wir noch keine richtige authentifikation haben
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public User loadUser(@RequestParam String eMail) throws Exception {
-        return userService.loadUser(eMail);
-    }
-
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @PreAuthorize("permitAll")
-    public boolean userExists(@RequestBody String eMail) throws EntityNotFoundException {
-        return userService.userExists(eMail);
+    public User loadUser(@RequestBody String eMail) {
+        return userService.loadUser(eMail);
     }
 
     /**

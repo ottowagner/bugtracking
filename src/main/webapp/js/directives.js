@@ -10,7 +10,7 @@ var directives = angular.module('directives', []);
 directives.directive("formatState", function () {
     /**
      * Return state with glyphicon.
-     * @returns {append html code to element}.
+     * @returns append html code to element.
      */
     return {
         link: function (scope, element, attrs) {
@@ -21,7 +21,7 @@ directives.directive("formatState", function () {
                     state = "<i class='glyphicon glyphicon-file'></i> " + state;
                     break;
                 case "In Bearbeitung":
-                    state = "<i class='glyphicon glyphicon-pencil'></i> " + state;
+                    state = "<i class='glyphicon glyphicon-wrench'></i> " + state;
                     break;
                 case "Behoben":
                     state = "<i class='glyphicon glyphicon-thumbs-up'></i> " + state;
