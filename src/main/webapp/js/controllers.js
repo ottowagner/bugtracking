@@ -136,6 +136,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
             sessionService.logOut();
             $scope.mainModel.authenticated = sessionService.isLoggedIn();
             $scope.mainModel.user = null;
+            $location.path("/login");
         };
 
     }]);
