@@ -24,14 +24,32 @@ services.service('sessionService', ['$http', function ($http) {
         });
     };
 
-    this.setLogIn = function () {
-        localStorage.setItem("session", {});
+    /**
+     * Logout by using an asynchronous REST call with promise.
+     * @returns {HttpPromise}.
+     */
+    this.logoutWithPromise = function () {
+        return $http({
+            url: 'logout',
+            method: 'POST'
+        });
     };
 
-    this.logOut = function () {
-        localStorage.removeItem("session");
+    /**
+     * Set / remove session in localStorage
+     * @param login The bool to set or remove login.
+     */
+    this.setLogIn = function (login) {
+        if(login){
+            localStorage.setItem("session", {});
+        }else{
+            localStorage.removeItem("session");
+        }
     };
 
+    /**
+     * Check session in localStorage
+     */
     this.isLoggedIn = function () {
         return localStorage.getItem("session") !== null;
     };

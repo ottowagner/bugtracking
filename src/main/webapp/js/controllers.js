@@ -79,7 +79,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 .success(function (userData) {
                     sessionService.loginWithPromise(user)
                         .success(function () {
-                            sessionService.setLogIn();
+                            sessionService.setLogIn(true);
                             sessionService.user = userData;
                             $scope.mainModel.user = sessionService.user;
                             $scope.mainModel.authenticated = sessionService.isLoggedIn();
@@ -109,7 +109,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                     .success(function (userData) {
                         sessionService.loginWithPromise(user)
                             .success(function () {
-                                sessionService.setLogIn();
+                                sessionService.setLogIn(true);
                                 sessionService.user = userData;
                                 $scope.mainModel.user = sessionService.user;
                                 $scope.mainModel.authenticated = sessionService.isLoggedIn();
@@ -133,10 +133,16 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * logout a User.
          */
         this.logout = function () {
-            sessionService.logOut();
-            $scope.mainModel.authenticated = sessionService.isLoggedIn();
-            $scope.mainModel.user = null;
-            $location.path("/login");
+            sessionService.logoutWithPromise()
+                .success(function () {
+                    sessionService.setLogIn(false);
+                    $scope.mainModel.authenticated = sessionService.isLoggedIn();
+                    $scope.mainModel.user = null;
+                    $location.path("/login");
+                }).error(function (data) {
+                    $scope.mainModel.error = data;
+                    $scope.mainModel.showError = true;
+                });
         };
 
     }]);
