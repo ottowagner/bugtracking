@@ -35,22 +35,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and().formLogin()/**.loginPage("/index.html")*/.permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
+
         http
                 .csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers(new String[]{"/*", "/partials/login.html", "/resources/**/*", "/js/*","/rest/users"}).permitAll()
-                .anyRequest().authenticated();
-
-
-        /*.antMatchers("/index.html", "/home.html", "/login.html", "/").permitAll()
-                .anyRequest().authenticated();*/
+                .antMatchers(new String[]{"/views/auth/*", "/*", "/partials/login.html", "/resources/**/*", "/js/*", "/rest/users"}).permitAll()
+                .anyRequest().authenticated().and().formLogin().permitAll();
     }
 }
