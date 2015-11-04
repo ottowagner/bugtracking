@@ -41,21 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                     .authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                    .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/*")
+                    .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/users")
                     .permitAll()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login")
-                    .permitAll()
-                    .and()
-                .logout()
+                    .antMatchers("/placeholderForAdminURLs").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().permitAll()
+                .and().logout()
                 //TODO: Löscht cookie nicht! Wird zwar im wntwart header gelöscht, aber iwie nicht im browser
                         // übernommen.. evtl liegt es an tomcat.. kp
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/#/login")
-                    .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID");
+                // logout ansich funktioniert aba
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
 //                    .logoutSuccessHandler(logoutSuccessHandler)
 //                    .addLogoutHandler(logoutHandler);
 
