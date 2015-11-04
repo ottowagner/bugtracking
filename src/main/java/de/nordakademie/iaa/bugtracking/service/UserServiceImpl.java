@@ -23,17 +23,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUser(String email) {
+    public User loadUser(String email) throws EntityNotFoundException {
         return userDAO.load(email);
     }
 
     @Override
     public void deleteUser(String email) throws EntityNotFoundException {
         User user = loadUser(email);
-        if (user == null) {
-            throw new EntityNotFoundException();
-        }
         userDAO.delete(user);
+    }
+
+    @Override
+    public String getRole(String email) throws EntityNotFoundException {
+        User user = loadUser(email);
+        return user.getRole();
     }
 
     @Inject

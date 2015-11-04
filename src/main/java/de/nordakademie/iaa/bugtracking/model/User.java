@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String firstname;
     private String lastname;
     private String password;
+    private String role = "ROLE_USER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -62,4 +63,8 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getRole() { return role; }
+
+    public void setRole(String role) { this.role = role; }
 }

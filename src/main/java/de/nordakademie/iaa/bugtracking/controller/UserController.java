@@ -30,7 +30,7 @@ public class UserController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @PreAuthorize("permitAll")
-    public User loadUser(@RequestBody String eMail) {
+    public User loadUser(@RequestBody String eMail) throws EntityNotFoundException {
         return userService.loadUser(eMail);
     }
 

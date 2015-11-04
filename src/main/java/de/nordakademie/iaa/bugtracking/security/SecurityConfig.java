@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/users")
                     .permitAll()
                     .antMatchers("/placeholderForAdminURLs").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
                 .and().logout()

@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.bugtracking.security;
 import de.nordakademie.iaa.bugtracking.model.User;
+import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +18,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userService.loadUser(email);
-        if(user == null) {
+        try {
+            User user = userService.loadUser(email);
+            return new AccountUserDetails(user);
+        } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException("no user found with " + email);
         }
-        return new AccountUserDetails(user);
     }
 }

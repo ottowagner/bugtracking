@@ -22,10 +22,9 @@ public class AccountUserDetails implements UserDetails {
         GrantedAuthority authority = new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return "USER";
+                return user.getRole();
             }
         };
-
         ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(authority);
         return authorities;
