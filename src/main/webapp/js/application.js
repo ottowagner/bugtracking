@@ -40,7 +40,7 @@ application.config(['$routeProvider', '$httpProvider',
                 controller: 'commentController as cmtCtrl'
             }).
             otherwise({
-                redirectTo: '/login'
+                redirectTo: '/bugs'
             });
 
         //https://github.com/dsyer/spring-security-angular/tree/master/single

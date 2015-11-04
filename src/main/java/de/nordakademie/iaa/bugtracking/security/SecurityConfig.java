@@ -37,9 +37,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .csrf().disable()
+                .exceptionHandling()
+                    .authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers(new String[]{"/views/auth/*", "/*", "/partials/login.html", "/resources/**/*", "/js/*", "/rest/users"}).permitAll()
-                .anyRequest().authenticated().and().formLogin().permitAll();
+                    .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/*")
+                    .permitAll()
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                    .and()
+                .logout()
+                //TODO: Löscht cookie nicht! Wird zwar im wntwart header gelöscht, aber iwie nicht im browser
+                        // übernommen.. evtl liegt es an tomcat.. kp
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/#/login")
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID");
+//                    .logoutSuccessHandler(logoutSuccessHandler)
+//                    .addLogoutHandler(logoutHandler);
+
     }
 }
