@@ -40,9 +40,9 @@ services.service('sessionService', ['$http', function ($http) {
      * @param login The bool to set or remove login.
      */
     this.setLogIn = function (login) {
-        if(login){
+        if (login) {
             localStorage.setItem("session", {});
-        }else{
+        } else {
             localStorage.removeItem("session");
         }
     };
@@ -72,8 +72,16 @@ services.service('userService', ['$http', function ($http) {
      * @param eMail The eMail of the User to be loaded.
      * @returns {HttpPromise}.
      */
-    this.getUserWithPromise = function (eMail) {
+    this.getUserByMailWithPromise = function (eMail) {
         return $http.post('rest/users', eMail);
+    };
+
+    /**
+     * Return a user identified with the giving cookie by using an asynchronous REST call with promise.
+     * @returns {HttpPromise}.
+     */
+    this.getUserWithPromise = function () {
+        return $http.get('rest/users');
     };
 }]);
 
@@ -159,3 +167,27 @@ services.service('stateService', ['$http', function ($http) {
         return $http.get('rest/bugs/' + bugId + '/states');
     };
 }]);
+
+// Set up the error service.
+services.service('errorService', function () {
+    var errorMessage = "";
+    var showError = false;
+
+    /**
+     * close a error message
+     */
+    this.closeError = function () {
+        this.errorMessage = "";
+        this.showError = false;
+    };
+
+    /**
+     * set a error message
+     * @param message The message to be shown
+     */
+    this.setError = function (message) {
+        this.errorMessage = message;
+        this.showError = true;
+    };
+
+});

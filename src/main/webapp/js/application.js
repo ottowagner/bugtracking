@@ -46,18 +46,3 @@ application.config(['$routeProvider', '$httpProvider',
         //https://github.com/dsyer/spring-security-angular/tree/master/single
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
     }]);
-//
-//application.run(['$rootScope', '$location', '$scope', 'authService', function ($rootScope, $location, $scope, authService) {
-//    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-//        if ($scope.mainModel.showError == true) {
-//            $scope.mainModel.showError = false;
-//        }
-//        //if (!(authService.authenticated == true)) {
-//        //    if (next.templateUrl == "partials/login.html") {
-//        //    } else if (next.templateUrl == "partials/register.html") {
-//        //    } else {
-//        //        $location.path("/login");
-//        //    }
-//        //}
-//    });
-//}]);
