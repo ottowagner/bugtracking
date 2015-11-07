@@ -4,8 +4,7 @@
  */
 'use strict';
 
-var application = angular.module('bugtracking', ['ngRoute', 'controllers']);
-
+var application = angular.module('bugtracking', ['ngRoute', 'controllers', 'http-auth-interceptor']);
 application.config(['$routeProvider', '$httpProvider',
     function ($routeProvider, $httpProvider) {
         $routeProvider.
@@ -40,24 +39,31 @@ application.config(['$routeProvider', '$httpProvider',
                 controller: 'commentController as cmtCtrl'
             }).
             otherwise({
-                redirectTo: '/login'
+                redirectTo: '/bugs'
             });
 
-        //https://github.com/dsyer/spring-security-angular/tree/master/single
+        //https://github.com/dsyer/spring-security-angular/tree/master/singlec
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+    }]).factory('errorInterceptor', ['$q', '$rootScope', '$location',
+    function ($q, $rootScope, $location) {
+        return {
+            request: function (config) {
+                return config || $q.when(config);
+            },
+            requestError: function(request){
+                return $q.reject(request);
+            },
+            response: function (response) {
+                return response || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response && response.status === 401) {
+                    $location.path('/login');
+                }
+                    return $q.reject(response);
+            }
+        };
     }]);
-//
-//application.run(['$rootScope', '$location', '$scope', 'authService', function ($rootScope, $location, $scope, authService) {
-//    $rootScope.$on("$routeChangeStart", function (event, next, current) {
-//        if ($scope.mainModel.showError == true) {
-//            $scope.mainModel.showError = false;
-//        }
-//        //if (!(authService.authenticated == true)) {
-//        //    if (next.templateUrl == "partials/login.html") {
-//        //    } else if (next.templateUrl == "partials/register.html") {
-//        //    } else {
-//        //        $location.path("/login");
-//        //    }
-//        //}
-//    });
-//}]);
+application.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('errorInterceptor');
+}]);
