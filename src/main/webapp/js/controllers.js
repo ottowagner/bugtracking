@@ -7,14 +7,17 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives', 'filters']);
 
 // Set up the mainController.
-controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'User',
-    function ($scope, $location, userService, sessionService, User) {
+controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'User', 'errorService',
+    function ($scope, $location, userService, sessionService, User, errorService) {
+        var mainController = this;
+
         $scope.mainModel = {
             authenticated: sessionService.isLoggedIn(),
             user: sessionService.user,
-            error: "",
-            showError: false
+            error: errorService
         };
+
+        //TODO: Auslagern in den Service
         var errorMessages = {
             errors: {
                 required: 'Bitte angeben',
@@ -45,11 +48,10 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
         };
 
         /**
-         * close a error message
+         * close Error
          */
         this.closeError = function () {
-            $scope.mainModel.error = "";
-            $scope.mainModel.showError = false;
+            errorService.closeError();
         };
 
         /**
@@ -57,13 +59,13 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          */
         if ($scope.mainModel.authenticated) {
             //TODO USER LADEN! Sollte iwie anhand cookie gehen!
-            userService.getUserWithPromise("otto-wagner@gmx.net")
+            //userService.getUserWithPromise()
+            userService.getUserByMailWithPromise("otto-wagner@gmx.net")
                 .success(function (userData) {
                     sessionService.user = userData;
                     $scope.mainModel.user = sessionService.user;
                 }).error(function (data) {
-                    $scope.mainModel.error = data;
-                    $scope.mainModel.showError = true;
+                    errorService.setError(data);
                 });
         }
 
@@ -72,25 +74,29 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * @param loginForm The login Form.
          */
         this.login = function (loginForm) {
-            var user = new User();
-            user.email = loginForm.email.$modelValue;
-            user.password = loginForm.password.$modelValue;
-            userService.getUserWithPromise(user.email)
+            var userForm = new User();
+            userForm.email = loginForm.email.$modelValue;
+            userForm.password = loginForm.password.$modelValue;
+            userService.getUserByMailWithPromise(userForm.email)
                 .success(function (userData) {
-                    sessionService.loginWithPromise(user)
-                        .success(function () {
-                            sessionService.setLogIn(true);
-                            sessionService.user = userData;
-                            $scope.mainModel.user = sessionService.user;
-                            $scope.mainModel.authenticated = sessionService.isLoggedIn();
-                            $location.path("/bugs");
-                        }).error(function (data) {
-                            $scope.mainModel.error = data;
-                            $scope.mainModel.showError = true;
-                        });
+                    mainController.loginWithService(userForm, userData);
                 }).error(function (data) {
-                    $scope.mainModel.error = data;
-                    $scope.mainModel.showError = true;
+                    //User do not exist
+                    errorService.setError(data);
+                });
+        };
+
+        this.loginWithService = function (userForm, userData) {
+            sessionService.loginWithPromise(userForm)
+                .success(function () {
+                    sessionService.setLogIn(true);
+                    sessionService.user = userData;
+                    $scope.mainModel.user = sessionService.user;
+                    $scope.mainModel.authenticated = sessionService.isLoggedIn();
+                    $location.path("/bugs");
+                    errorService.closeError();
+                }).error(function (data) {
+                    errorService.setError(data);
                 });
         };
 
@@ -99,33 +105,21 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * @param regForm The Register Form.
          */
         this.register = function (regForm) {
-            var user = new User();
-            user.email = regForm.email.$modelValue;
-            user.password = regForm.password.$modelValue;
-            user.firstname = regForm.firstname.$modelValue;
-            user.lastname = regForm.lastname.$modelValue;
-            if (regForm.$valid && user) {
-                userService.saveUserWithPromise(user)
+            var userForm = new User();
+            userForm.email = regForm.email.$modelValue;
+            userForm.password = regForm.password.$modelValue;
+            userForm.firstname = regForm.firstname.$modelValue;
+            userForm.lastname = regForm.lastname.$modelValue;
+            if (regForm.$valid && userForm) {
+                userService.saveUserWithPromise(userForm)
                     .success(function (userData) {
-                        sessionService.loginWithPromise(user)
-                            .success(function () {
-                                sessionService.setLogIn(true);
-                                sessionService.user = userData;
-                                $scope.mainModel.user = sessionService.user;
-                                $scope.mainModel.authenticated = sessionService.isLoggedIn();
-                                $location.path("/bugs");
-                            }).error(function (data) {
-                                $scope.mainModel.error = data;
-                                $scope.mainModel.showError = true;
-                            });
+                        mainController.loginWithService(userForm, userData);
                     })
                     .error(function (data) {
-                        $scope.mainModel.error = data;
-                        $scope.mainModel.showError = true;
-                        $scope.error = true;
+                        errorService.setError(data);
                     });
             } else {
-                alert("Fehler abfangen!");
+                alert("Formular nicht vollständig!");
             }
         };
 
@@ -139,17 +133,32 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                     $scope.mainModel.authenticated = sessionService.isLoggedIn();
                     $scope.mainModel.user = null;
                     $location.path("/login");
+                    errorService.closeError();
                 }).error(function (data) {
-                    $scope.mainModel.error = data;
-                    $scope.mainModel.showError = true;
+                    errorService.setError(data);
                 });
         };
 
+        /**
+         * go to Login
+         */
+        this.toLogin = function () {
+            $location.path("/login");
+            errorService.closeError();
+        };
+
+        /**
+         * go to Register
+         */
+        this.toRegister = function () {
+            $location.path("/register");
+            errorService.closeError();
+        };
     }]);
 
 // Set up the listBugController.
-controllers.controller('listBugController', ['$scope', '$location', 'bugService',
-    function ($scope, $location, bugService) {
+controllers.controller('listBugController', ['$scope', '$location', 'bugService', 'errorService',
+    function ($scope, $location, bugService, errorService) {
         $scope.listBugModel = {
             bugs: [],
             sortType: 'id',
@@ -164,8 +173,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
                 $scope.listBugModel.bugs = data;
             })
             .error(function (data) {
-                $scope.mainModel.error = data;
-                $scope.mainModel.showError = true;
+                errorService.setError(data);
             });
 
         /**
@@ -182,6 +190,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
          */
         this.createBug = function () {
             $location.path("/bugs/create");
+            errorService.closeError();
         };
 
         /**
@@ -190,15 +199,15 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
          */
         this.openBug = function (selected) {
             $location.path("/bugs/" + selected.id);
+            errorService.closeError();
         };
 
     }])
 ;
 
 // Set up the editBugController.
-controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'sessionService',
-    'Bug', 'bugService', function ($scope, $location, $routeParams, sessionService, Bug, bugService) {
-
+controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'sessionService', 'Bug',
+    'bugService', 'errorService', function ($scope, $location, $routeParams, sessionService, Bug, bugService, errorService) {
         $scope.editBugModel = {
             editMode: null,
             selectedBug: null,
@@ -217,8 +226,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                     $scope.editBugModel.editedBug = new Bug(data.id, data.title, data.description, data.state, data.autor,
                         data.developer, data.lastUpdateDate, data.creationDate);
                 }).error(function (data) {
-                    $scope.mainModel.error = data;
-                    $scope.mainModel.showError = true;
+                    errorService.setError(data);
                     $location.path("/bugs");
                 });
         } else {
@@ -245,13 +253,12 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                 bugService.saveBugWithPromise(selected)
                     .success(function (data) {
                         $location.path("/bugs/" + data.id);
+                        errorService.closeError();
                     }).error(function (data) {
-                        $scope.mainModel.error = data;
-                        $scope.mainModel.showError = true;
+                        errorService.setError(data);
                     });
             } else {
-                $scope.mainModel.error = "Fehler beim anlegen";
-                $scope.mainModel.showError = true;
+                errorService.setError("Fehler beim anlegen");
             }
         };
 
@@ -259,14 +266,16 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
          * go back
          */
         this.pageBack = function () {
-            history.back()
+            history.back();
+            errorService.closeError();
         };
 
     }]);
 
 // Set up the showBugController.
 controllers.controller('showBugController', ['$scope', '$location', '$routeParams', 'bugService', 'stateService',
-    'commentService', function ($scope, $location, $routeParams, bugService, stateService, commentService) {
+    'commentService', 'errorService', function ($scope, $location, $routeParams, bugService, stateService,
+                                                commentService, errorService) {
         $scope.showBugModel = {
             bug: null,
             comments: [],
@@ -280,8 +289,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
             .success(function (data) {
                 $scope.showBugModel.bug = data;
             }).error(function (data) {
-                $scope.mainModel.error = data;
-                $scope.mainModel.showError = true;
+                errorService.setError(data);
                 $location.path("/bugs");
             });
 
@@ -294,8 +302,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
                 $scope.showBugModel.comments = data;
             })
             .error(function (data) {
-                $scope.mainModel.error = data;
-                $scope.mainModel.showError = true;
+                errorService.setError(data);
             });
 
         /**
@@ -306,16 +313,14 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
             .success(function (data) {
                 $scope.showBugModel.toStates = data;
             }).error(function (data) {
-                $scope.mainModel.error = data;
-                $scope.mainModel.showError = true;
-                $location.path("/bugs");
+                errorService.setError(data);
             });
-
         /**
          * go to changeState
          */
         this.toChangeState = function (state) {
             $location.path("/bugs/" + $routeParams.bugId + "/state/change/" + state.id);
+            errorService.closeError();
         };
 
         /**
@@ -323,6 +328,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
          */
         this.createComment = function () {
             $location.path("/bugs/" + $routeParams.bugId + "/comments/create");
+            errorService.closeError();
         };
 
         /**
@@ -330,6 +336,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
          */
         this.toBugList = function () {
             $location.path("/bugs");
+            errorService.closeError();
         };
 
         /**
@@ -337,6 +344,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
          */
         this.toEditBug = function () {
             $location.path("/bugs/" + $routeParams.bugId + "/edit");
+            errorService.closeError();
         };
 
         /**
@@ -344,14 +352,15 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
          */
         this.toShowBug = function () {
             $location.path("/bugs/" + $routeParams.bugId);
+            errorService.closeError();
         };
 
     }]);
 
 // Set up the commentController.
 controllers.controller('commentController',
-    ['$scope', '$location', '$routeParams', 'bugService', 'commentService', 'Comment', 'stateService',
-        function ($scope, $location, $routeParams, bugService, commentService, Comment, stateService) {
+    ['$scope', '$location', '$routeParams', 'bugService', 'commentService', 'Comment', 'stateService', 'errorService',
+        function ($scope, $location, $routeParams, bugService, commentService, Comment, stateService, errorService) {
             $scope.commentModel = {
                 comment: null,
                 fromState: null,
@@ -369,12 +378,12 @@ controllers.controller('commentController',
                     commentService.saveCommentWithPromise($routeParams.bugId, comment)
                         .success(function () {
                             $location.path("/bugs/" + $routeParams.bugId);
+                            errorService.closeError();
                         }).error(function (data) {
-                            $scope.mainModel.error = data;
-                            $scope.mainModel.showError = true;
+                            errorService.setError(data);
                         });
                 } else {
-                    alert("Fehler abfangen!");
+                    errorService.setError("Formular nicht vollständig!");
                 }
             };
 
@@ -386,8 +395,7 @@ controllers.controller('commentController',
                     .success(function (data) {
                         $scope.commentModel.fromState = data.state;
                     }).error(function (data) {
-                        $scope.mainModel.error = data;
-                        $scope.mainModel.showError = true;
+                        errorService.setError(data);
                         $location.path("/bugs");
                     });
 
@@ -395,10 +403,9 @@ controllers.controller('commentController',
                     .success(function (data) {
                         $scope.commentModel.toState = data;
                     }).error(function (data) {
-                        $scope.mainModel.error = data;
-                        $scope.mainModel.showError = true;
+                        errorService.setError(data);
+                        $location.path("/bugs/" + $routeParams.bugId);
                     });
-
             }
 
             /**
@@ -414,20 +421,22 @@ controllers.controller('commentController',
                     comment.title = $scope.commentModel.comment.title;
                     comment.description = $scope.commentModel.comment.description;
                 }
-
-                bugService.setBugStateWithPromise($routeParams.bugId, $routeParams.stateId)
-                    .success(function (data) {
-                        commentService.saveCommentWithPromise($routeParams.bugId, comment)
-                            .success(function (data) {
-                                $location.path("/bugs/" + $routeParams.bugId);
-                            }).error(function (data) {
-                                $scope.mainModel.error = data;
-                                $scope.mainModel.showError = true;
-                            });
-                    }).error(function (data) {
-                        $scope.mainModel.error = data;
-                        $scope.mainModel.showError = true;
-                    });
+                if (stateForm.$valid && comment) {
+                    bugService.setBugStateWithPromise($routeParams.bugId, $routeParams.stateId)
+                        .success(function (data) {
+                            commentService.saveCommentWithPromise($routeParams.bugId, comment)
+                                .success(function (data) {
+                                    $location.path("/bugs/" + $routeParams.bugId);
+                                    errorService.closeError();
+                                }).error(function (data) {
+                                    errorService.setError(data);
+                                });
+                        }).error(function (data) {
+                            errorService.setError(data);
+                        });
+                } else {
+                    errorService.setError("Formular nicht vollständig!");
+                }
             };
 
             /**
@@ -435,6 +444,7 @@ controllers.controller('commentController',
              */
             this.toShowBug = function () {
                 $location.path("/bugs/" + $routeParams.bugId);
+                errorService.closeError();
             };
 
         }])

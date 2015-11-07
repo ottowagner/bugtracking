@@ -32,6 +32,6 @@
         <input type="submit" class="btn btn-primary" value="Registrieren" ng-disabled="registForm.$invalid"
                ng-click="mainCtrl.register(registForm)">
 
-        <a href="#/login" class="btn btn-default">Abbrechen</a>
+        <a ng-click="mainCtrl.toLogin()" class="btn btn-default">Abbrechen</a>
     </form>
 </div>
