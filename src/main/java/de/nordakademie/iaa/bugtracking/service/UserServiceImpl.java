@@ -45,9 +45,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getLogin() {
-        AccountUserDetails accUserDetails = (AccountUserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        return accUserDetails.getUser();
+        User user=null;
+        try {
+            user = loadUser(SecurityContextHolder.getContext()
+                    .getAuthentication().getName());
+        } catch (EntityNotFoundException e)
+        {
+            //ignore user MUSS vorhanden sein sonst wär er nicht eingeloggt^^
+        }
+        return user;
     }
 
     @Inject
