@@ -44,26 +44,31 @@ application.config(['$routeProvider', '$httpProvider',
 
         //https://github.com/dsyer/spring-security-angular/tree/master/singlec
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-    }]).factory('errorInterceptor', ['$q', '$rootScope', '$location',
-    function ($q, $rootScope, $location) {
+        $httpProvider.interceptors.push('authHttpResponseInterceptor');
+    }]);
+
+application.factory('authHttpResponseInterceptor', ['$q', '$location', 'errorService',
+    function ($q, $location, errorService) {
         return {
-            request: function (config) {
-                return config || $q.when(config);
-            },
-            requestError: function(request){
-                return $q.reject(request);
-            },
-            response: function (response) {
-                return response || $q.when(response);
-            },
-            responseError: function (response) {
-                if (response && response.status === 401) {
+            responseError: function (rejection) {
+                if (rejection.status === 401) {
+                    errorService.setError(rejection); //TODO Fehler korrekt abfangen!
                     $location.path('/login');
                 }
-                    return $q.reject(response);
+                return $q.reject(rejection);
             }
         };
     }]);
-application.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('errorInterceptor');
+
+//Ansonsten kann vorkommen, dass im Frontend ein Aufruf durchgeführt wird ohne eingeloggt zu sein!
+// Sollte doch mal eine Anfrage ohne Autorisierung durchgeführt werden, so wirft das Backend einen 400er Fehler, der
+// im Frontend per authHttpResponseInterceptor abgefangen wird.
+application.run(['$rootScope', '$location', 'sessionService', function ($rootScope, $location, sessionService) {
+    $rootScope.$on("$routeChangeStart", function (event, next) {
+        if (!(sessionService.isLoggedIn())) {
+            if (!(next.templateUrl == "views/auth/login.html") && !(next.templateUrl == "views/auth/register.html")) {
+                $location.path("/login");
+            }
+        }
+    });
 }]);
