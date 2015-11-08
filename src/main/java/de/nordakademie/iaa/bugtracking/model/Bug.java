@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 public class Bug implements Serializable {
-    private static final long serialVersionUID = 6925248180274039277L;
+    private static final long serialVersionUID = -2505362905947838530L;
 
     private Long id;
     private String title;

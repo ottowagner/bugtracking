@@ -12,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 public class State implements Serializable {
-    private static final long serialVersionUID = 6925248180274139277L;
+    private static final long serialVersionUID = 8647209811200579375L;
 
     private Long id;
     private String title;

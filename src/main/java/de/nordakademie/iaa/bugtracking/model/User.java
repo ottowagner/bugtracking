@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Entity
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class User implements Serializable {
-    private static final long serialVersionUID = 6925248180274039274L;
+    private static final long serialVersionUID = 3185274412265195568L;
 
     private Long id;
     private String email;
