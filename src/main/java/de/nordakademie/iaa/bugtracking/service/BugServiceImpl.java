@@ -9,6 +9,7 @@ import de.nordakademie.iaa.bugtracking.model.State;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Bug service implementation.
@@ -21,6 +22,7 @@ public class BugServiceImpl implements BugService {
     private StateDAO stateDAO;
     //TODO: Service muss weg.. Die Frontend-Schicht arbeitet nur mit den Services, DAOs werden nur Spring-intern von den Service-Klassen verwendet.
     private CommentService commentService;
+    private UserService userService;
 
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException {
@@ -28,12 +30,13 @@ public class BugServiceImpl implements BugService {
         Comment comment = new Comment();
         StringBuffer description = new StringBuffer();
 
-        //TODO: bessere lösung implementieren...
+
         if (bug.getState() == null) {
             Date creationDate = new Date();
             bug.setCreationDate(creationDate);
             State state = stateDAO.load((long) 1);
             bug.setState(state);
+            bug.setAutor(userService.getLogin());
 
             savedBug = bugDAO.save(bug);
 
@@ -62,15 +65,15 @@ public class BugServiceImpl implements BugService {
             comment.setTitle("Fehler wurde bearbeitet");
             comment.setDescription(description.toString());
         }
-        comment.setAutor(bug.getAutor());
+        //TODO: bessere lösung implementieren...
+        comment.setAutor(userService.getLogin());
         commentService.saveComment(bug.getId(), comment);
 
         return savedBug;
     }
 
     @Override
-    public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException {
-//        TODO: Prüfe ob status gesetzt werden darf!!!!! und ggf. Fehler werfen! (Es ist sonst via url möglich nicht erlaubte statuswechsle durchzuführen)
+    public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException, IlleagalToStateException, EntityNotFoundException {
         Bug bug = null;
         Date updateDate = new Date();
         try {
@@ -79,10 +82,16 @@ public class BugServiceImpl implements BugService {
             e.printStackTrace();
         }
         State state = stateDAO.load(stateId);
+
+        Set<Long> allowedStates =  bug.getState().getToStateId();
+        if(!allowedStates.contains(state))
+            throw new IlleagalToStateException("ToState not valid");
+
         bug.setState(state);
-//        TODO: Setze bearbeiter, wenn statuswechsel auf In Bearbeitung, sonst entferne bearbeiter!
-        if (state.getTitle().equals("In Bearbeitung")) { //IF geht vllt noch besser...
-            bug.setDeveloper(bug.getAutor()); //DER Autor wurde hier nur zum test gesetzt! MUSS WEG!
+        if (state.getTitle().equals("In Bearbeitung")) {
+
+            bug.setDeveloper(userService.getLogin());
+
         } else {
             bug.setDeveloper(null);
         }
@@ -127,4 +136,7 @@ public class BugServiceImpl implements BugService {
     public void setCommentService(CommentService commentService) {
         this.commentService = commentService;
     }
+
+    @Inject
+    public void setUserService(UserService userService) {this.userService = userService;}
 }

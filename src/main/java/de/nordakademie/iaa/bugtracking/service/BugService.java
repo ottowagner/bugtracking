@@ -30,7 +30,7 @@ public interface BugService {
      * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
      *                                       combination is already present in the database.
      */
-    Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException;
+    Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException, EntityNotFoundException, IlleagalToStateException;
 
     /**
      * List all bugs currently stored in the database.

@@ -1,9 +1,9 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 /**
- * Exception throws if a room could not be found.
+ * Exception throws if a entity could not be found.
  *
- * @author Stephan Anft
+ * @author Johan Ahrens
  */
 public class EntityNotFoundException extends Exception {
     /**

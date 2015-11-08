@@ -21,17 +21,22 @@ public class CommentServiceImpl implements CommentService {
     private CommentDAO commentDAO;
 
     /**
-     * The course service.
+     * The bug service.
      */
     private BugService bugService;
 
-    //    @Override
+    /**
+     * The user service.
+     */
+    private UserService userService;
+
+    @Override
     public void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException {
         Bug bug = bugService.loadBug(bugId);
         Date creationDate = new Date();
 
         comment.setBug(bug);
-        comment.setAutor(bug.getAutor()); //TODO: load logged User!
+        comment.setAutor(userService.getLogin());
         comment.setCreationDate(creationDate);
         commentDAO.save(comment);
     }
@@ -66,5 +71,8 @@ public class CommentServiceImpl implements CommentService {
     public void setBugService(BugService bugService) {
         this.bugService = bugService;
     }
+
+    @Inject
+    public void setUserService(UserService userService) {this.userService = userService;}
 
 }

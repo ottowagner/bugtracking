@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.bugtracking.model;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,7 +11,6 @@ import java.io.Serializable;
  * @author Otto Wagner
  */
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class User implements Serializable {
     private static final long serialVersionUID = 6925248180274039274L;
 
@@ -31,6 +32,7 @@ public class User implements Serializable {
     }
 
     @Column(nullable = false)
+    @NaturalId
     public String getEmail() {
         return email;
     }

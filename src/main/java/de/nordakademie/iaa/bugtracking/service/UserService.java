@@ -35,10 +35,19 @@ public interface UserService {
 
     /**
      * Get the User's role for authentification
+     *
      * @param email
      * @return
      * @throws EntityNotFoundException
      */
     String getRole(String email) throws EntityNotFoundException;
+
+    /**
+     * get the user logged in
+     *
+     * @return the user logged in
+     * @throws EntityNotFoundException
+     */
+    public User getLogin() throws EntityNotFoundException;
 
 }

@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 /**
- * Exception indicating an already present room.
+ * Exception indicating an already present entity.
  *
  * @author Stephan Anft
  */

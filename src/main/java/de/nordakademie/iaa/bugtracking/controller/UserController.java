@@ -4,14 +4,15 @@ import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.security.AccountUserDetails;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
+import javassist.bytecode.ByteArray;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.codec.Base64;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import java.security.Principal;
 
 /**
  * REST controller for the user service.
@@ -54,7 +55,6 @@ public class UserController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public User getLogin() throws EntityNotFoundException {
-        AccountUserDetails userDetails = (AccountUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userDetails.getUser();
+        return userService.getLogin();
     }
 }
