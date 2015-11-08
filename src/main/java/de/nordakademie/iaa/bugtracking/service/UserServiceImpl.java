@@ -43,10 +43,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getLogin() throws EntityNotFoundException{
-        org.springframework.security.core.userdetails.User userDetails =
-                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext()
+        AccountUserDetails accUserDetails = (AccountUserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        return loadUser(userDetails.getUsername());
+        return accUserDetails.getUser();
     }
 
     @Inject
