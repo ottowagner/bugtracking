@@ -21,9 +21,7 @@ public class BugController {
     @ExceptionHandler(BugException.class)
     public ErrorDetail myError(HttpServletRequest request, Exception exception) {
         ErrorDetail error = new ErrorDetail();
-        error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(exception.getLocalizedMessage());
-        error.setUrl(request.getRequestURL().append("/exception/111").toString());
         return error;
     }
     /**
