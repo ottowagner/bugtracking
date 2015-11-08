@@ -41,7 +41,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public List<State> listToStates(Long bugId) {
+    public List<State> listToStates(Long bugId) throws EntityNotFoundException{
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
         List<State> toStates = new ArrayList<State>();

@@ -26,6 +26,6 @@ public interface StateService {
      * @param id The identifier.
      * @return the found entity
      */
-    List<State> listToStates(Long id);
+    List<State> listToStates(Long id) throws EntityNotFoundException;
 
 }

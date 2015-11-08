@@ -54,7 +54,11 @@ public class StateController {
      */
     @RequestMapping(value = "/bugs/{bugId}/states", method = RequestMethod.GET)
     public List<State> listToStates(@PathVariable Long bugId) {
-        return stateService.listToStates(bugId);
+        try {
+            return stateService.listToStates(bugId);
+        } catch (EntityNotFoundException e) {
+            throw new StateException(e.getMessage());
+        }
 
     }
 
