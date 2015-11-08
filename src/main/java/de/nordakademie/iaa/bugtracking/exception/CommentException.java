@@ -1,11 +1,11 @@
-package de.nordakademie.iaa.bugtracking.service;
+package de.nordakademie.iaa.bugtracking.exception;
 
 /**
- * Exception throws if toState of state is not valid.
+ * Comment Exception
  *
  * @author Johan Ahrens
  */
-public class IlleagalToStateException extends Exception {
+public class CommentException extends RuntimeException {
     /**
      * Serial version uid.
      */
@@ -14,7 +14,7 @@ public class IlleagalToStateException extends Exception {
     /**
      * Default constructor.
      */
-    public IlleagalToStateException() {
+    public CommentException() {
         super();
     }
 
@@ -23,7 +23,7 @@ public class IlleagalToStateException extends Exception {
      *
      * @param message The message.
      */
-    public IlleagalToStateException(String message) {
+    public CommentException(String message) {
         super(message);
     }
 }

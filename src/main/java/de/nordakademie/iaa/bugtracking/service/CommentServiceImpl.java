@@ -1,6 +1,8 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.CommentDAO;
+import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 
@@ -38,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
      * @throws EntityNotFoundException
      */
     @Override
-    public void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException {
+    public void saveComment(Long bugId, Comment comment) throws EntityNotFoundException {
         Bug bug = bugService.loadBug(bugId);
         Date creationDate = new Date();
 

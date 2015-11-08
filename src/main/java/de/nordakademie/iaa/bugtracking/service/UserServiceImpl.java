@@ -1,6 +1,8 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.UserDAO;
+import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.User;
 import de.nordakademie.iaa.bugtracking.security.AccountUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getLogin() throws EntityNotFoundException{
+    public User getLogin() {
         AccountUserDetails accUserDetails = (AccountUserDetails) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
         return accUserDetails.getUser();

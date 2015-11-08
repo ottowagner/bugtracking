@@ -1,18 +1,17 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
+import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
+import de.nordakademie.iaa.bugtracking.exception.ErrorDetail;
+import de.nordakademie.iaa.bugtracking.exception.UserException;
 import de.nordakademie.iaa.bugtracking.model.User;
-import de.nordakademie.iaa.bugtracking.security.AccountUserDetails;
-import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
-import javassist.bytecode.ByteArray;
-import org.apache.http.auth.UsernamePasswordCredentials;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.security.Principal;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * REST controller for the user service.
@@ -21,6 +20,14 @@ import java.security.Principal;
  */
 @RestController
 public class UserController {
+    @ExceptionHandler(UserException.class)
+    public ErrorDetail myError(HttpServletRequest request, Exception exception) {
+        ErrorDetail error = new ErrorDetail();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exception.getLocalizedMessage());
+        error.setUrl(request.getRequestURL().append("/exception/111").toString());
+        return error;
+    }
 
     /**
      * The user service.
@@ -33,8 +40,12 @@ public class UserController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     @PreAuthorize("permitAll")
-    public User loadUser(@RequestBody String eMail) throws EntityNotFoundException {
-        return userService.loadUser(eMail);
+    public User loadUser(@RequestBody String eMail) {
+        try {
+            return userService.loadUser(eMail);
+        } catch (EntityNotFoundException e) {
+            throw new UserException("Benutzer "+ eMail +" ist nicht vorhanden");
+        }
     }
 
     /**
@@ -44,8 +55,12 @@ public class UserController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
     @PreAuthorize("permitAll")
-    public User saveUser(@RequestBody User user) throws Exception {
-        return userService.saveUser(user);
+    public User saveUser(@RequestBody User user) {
+        try {
+            return userService.saveUser(user);
+        } catch (EntityAlreadyPresentException e) {
+            throw new UserException("Benutzer "+ user.getEmail() +" ist bereits vorhanden");
+        }
     }
 
     /**
@@ -54,7 +69,7 @@ public class UserController {
      * @throws EntityNotFoundException
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public User getLogin() throws EntityNotFoundException {
+    public User getLogin() {
         return userService.getLogin();
     }
 

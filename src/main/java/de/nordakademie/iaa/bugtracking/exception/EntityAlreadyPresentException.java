@@ -1,11 +1,11 @@
-package de.nordakademie.iaa.bugtracking.service;
+package de.nordakademie.iaa.bugtracking.exception;
 
 /**
- * Exception throws if a entity could not be found.
+ * Exception indicating an already present entity.
  *
  * @author Johan Ahrens
  */
-public class EntityNotFoundException extends Exception {
+public class EntityAlreadyPresentException extends Exception {
     /**
      * Serial version uid.
      */
@@ -14,7 +14,7 @@ public class EntityNotFoundException extends Exception {
     /**
      * Default constructor.
      */
-    public EntityNotFoundException() {
+    public EntityAlreadyPresentException() {
         super();
     }
 
@@ -23,7 +23,7 @@ public class EntityNotFoundException extends Exception {
      *
      * @param message The message.
      */
-    public EntityNotFoundException(String message) {
+    public EntityAlreadyPresentException(String message) {
         super(message);
     }
 }
