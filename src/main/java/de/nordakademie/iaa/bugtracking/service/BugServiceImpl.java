@@ -84,8 +84,8 @@ public class BugServiceImpl implements BugService {
         State state = stateDAO.load(stateId);
 
         Set<Long> allowedStates =  bug.getState().getToStateId();
-        if(!allowedStates.contains(state))
-            throw new IlleagalToStateException("ToState not valid");
+        if(!allowedStates.contains(state.getId()))
+            throw new IlleagalToStateException("Statuswechel auf "+ state+ " nicht erlaubt");
 
         bug.setState(state);
         if (state.getTitle().equals("In Bearbeitung")) {
