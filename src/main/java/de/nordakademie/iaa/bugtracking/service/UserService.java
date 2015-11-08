@@ -50,6 +50,6 @@ public interface UserService {
      * @return the user logged in
      * @throws EntityNotFoundException
      */
-    public User getLogin();
+    public User getLogin() throws EntityNotFoundException;
 
 }

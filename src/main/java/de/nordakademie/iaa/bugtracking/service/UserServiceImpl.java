@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getLogin() {
+    public User getLogin() throws EntityNotFoundException {
         User user=null;
         try {
             user = loadUser(SecurityContextHolder.getContext()
@@ -52,6 +52,9 @@ public class UserServiceImpl implements UserService {
         } catch (EntityNotFoundException e)
         {
             //ignore user MUSS vorhanden sein sonst wär er nicht eingeloggt^^
+        }
+        if(user==null) {
+            throw new EntityNotFoundException("Benutzer ist nicht mehr eingeloggt");
         }
         return user;
     }

@@ -69,7 +69,11 @@ public class UserController {
      */
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public User getLogin() {
-        return userService.getLogin();
+        try {
+            return userService.getLogin();
+        } catch (EntityNotFoundException e) {
+            throw new UserException(e.getMessage());
+        }
     }
 
     @Inject
