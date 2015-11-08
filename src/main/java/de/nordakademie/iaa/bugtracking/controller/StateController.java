@@ -19,6 +19,7 @@ import java.util.List;
  */
 @RestController
 public class StateController {
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     @ExceptionHandler(StateException.class)
     public ErrorDetail myError(HttpServletRequest request, Exception exception) {
         ErrorDetail error = new ErrorDetail();

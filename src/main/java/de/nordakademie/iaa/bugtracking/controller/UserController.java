@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 public class UserController {
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserException.class)
     public ErrorDetail myError(HttpServletRequest request, Exception exception) {
         ErrorDetail error = new ErrorDetail();
