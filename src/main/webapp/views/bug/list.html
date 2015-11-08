@@ -46,11 +46,11 @@
                 <span ng-show="listBugModel.sortType == 'state' && listBugModel.sortReverse"
                       class="glyphicon glyphicon-chevron-up"></span>
             </a></th>
-            <th><a ng-click="listCtrl.sortBy('autor')">
+            <th><a ng-click="listCtrl.sortBy('author')">
                 Autor
-                <span ng-show="listBugModel.sortType == 'autor' && !listBugModel.sortReverse"
+                <span ng-show="listBugModel.sortType == 'author' && !listBugModel.sortReverse"
                       class="glyphicon glyphicon-chevron-down"></span>
-                <span ng-show="listBugModel.sortType == 'autor' && listBugModel.sortReverse"
+                <span ng-show="listBugModel.sortType == 'author' && listBugModel.sortReverse"
                       class="glyphicon glyphicon-chevron-up"></span>
             </a></th>
             <th><a ng-click="listCtrl.sortBy('developer')">
@@ -80,7 +80,7 @@
             <td>{{bug.id}}</td>
             <td>{{bug.title}}</td>
             <td format-state="{{bug.state.title}}"></td>
-            <td>{{bug.autor.firstname}} {{bug.autor.lastname}}</td>
+            <td>{{bug.author.firstname}} {{bug.author.lastname}}</td>
             <td>{{bug.developer.firstname}} {{bug.developer.lastname}}</td>
             <td>{{bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}</td>
             <td>{{bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}</td>
