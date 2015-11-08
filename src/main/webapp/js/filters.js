@@ -20,7 +20,7 @@ filters.filter("bugListFilter", ['$filter', function ($filter) {
             var id = data[position].id.toString();
             var title = data[position].title.toLowerCase();
             var state = data[position].state.title.toLowerCase();
-            var autor = (data[position].autor.firstname + " " + data[position].autor.lastname).toLowerCase();
+            var author = (data[position].author.firstname + " " + data[position].author.lastname).toLowerCase();
 
             var developer = "";
             if (!!data[position].developer) {
@@ -40,7 +40,7 @@ filters.filter("bugListFilter", ['$filter', function ($filter) {
                 return true;
             } else if (state.indexOf(searchString) !== -1) {
                 return true;
-            } else if (autor.indexOf(searchString) !== -1) {
+            } else if (author.indexOf(searchString) !== -1) {
                 return true;
             } else if (developer.indexOf(searchString) !== -1) {
                 return true;

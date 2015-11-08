@@ -208,7 +208,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                     $scope.editBugModel.editMode = true;
                     $scope.editBugModel.selectedBug = data;
                     $scope.editBugModel.editedBug = new Bug(data.id, data.title, data.description, data.state,
-                        data.autor, data.developer, data.lastUpdateDate, data.creationDate);
+                        data.author, data.developer, data.lastUpdateDate, data.creationDate);
                 }).error(function (data) {
                     errorService.setError(data);
                     $location.path("/bugs");
@@ -217,7 +217,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
             var bug = new Bug();
             $scope.editBugModel.editMode = false;
             $scope.editBugModel.selectedBug = bug;
-            $scope.editBugModel.editedBug = new Bug(bug.id, bug.title, bug.description, bug.state, bug.autor,
+            $scope.editBugModel.editedBug = new Bug(bug.id, bug.title, bug.description, bug.state, bug.author,
                 bug.developer, bug.lastUpdateDate, bug.creationDate);
         }
 

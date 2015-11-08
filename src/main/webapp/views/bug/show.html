@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-12">
                 Entwickler: {{showBugModel.bug.developer.firstname}} {{showBugModel.bug.developer.lastname}}<br/> <br/>
-                Autor: {{showBugModel.bug.autor.firstname}} {{showBugModel.bug.autor.lastname}}<br/> <br/>
+                Autor: {{showBugModel.bug.author.firstname}} {{showBugModel.bug.author.lastname}}<br/> <br/>
                 Letzte aktualisierung: {{showBugModel.bug.lastUpdateDate | date:'dd.MM.yyyy - HH:mm'}}<br/> <br/>
                 Erstellungsdatum: {{showBugModel.bug.creationDate | date:'dd.MM.yyyy - HH:mm'}}
             </div>
@@ -49,7 +49,7 @@
     </div>
     <div ng-repeat="comment in showBugModel.comments | orderBy:'id':true" class="col-md-12 alert alert-info">
         <div class="col-md-2">
-            Autor: {{comment.autor.firstname}} {{comment.autor.lastname}}<br/>
+            Autor: {{comment.author.firstname}} {{comment.author.lastname}}<br/>
             Am: {{comment.creationDate | date:'dd.MM.yyyy - HH:mm'}}<br/>
             <span ng-if="comment.fromState" format-state="{{comment.fromState}}">Von: </span> <br/>
             <span ng-if="comment.toState" format-state="{{comment.toState}}">Auf: </span>
