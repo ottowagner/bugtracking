@@ -24,7 +24,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 .success(function (userData) {
                     sessionService.user = userData;
                 }).error(function (data) {
-                    errorService.setError(data);
+                    errorService.setError(data.message);
                 });
         }
 
@@ -68,7 +68,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 .success(function (userData) {
                     mainController.loginWithService(userForm, userData);
                 }).error(function (data) {
-                    errorService.setError(data);
+                    errorService.setError(data.message);
                 });
         };
 
@@ -88,7 +88,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                         mainController.loginWithService(userForm, userData);
                     })
                     .error(function (data) {
-                        errorService.setError(data);
+                        errorService.setError(data.message);
                     });
             } else {
                 alert("Formular nicht vollständig!");
@@ -103,7 +103,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                     $location.path("/bugs");
                     errorService.closeError();
                 }).error(function (data) {
-                    errorService.setError(data);
+                    errorService.setError(data.message);
                 });
         };
 
@@ -118,7 +118,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                     $location.path("/login");
                     errorService.closeError();
                 }).error(function (data) {
-                    errorService.setError(data);
+                    errorService.setError(data.message);
                 });
         };
 
@@ -156,7 +156,7 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
                 $scope.listBugModel.bugs = data;
             })
             .error(function (data) {
-                errorService.setError(data);
+                errorService.setError(data.message);
             });
 
         /**
@@ -210,7 +210,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                     $scope.editBugModel.editedBug = new Bug(data.id, data.title, data.description, data.state,
                         data.author, data.developer, data.lastUpdateDate, data.creationDate);
                 }).error(function (data) {
-                    errorService.setError(data);
+                    errorService.setError(data.message);
                     $location.path("/bugs");
                 });
         } else {
@@ -237,7 +237,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                         $location.path("/bugs/" + data.id);
                         errorService.closeError();
                     }).error(function (data) {
-                        errorService.setError(data);
+                        errorService.setError(data.message);
                     });
             } else {
                 errorService.setError("Fehler beim anlegen");
@@ -270,33 +270,33 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
         bugService.loadBugWithPromise($routeParams.bugId)
             .success(function (data) {
                 $scope.showBugModel.bug = data;
+                /**
+                 * load comments for the bug with showBugController creation
+                 * @param $routeParams.bugId The bugId.
+                 */
+                commentService.listCommentsWithPromise($routeParams.bugId)
+                    .success(function (data) {
+                        $scope.showBugModel.comments = data;
+                    })
+                    .error(function (data) {
+                        errorService.setError(data.message);
+                    });
+
+                /**
+                 * load possible toStates for the bug with showBugController creation
+                 * @param $routeParams.bugId The bugId.
+                 */
+                stateService.listToStatesWithPromise($routeParams.bugId)
+                    .success(function (data) {
+                        $scope.showBugModel.toStates = data;
+                    }).error(function (data) {
+                        errorService.setError(data.message);
+                    });
             }).error(function (data) {
                 errorService.setError(data.message);
                 $location.path("/bugs");
             });
 
-        /**
-         * load comments for the bug with showBugController creation
-         * @param $routeParams.bugId The bugId.
-         */
-        commentService.listCommentsWithPromise($routeParams.bugId)
-            .success(function (data) {
-                $scope.showBugModel.comments = data;
-            })
-            .error(function (data) {
-                errorService.setError(data);
-            });
-
-        /**
-         * load possible toStates for the bug with showBugController creation
-         * @param $routeParams.bugId The bugId.
-         */
-        stateService.listToStatesWithPromise($routeParams.bugId)
-            .success(function (data) {
-                $scope.showBugModel.toStates = data;
-            }).error(function (data) {
-                errorService.setError(data);
-            });
         /**
          * go to changeState
          */
@@ -362,7 +362,7 @@ controllers.controller('commentController',
                             $location.path("/bugs/" + $routeParams.bugId);
                             errorService.closeError();
                         }).error(function (data) {
-                            errorService.setError(data);
+                            errorService.setError(data.message);
                         });
                 } else {
                     errorService.setError("Formular nicht vollständig!");
@@ -377,7 +377,7 @@ controllers.controller('commentController',
                     .success(function (data) {
                         $scope.commentModel.fromState = data.state;
                     }).error(function (data) {
-                        errorService.setError(data);
+                        errorService.setError(data.message);
                         $location.path("/bugs");
                     });
 
@@ -385,7 +385,7 @@ controllers.controller('commentController',
                     .success(function (data) {
                         $scope.commentModel.toState = data;
                     }).error(function (data) {
-                        errorService.setError(data);
+                        errorService.setError(data.message);
                         $location.path("/bugs/" + $routeParams.bugId);
                     });
             }
@@ -411,10 +411,10 @@ controllers.controller('commentController',
                                     $location.path("/bugs/" + $routeParams.bugId);
                                     errorService.closeError();
                                 }).error(function (data) {
-                                    errorService.setError(data);
+                                    errorService.setError(data.message);
                                 });
                         }).error(function (data) {
-                            errorService.setError(data);
+                            errorService.setError(data.message);
                         });
                 } else {
                     errorService.setError("Formular nicht vollständig!");
