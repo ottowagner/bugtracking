@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * The bug DAO that manages all persistence functionality.
  *
- * @author Otto Wagner
+ * @author Johan Ahrens, Otto Wagner
  */
 public class BugDAO {
     /**

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * The user DAO that manages all persistence functionality.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public class UserDAO {
     /**
@@ -25,7 +25,9 @@ public class UserDAO {
      * @return the found entity or {@code null} if no entity was found with given identifier.
      */
     public User load(String email) throws EntityNotFoundException {
-        List<User> userList = entityManager.createQuery("select user from User user where user.email = :email").setParameter("email", email).getResultList();
+        List<User> userList = entityManager.createQuery(
+                "select user from User user where user.email = :email")
+                .setParameter("email", email).getResultList();
         if (userList == null || userList.size() == 0)
             throw new EntityNotFoundException("user not found");
         return userList.get(0);
