@@ -7,16 +7,15 @@ import java.util.List;
 /**
  * Interface for the state service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public interface StateService {
-    //TODO: Sinnvolle Texte!
 
     /**
      * Returns the State identified by the given id.
      *
      * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @return the found entity
      */
     State loadState(Long id) throws EntityNotFoundException;
 
@@ -24,7 +23,7 @@ public interface StateService {
      * Returns the state identified by the given id.
      *
      * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @return the found entity
      */
     List<State> listToStates(Long id) throws EntityNotFoundException;
 

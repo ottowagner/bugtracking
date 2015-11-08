@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Interface for the bug service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public interface BugService {
 

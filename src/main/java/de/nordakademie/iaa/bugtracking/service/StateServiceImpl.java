@@ -19,6 +19,9 @@ public class StateServiceImpl implements StateService {
      * The state DAO.
      */
     private StateDAO stateDAO;
+    /**
+     * the bug DAO
+     */
     private BugDAO bugDAO;
 
     @Override
@@ -34,7 +37,7 @@ public class StateServiceImpl implements StateService {
     public List<State> listToStates(Long bugId) throws EntityNotFoundException {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
-        List<State> toStates = new ArrayList<State>(); //TODO: Vllt fällt dir was besseres ein.. ZUDEM MUSS hier noch geprüft werden, ob er wechseln darf..
+        List<State> toStates = new ArrayList<State>();
         for (Long stateId : state.getToStateId()) {
             toStates.add(stateDAO.load(stateId));
         }

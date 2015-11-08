@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Comment service implementation.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public class CommentServiceImpl implements CommentService {
 
@@ -30,17 +30,30 @@ public class CommentServiceImpl implements CommentService {
      */
     private UserService userService;
 
+    /**
+     * saves a comment under a given bugID
+     * @param bugId
+     * @param comment The comment to be saved.
+     * @throws EntityAlreadyPresentException
+     * @throws EntityNotFoundException
+     */
     @Override
     public void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException {
         Bug bug = bugService.loadBug(bugId);
         Date creationDate = new Date();
 
         comment.setBug(bug);
-        comment.setAutor(userService.getLogin());
+        comment.setAuthor(userService.getLogin());
         comment.setCreationDate(creationDate);
         commentDAO.save(comment);
     }
 
+    /**
+     * lists all comments for a bug
+     * @param bugId The identifier of the bug.
+     * @return
+     * @throws EntityNotFoundException
+     */
     @Override
     public List<Comment> listComments(Long bugId) throws EntityNotFoundException {
         Bug bug = bugService.loadBug(bugId);
@@ -48,11 +61,21 @@ public class CommentServiceImpl implements CommentService {
         return commentDAO.findAllByBug(bug);
     }
 
+    /**
+     * load a comment by id
+     * @param id The identifier.
+     * @return
+     */
     @Override
     public Comment loadComment(Long id) {
         return commentDAO.load(id);
     }
 
+    /**
+     * delete a comment
+     * @param id The identifier.
+     * @throws EntityNotFoundException
+     */
     @Override
     public void deleteComment(Long id) throws EntityNotFoundException {
         Comment comment = loadComment(id);

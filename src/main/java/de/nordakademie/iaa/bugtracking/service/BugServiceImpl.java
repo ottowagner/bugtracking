@@ -14,16 +14,22 @@ import java.util.Set;
 /**
  * Bug service implementation.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public class BugServiceImpl implements BugService {
 
     private BugDAO bugDAO;
     private StateDAO stateDAO;
-    //TODO: Service muss weg.. Die Frontend-Schicht arbeitet nur mit den Services, DAOs werden nur Spring-intern von den Service-Klassen verwendet.
     private CommentService commentService;
     private UserService userService;
 
+    /**
+     * saves a bug
+     * @param bug The bug to be saved.
+     * @return
+     * @throws EntityAlreadyPresentException
+     * @throws EntityNotFoundException
+     */
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException {
         Bug savedBug = null;
@@ -36,7 +42,7 @@ public class BugServiceImpl implements BugService {
             bug.setCreationDate(creationDate);
             State state = stateDAO.load((long) 1);
             bug.setState(state);
-            bug.setAutor(userService.getLogin());
+            bug.setAuthor(userService.getLogin());
 
             savedBug = bugDAO.save(bug);
 
@@ -66,12 +72,21 @@ public class BugServiceImpl implements BugService {
             comment.setDescription(description.toString());
         }
         //TODO: bessere lösung implementieren...
-        comment.setAutor(userService.getLogin());
+        comment.setAuthor(userService.getLogin());
         commentService.saveComment(bug.getId(), comment);
 
         return savedBug;
     }
 
+    /**
+     * sets the state of a bug
+     * @param bugId
+     * @param stateId The stateId to be saved.
+     * @return
+     * @throws EntityAlreadyPresentException
+     * @throws IlleagalToStateException
+     * @throws EntityNotFoundException
+     */
     @Override
     public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException, IlleagalToStateException, EntityNotFoundException {
         Bug bug = null;
@@ -99,11 +114,21 @@ public class BugServiceImpl implements BugService {
         return bugDAO.save(bug);
     }
 
+    /**
+     * list all bugs in DB
+     * @return
+     */
     @Override
     public List<Bug> listBugs() {
         return bugDAO.findAll();
     }
 
+    /**
+     * load a bug by id
+     * @param id The identifier.
+     * @return
+     * @throws EntityNotFoundException
+     */
     @Override
     public Bug loadBug(Long id) throws EntityNotFoundException {
         Bug bug = bugDAO.load(id);
@@ -113,6 +138,11 @@ public class BugServiceImpl implements BugService {
         return bug;
     }
 
+    /**
+     * delete a bug by id
+     * @param id The identifier.
+     * @throws EntityNotFoundException
+     */
     @Override
     public void deleteBug(Long id) throws EntityNotFoundException {
         Bug bug = loadBug(id);

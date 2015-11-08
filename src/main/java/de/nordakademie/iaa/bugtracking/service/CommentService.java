@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Interface for the comment service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public interface CommentService {
 

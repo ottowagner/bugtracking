@@ -10,7 +10,7 @@ import javax.inject.Inject;
 /**
  * user service implementation.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public class UserServiceImpl implements UserService {
 
@@ -19,33 +19,16 @@ public class UserServiceImpl implements UserService {
      */
     private UserDAO userDAO;
 
-    /**
-     * saves a user
-     * @param user The user to be saved.
-     * @return
-     * @throws EntityAlreadyPresentException
-     */
     @Override
     public User saveUser(User user) throws EntityAlreadyPresentException {
         return userDAO.save(user);
     }
 
-    /**
-     * load a user
-     * @param email The identifier.
-     * @return
-     * @throws EntityNotFoundException
-     */
     @Override
     public User loadUser(String email) throws EntityNotFoundException {
         return userDAO.load(email);
     }
 
-    /**
-     * delete a user
-     * @param email The identifier.
-     * @throws EntityNotFoundException
-     */
     @Override
     public void deleteUser(String email) throws EntityNotFoundException {
         User user = loadUser(email);

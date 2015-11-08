@@ -5,7 +5,7 @@ import de.nordakademie.iaa.bugtracking.model.User;
 /**
  * Interface for the user service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public interface UserService {
 
@@ -43,7 +43,7 @@ public interface UserService {
     String getRole(String email) throws EntityNotFoundException;
 
     /**
-     * get the user logged in
+     * get the user currently logged in
      *
      * @return the user logged in
      * @throws EntityNotFoundException
