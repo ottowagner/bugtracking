@@ -58,9 +58,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * load the current loggedin User with mainController creation
          */
         if ($scope.mainModel.authenticated) {
-            //TODO USER LADEN! Sollte iwie anhand cookie gehen!
-            //userService.getUserWithPromise()
-            userService.getUserByMailWithPromise("otto-wagner@gmx.net")
+            userService.getUserWithPromise()
                 .success(function (userData) {
                     sessionService.user = userData;
                     $scope.mainModel.user = sessionService.user;
