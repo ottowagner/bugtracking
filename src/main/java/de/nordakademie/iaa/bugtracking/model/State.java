@@ -8,14 +8,23 @@ import java.util.Set;
 /**
  * Bug entity.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class State implements Serializable {
     private static final long serialVersionUID = 8647209811200579375L;
 
+    /**
+     * unique identifier
+     */
     private Long id;
+    /**
+     * title
+     */
     private String title;
+    /**
+     * allowed states
+     */
     private Set<Long> toStateId = new HashSet<Long>();
 
     @Id

@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-/**
- * Created by 13190 on 26.10.2015.
+/** UserService for security framework
+ * @author Johan Ahrens
  */
 @Component
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -16,13 +16,19 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private UserService userService;
 
+    /**
+     * loads a user for security framework
+     * @param email
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
             User user = userService.loadUser(email);
             return new AccountUserDetails(user);
         } catch (EntityNotFoundException e) {
-            throw new UsernameNotFoundException("no user found with " + email);
+            throw new UsernameNotFoundException("Kein Nutzer " + email + " vorhanden");
         }
     }
 }

@@ -8,15 +8,21 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by 13190 on 26.10.2015.
+ * AccountUserDetails for Spring security
+ * @Author Johan Ahrens
  */
 public class AccountUserDetails implements UserDetails {
+    /** the user */
     private final User user;
 
     public AccountUserDetails(User user) {
         this.user = user;
     }
 
+    /**
+     * returns the authority for spring security
+     * @return
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         GrantedAuthority authority = new GrantedAuthority() {

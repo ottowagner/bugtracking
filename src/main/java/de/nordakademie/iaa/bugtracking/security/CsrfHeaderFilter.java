@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
+/** Set a cookie for CSRF protection
  * @Author Johan Ahrens
  */
 public class CsrfHeaderFilter extends OncePerRequestFilter {

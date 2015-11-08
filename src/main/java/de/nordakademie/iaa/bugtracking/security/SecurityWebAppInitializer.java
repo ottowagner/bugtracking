@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
-/**
+/** necessary for Spring security configuration
  * @author 13190 Johan Ahrens
  */
 public class SecurityWebAppInitializer extends AbstractSecurityWebApplicationInitializer {

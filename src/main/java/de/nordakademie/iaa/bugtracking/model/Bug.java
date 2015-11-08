@@ -12,19 +12,41 @@ import java.util.Date;
 @Entity
 public class Bug implements Serializable {
     private static final long serialVersionUID = -2505362905947838530L;
-
+    /**
+     * unique identifier
+     */
     private Long id;
+    /**
+     * title
+     */
     private String title;
+    /**
+     * description
+     */
     private String description;
+    /**
+     * state of the bug
+     */
     private State state;
-    private User autor;
+    /**
+     * the autor
+     */
+    private User author;
+    /**
+     * the developer
+     */
     private User developer;
+    /**
+     * lastUpdateDate
+     */
     private Date lastUpdateDate;
+    /**
+     * creationDate
+     */
     private Date creationDate;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "BUG_ID")
     public Long getId() {
         return id;
     }
@@ -42,7 +64,7 @@ public class Bug implements Serializable {
         this.title = title;
     }
 
-    @Column(nullable = true, length = 1000) //da bei Kommentare die Description verwendet und max größe 4000 festgelegt wurde.
+    @Column(nullable = true, length = 1000)
     public String getDescription() {
         return description;
     }
@@ -61,12 +83,12 @@ public class Bug implements Serializable {
     }
 
     @ManyToOne(optional = false)
-    public User getAutor() {
-        return autor;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAutor(User autor) {
-        this.autor = autor;
+    public void setAuthor(User autor) {
+        this.author = autor;
     }
 
     @ManyToOne(optional = true)

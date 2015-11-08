@@ -14,11 +14,29 @@ import java.io.Serializable;
 public class User implements Serializable {
     private static final long serialVersionUID = 3185274412265195568L;
 
+    /**
+     * id
+     */
     private Long id;
+    /**
+     * email
+     */
     private String email;
+    /**
+     * firstname
+     */
     private String firstname;
+    /**
+     * lastname
+     */
     private String lastname;
+    /**
+     * password
+     */
     private String password;
+    /**
+     * role
+     */
     private String role = "ROLE_USER";
 
     @Id

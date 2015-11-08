@@ -7,20 +7,42 @@ import java.util.Date;
 /**
  * Comment entity.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 @Entity
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class Comment implements Serializable {
     private static final long serialVersionUID = 7758536242036634910L;
-
+    /**
+     * unique identifier
+     */
     private Long id;
+    /**
+     * the bug related to this comment
+     */
     private Bug bug;
+    /**
+     * title
+     */
     private String title;
+    /**
+     * description
+     */
     private String description;
-    private User autor;
+    /**
+     * author
+     */
+    private User author;
+    /**
+     * creationDate
+     */
     private Date creationDate;
+    /**
+     * the state before a state change
+     */
     private String fromState;
+    /**
+     * the state after a state change
+     */
     private String toState;
 
     @Id
@@ -61,12 +83,12 @@ public class Comment implements Serializable {
     }
 
     @ManyToOne(optional = false)
-    public User getAutor() {
-        return autor;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAutor(User autor) {
-        this.autor = autor;
+    public void setAuthor(User autor) {
+        this.author = autor;
     }
 
     @Column(nullable = false)

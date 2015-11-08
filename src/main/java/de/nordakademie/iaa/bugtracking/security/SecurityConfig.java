@@ -17,6 +17,8 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import javax.sql.DataSource;
 
 /**
+ * Spring Security configuration
+ *
  * @autor Johan Ahrens
  */
 @Configuration
@@ -41,35 +43,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         builder.userDetailsService(userDetailService);
     }
 
+    /**
+     * Security configuration
+     *
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-//                .csrf().disable()
                 .exceptionHandling()
-                    .authenticationEntryPoint(unauthorizedHandler)
+                .authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                    .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/users")
-                    .permitAll()
-                    .antMatchers("/placeholderForAdminURLs").hasRole("ADMIN")
-                    .anyRequest().authenticated()
+                .antMatchers("/*", "/views/auth/*", "/resources/**/*", "/js/*", "/rest/users")
+                .permitAll()
+                .antMatchers("/placeholderForAdminURLs").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
                 .addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class)
                 .csrf().csrfTokenRepository(csrfTokenRepository()).and()
                 .formLogin().permitAll()
                 .and().logout()
-                //TODO: Löscht cookie nicht! Wird zwar im wntwart header gelöscht, aber iwie nicht im browser
-                        // übernommen.. evtl liegt es an tomcat.. kp
-                // logout ansich funktioniert aba
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
-//                    .logoutSuccessHandler(logoutSuccessHandler)
-//                    .addLogoutHandler(logoutHandler);
-
     }
 
+    /**
+     * Token repository for CSRF protection
+     *
+     * @return
+     */
     private CsrfTokenRepository csrfTokenRepository() {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName("X-XSRF-TOKEN");
@@ -85,12 +91,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         auth.jdbcAuthentication().dataSource(dataSource)
                 .passwordEncoder(passwordEncoder())
-                .usersByUsernameQuery("select email as principal, password as credentials, true from user where email = ?")
-                .authoritiesByUsernameQuery("select email as principal, role as role from user where email = ?") ;
+                .usersByUsernameQuery(
+                        "select email as principal, password as credentials, true from user where email = ?")
+                .authoritiesByUsernameQuery(
+                        "select email as principal, role as role from user where email = ?");
     }
 
+    /**
+     * passwordEncoder Bean
+     *
+     * @return
+     */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         PasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder;
     }
