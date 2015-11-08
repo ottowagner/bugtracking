@@ -65,6 +65,8 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 }).error(function (data) {
                     errorService.setError(data);
                 });
+        }else{
+            $location.path("/login");
         }
 
         /**
