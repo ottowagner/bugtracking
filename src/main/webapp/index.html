@@ -8,7 +8,8 @@
 
     <script type="application/javascript" src="resources/bower_components/angular/angular.js"></script>
     <script type="application/javascript" src="resources/bower_components/angular-route/angular-route.js"></script>
-    <script type="application/javascript" src="resources/bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
+    <script type="application/javascript"
+            src="resources/bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
     <script type="application/javascript" src="js/application.js"></script>
     <script type="application/javascript" src="js/controllers.js"></script>
     <script type="application/javascript" src="js/resources.js"></script>
@@ -32,13 +33,15 @@
             <p class="navbar-text navbar-title">Bugtracking</p>
         </div>
         <div class="navbar-form navbar-right">
-            <a ng-click="mainCtrl.toLogin()" class="btn btn-default" ng-hide="mainModel.authenticated">Anmelden</a>
-            <a ng-click="mainCtrl.toRegister()" class="btn btn-default" ng-hide="mainModel.authenticated">Registrieren</a>
+            <a ng-click="mainCtrl.toLogin()" class="btn btn-default"
+               ng-hide="mainModel.session.isLoggedIn()">Anmelden</a>
+            <a ng-click="mainCtrl.toRegister()" class="btn btn-default"
+               ng-hide="mainModel.session.isLoggedIn()">Registrieren</a>
 
-            <a class="btn btn-default" aria-label="Logout" ng-show="mainModel.authenticated"
+            <a class="btn btn-default" aria-label="Logout" ng-show="mainModel.session.isLoggedIn()"
                ng-click="mainCtrl.logout()">
-                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{mainModel.user.firstname}}
-                {{mainModel.user.lastname}}
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span> {{mainModel.session.user.firstname}}
+                {{mainModel.session.user.lastname}}
             </a>
         </div>
     </div>
@@ -54,7 +57,7 @@
 
 <div class="navbar-default navbar-fixed-bottom">
     <div>
-        <p class="navbar-text">created by Otto Wagner & Johan Ahrens</p>
+        <p class="navbar-text">Created by Otto Wagner & Johan Ahrens</p>
     </div>
 </div>
 

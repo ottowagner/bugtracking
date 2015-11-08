@@ -24,7 +24,8 @@ filters.filter("bugListFilter", ['$filter', function ($filter) {
 
             var developer = "";
             if (!!data[position].developer) {
-                developer = (data[position].developer.firstname + " " + data[position].developer.lastname).toLowerCase();
+                developer = (data[position].developer.firstname + " " +
+                data[position].developer.lastname).toLowerCase();
             }
             var creationDate = $filter('date')(data[i].creationDate, 'dd.MM.yyyy - HH:mm');
 

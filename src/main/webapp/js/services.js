@@ -173,6 +173,14 @@ services.service('errorService', function () {
     var errorMessage = "";
     var showError = false;
 
+    this.errorMessages = {
+        errors: {
+            required: 'Bitte angeben',
+            email: 'Bitte eine Email-Adresse angeben',
+            unknown: 'Bitte einen gültigen Wert angeben'
+        }
+    };
+
     /**
      * close a error message
      */
