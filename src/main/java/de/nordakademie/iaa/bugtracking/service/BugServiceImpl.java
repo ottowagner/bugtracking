@@ -100,7 +100,7 @@ public class BugServiceImpl implements BugService {
         State fromState = bug.getState();
 
         Set<Long> allowedStates =  bug.getState().getToStateId();
-        if(!allowedStates.contains(fromState.getId()))
+        if(!allowedStates.contains(state.getId()))
             throw new StateException("Statuswechel auf "+ fromState.getTitle()+ " nicht erlaubt");
 
         if (fromState.getTitle().equalsIgnoreCase("In Bearbeitung") && !userService.getLogin().equals(bug.getDeveloper())) {
