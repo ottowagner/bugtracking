@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 public class BugController {
     @ExceptionHandler(BugException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorDetail myError(HttpServletRequest request, Exception exception) {
         ErrorDetail error = new ErrorDetail();
         error.setStatus(HttpStatus.BAD_REQUEST.value());

@@ -271,7 +271,7 @@ controllers.controller('showBugController', ['$scope', '$location', '$routeParam
             .success(function (data) {
                 $scope.showBugModel.bug = data;
             }).error(function (data) {
-                errorService.setError(data);
+                errorService.setError(data.message);
                 $location.path("/bugs");
             });
 
