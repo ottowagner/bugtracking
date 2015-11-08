@@ -17,7 +17,7 @@ import java.security.Principal;
 /**
  * REST controller for the user service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 @RestController
 public class UserController {
@@ -28,7 +28,7 @@ public class UserController {
     private UserService userService;
 
     /*
-     *
+     *  Load user by email
      * @return the user.
      */
     @RequestMapping(value = "/users", method = RequestMethod.POST)
@@ -48,13 +48,19 @@ public class UserController {
         return userService.saveUser(user);
     }
 
+    /**
+     *  returns User currently logged in
+     * @return User currently logged in
+     * @throws EntityNotFoundException
+     */
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public User getLogin() throws EntityNotFoundException {
+        return userService.getLogin();
+    }
+
     @Inject
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public User getLogin() throws EntityNotFoundException {
-        return userService.getLogin();
-    }
 }

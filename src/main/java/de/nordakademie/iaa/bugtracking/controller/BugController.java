@@ -11,11 +11,10 @@ import java.util.List;
 /**
  * REST controller for the bug service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 @RestController
 public class BugController {
-//https://dzone.com/articles/exception-handling-spring-rest
     /**
      * The bug service.
      */

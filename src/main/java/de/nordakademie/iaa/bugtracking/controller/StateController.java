@@ -14,9 +14,8 @@ import java.util.List;
 /**
  * REST controller for the state service.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
-//TODO: kann evtl komplett raus! Idee: Falls wird Status dynamisch machen wollen
 @RestController
 public class StateController {
     /**
@@ -36,7 +35,7 @@ public class StateController {
     }
 
     /**
-     * Load the allowed toStates with the given bug identifier and user role. //TODO: user role oder sowas impl..
+     * Load the allowed toStates with the given bug identifier
      *
      * @param bugId The bug's identifier.
      * @return Allowed toStates for user
