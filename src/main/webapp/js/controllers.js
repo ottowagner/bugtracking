@@ -411,13 +411,14 @@ controllers.controller('commentController',
                         .success(function (data) {
                             commentService.saveCommentWithPromise($routeParams.bugId, comment)
                                 .success(function () {
-                                    $location.path("/bugs/" + $routeParams.bugId);
                                     errorService.closeError();
                                 }).error(function (data) {
                                     errorService.setError(data.message);
                                 });
+                            $location.path("/bugs/" + $routeParams.bugId);
                         }).error(function (data) {
                             errorService.setError(data.message);
+                            $location.path("/bugs/" + $routeParams.bugId);
                         });
                 } else {
                     errorService.setError("Formular nicht vollständig!");
