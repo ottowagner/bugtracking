@@ -5,6 +5,7 @@ import de.nordakademie.iaa.bugtracking.dao.StateDAO;
 import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.State;
+
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +45,10 @@ public class StateServiceImpl implements StateService {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
         List<State> toStates = new ArrayList<State>();
-        if(!state.getTitle().equalsIgnoreCase("In Bearbeitung")
-                ||userService.getLogin().equals(bug.getAuthor())) {
+        if (state.getTitle().equalsIgnoreCase("In Bearbeitung") && !userService.getLogin().equals(bug.getDeveloper())) {
+        } else if ((state.getTitle().equalsIgnoreCase("Behoben") || state.getTitle().equalsIgnoreCase("Abgelehnt")) &&
+                !userService.getLogin().equals(bug.getAuthor())) {
+        } else {
             for (Long stateId : state.getToStateId()) {
                 toStates.add(stateDAO.load(stateId));
             }
@@ -64,5 +67,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Inject
-    public void setUserService(UserService userService) {this.userService = userService;}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }
