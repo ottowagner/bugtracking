@@ -85,7 +85,7 @@ public class BugServiceImpl implements BugService {
 
         Set<Long> allowedStates =  bug.getState().getToStateId();
         if(!allowedStates.contains(state.getId()))
-            throw new IlleagalToStateException("Statuswechel auf "+ state+ " nicht erlaubt");
+            throw new IlleagalToStateException("Statuswechel auf "+ state.getTitle()+ " nicht erlaubt");
 
         bug.setState(state);
         if (state.getTitle().equals("In Bearbeitung")) {
