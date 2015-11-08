@@ -42,11 +42,24 @@ application.config(['$routeProvider', '$httpProvider',
                 redirectTo: '/bugs'
             });
 
-        //https://github.com/dsyer/spring-security-angular/tree/master/singlec
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
         $httpProvider.interceptors.push('authHttpResponseInterceptor');
     }]);
 
+//Prüfe bei jeden Seitenaufruf, ob der Benutzer eingeloggt ist.
+//Ansonsten kann vorkommen, dass im Frontend ein Aufruf durchgeführt wird ohne eingeloggt zu sein!
+application.run(['$rootScope', '$location', 'sessionService', function ($rootScope, $location, sessionService) {
+    $rootScope.$on("$routeChangeStart", function (event, next) {
+        if (!(sessionService.isLoggedIn())) {
+            if (!(next.templateUrl == "views/auth/login.html") && !(next.templateUrl == "views/auth/register.html")) {
+                $location.path("/login");
+            }
+        }
+    });
+}]);
+
+// Sollte doch mal eine Anfrage ohne Autorisierung durchgeführt werden, so wirft das Backend einen 401er Fehler, der
+// im Frontend per authHttpResponseInterceptor abgefangen wird.
 application.factory('authHttpResponseInterceptor', ['$q', '$location', 'errorService',
     function ($q, $location, errorService) {
         return {
@@ -59,16 +72,3 @@ application.factory('authHttpResponseInterceptor', ['$q', '$location', 'errorSer
             }
         };
     }]);
-
-//Ansonsten kann vorkommen, dass im Frontend ein Aufruf durchgeführt wird ohne eingeloggt zu sein!
-// Sollte doch mal eine Anfrage ohne Autorisierung durchgeführt werden, so wirft das Backend einen 400er Fehler, der
-// im Frontend per authHttpResponseInterceptor abgefangen wird.
-application.run(['$rootScope', '$location', 'sessionService', function ($rootScope, $location, sessionService) {
-    $rootScope.$on("$routeChangeStart", function (event, next) {
-        if (!(sessionService.isLoggedIn())) {
-            if (!(next.templateUrl == "views/auth/login.html") && !(next.templateUrl == "views/auth/register.html")) {
-                $location.path("/login");
-            }
-        }
-    });
-}]);

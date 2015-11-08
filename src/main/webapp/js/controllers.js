@@ -7,23 +7,32 @@
 var controllers = angular.module('controllers', ['resources', 'services', 'directives', 'filters']);
 
 // Set up the mainController.
-controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'User', 'errorService',
-    function ($scope, $location, userService, sessionService, User, errorService) {
+controllers.controller('mainController', ['$scope', '$location', 'userService', 'sessionService', 'User',
+    'errorService', function ($scope, $location, userService, sessionService, User, errorService) {
         var mainController = this;
 
         $scope.mainModel = {
-            authenticated: sessionService.isLoggedIn(),
-            user: sessionService.user,
+            session: sessionService,
             error: errorService
         };
 
-        //TODO: Auslagern in den Service
-        var errorMessages = {
-            errors: {
-                required: 'Bitte angeben',
-                email: 'Bitte eine Email-Adresse angeben',
-                unknown: 'Bitte einen gültigen Wert angeben'
-            }
+        /**
+         * load the current logged User with mainController creation
+         */
+        if (sessionService.isLoggedIn()) {
+            userService.getUserWithPromise()
+                .success(function (userData) {
+                    sessionService.user = userData;
+                }).error(function (data) {
+                    errorService.setError(data);
+                });
+        }
+
+        /**
+         * close Error
+         */
+        this.closeError = function () {
+            errorService.closeError();
         };
 
         /**
@@ -35,36 +44,16 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
             var error = null;
             if (element.$error) {
                 if (element.$error.email) {
-                    error = errorMessages.errors.email;
+                    error = errorService.errorMessages.errors.email;
                 }
                 else if (element.$error.required) {
-                    error = errorMessages.errors.required;
+                    error = errorService.errorMessages.errors.required;
                 }
                 else {
-                    error = errorMessages.errors.unknown;
+                    error = errorService.errorMessages.errors.unknown;
                 }
             }
             return error;
-        };
-
-        /**
-         * close Error
-         */
-        this.closeError = function () {
-            errorService.closeError();
-        };
-
-        /**
-         * load the current loggedin User with mainController creation
-         */
-        if ($scope.mainModel.authenticated) {
-            userService.getUserWithPromise()
-                .success(function (userData) {
-                    sessionService.user = userData;
-                    $scope.mainModel.user = sessionService.user;
-                }).error(function (data) {
-                    errorService.setError(data);
-                });
         };
 
         /**
@@ -78,21 +67,6 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
             userService.getUserByMailWithPromise(userForm.email)
                 .success(function (userData) {
                     mainController.loginWithService(userForm, userData);
-                }).error(function (data) {
-                    //User do not exist
-                    errorService.setError(data);
-                });
-        };
-
-        this.loginWithService = function (userForm, userData) {
-            sessionService.loginWithPromise(userForm)
-                .success(function () {
-                    sessionService.setLogIn(true);
-                    sessionService.user = userData;
-                    $scope.mainModel.user = sessionService.user;
-                    $scope.mainModel.authenticated = sessionService.isLoggedIn();
-                    $location.path("/bugs");
-                    errorService.closeError();
                 }).error(function (data) {
                     errorService.setError(data);
                 });
@@ -121,6 +95,18 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
             }
         };
 
+        this.loginWithService = function (userForm, userData) {
+            sessionService.loginWithPromise(userForm)
+                .success(function () {
+                    sessionService.setLogIn(true);
+                    sessionService.user = userData;
+                    $location.path("/bugs");
+                    errorService.closeError();
+                }).error(function (data) {
+                    errorService.setError(data);
+                });
+        };
+
         /**
          * logout a User.
          */
@@ -128,8 +114,7 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
             sessionService.logoutWithPromise()
                 .success(function () {
                     sessionService.setLogIn(false);
-                    $scope.mainModel.authenticated = sessionService.isLoggedIn();
-                    $scope.mainModel.user = null;
+                    sessionService.user = null;
                     $location.path("/login");
                     errorService.closeError();
                 }).error(function (data) {
@@ -205,7 +190,8 @@ controllers.controller('listBugController', ['$scope', '$location', 'bugService'
 
 // Set up the editBugController.
 controllers.controller('editBugController', ['$scope', '$location', '$routeParams', 'sessionService', 'Bug',
-    'bugService', 'errorService', function ($scope, $location, $routeParams, sessionService, Bug, bugService, errorService) {
+    'bugService', 'errorService', function ($scope, $location, $routeParams, sessionService, Bug, bugService,
+                                            errorService) {
         $scope.editBugModel = {
             editMode: null,
             selectedBug: null,
@@ -221,8 +207,8 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                 .success(function (data) {
                     $scope.editBugModel.editMode = true;
                     $scope.editBugModel.selectedBug = data;
-                    $scope.editBugModel.editedBug = new Bug(data.id, data.title, data.description, data.state, data.autor,
-                        data.developer, data.lastUpdateDate, data.creationDate);
+                    $scope.editBugModel.editedBug = new Bug(data.id, data.title, data.description, data.state,
+                        data.autor, data.developer, data.lastUpdateDate, data.creationDate);
                 }).error(function (data) {
                     errorService.setError(data);
                     $location.path("/bugs");
@@ -242,12 +228,10 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
         this.saveBug = function (bugForm) {
             var selected = $scope.editBugModel.selectedBug;
             var edited = $scope.editBugModel.editedBug;
-            var user = sessionService.user;
 
-            if (bugForm.$valid && user && selected && edited) {
+            if (bugForm.$valid && selected && edited) {
                 selected.title = edited.title;
                 selected.description = edited.description;
-                selected.autor = user; //TODO: BACKEND!
                 bugService.saveBugWithPromise(selected)
                     .success(function (data) {
                         $location.path("/bugs/" + data.id);
@@ -423,7 +407,7 @@ controllers.controller('commentController',
                     bugService.setBugStateWithPromise($routeParams.bugId, $routeParams.stateId)
                         .success(function (data) {
                             commentService.saveCommentWithPromise($routeParams.bugId, comment)
-                                .success(function (data) {
+                                .success(function () {
                                     $location.path("/bugs/" + $routeParams.bugId);
                                     errorService.closeError();
                                 }).error(function (data) {
