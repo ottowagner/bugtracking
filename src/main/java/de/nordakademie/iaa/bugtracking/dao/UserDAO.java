@@ -1,6 +1,7 @@
 package de.nordakademie.iaa.bugtracking.dao;
 
 import de.nordakademie.iaa.bugtracking.model.User;
+import de.nordakademie.iaa.bugtracking.service.EntityAlreadyPresentException;
 import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
 
 import javax.persistence.EntityManager;
@@ -38,13 +39,16 @@ public class UserDAO {
      *
      * @param user The user to be saved.
      */
-    public User save(User user) {
-        if (user.getId() == null) {
-            entityManager.persist(user);
-        } else {
-            entityManager.merge(user);
+    public User save(User user) throws EntityAlreadyPresentException {
+        if(entityManager.find(User.class, user.getId())==null) {
+            if (user.getId() == null) {
+                entityManager.persist(user);
+            } else {
+                entityManager.merge(user);
+            }
+            return user;
         }
-        return user;
+        throw new EntityAlreadyPresentException("Der Benutzer ist bereits vorhanden");
     }
 
     /**
