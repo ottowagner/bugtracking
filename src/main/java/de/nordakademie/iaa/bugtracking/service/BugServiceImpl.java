@@ -106,7 +106,6 @@ public class BugServiceImpl implements BugService {
             throw new StateException("Statuswechsel nicht erlaubt");
         } else if ((state.getTitle().equalsIgnoreCase("Behoben") || state.getTitle().equalsIgnoreCase("Abgelehnt")) &&
                 !userService.getLogin().equals(bug.getAuthor())) {
-        } else {
             throw new StateException("Statuswechsel nicht erlaubt");
         }
         bug.setState(state);
