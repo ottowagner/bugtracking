@@ -65,7 +65,6 @@ application.factory('authHttpResponseInterceptor', ['$q', '$location', 'errorSer
         return {
             responseError: function (rejection) {
                 if (rejection.status === 401) {
-                    errorService.setError(rejection.message);
                     $location.path('/login');
                 }
                 return $q.reject(rejection);

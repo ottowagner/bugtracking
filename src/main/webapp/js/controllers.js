@@ -24,6 +24,8 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                 .success(function (userData) {
                     sessionService.user = userData;
                 }).error(function (data) {
+                    sessionService.setLogIn(false);
+                    sessionService.user = null;
                     errorService.setError(data.message);
                 });
         }
@@ -240,7 +242,7 @@ controllers.controller('editBugController', ['$scope', '$location', '$routeParam
                         errorService.setError(data.message);
                     });
             } else {
-                errorService.setError("Fehler beim anlegen");
+                errorService.setError("Fehler konnte nicht angelegt werden");
             }
         };
 
@@ -363,6 +365,7 @@ controllers.controller('commentController',
                             errorService.closeError();
                         }).error(function (data) {
                             errorService.setError(data.message);
+                            $location.path("/bugs");
                         });
                 } else {
                     errorService.setError("Formular nicht vollständig!");
