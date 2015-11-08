@@ -25,6 +25,11 @@ public class StateServiceImpl implements StateService {
      */
     private BugDAO bugDAO;
 
+    /**
+     * userService
+     */
+    private UserService userService;
+
     @Override
     public State loadState(Long id) throws EntityNotFoundException {
         State state = stateDAO.load(id);
@@ -39,8 +44,11 @@ public class StateServiceImpl implements StateService {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
         List<State> toStates = new ArrayList<State>();
-        for (Long stateId : state.getToStateId()) {
-            toStates.add(stateDAO.load(stateId));
+        if(!state.getTitle().equalsIgnoreCase("In Bearbeitung")
+                ||userService.getLogin().equals(bug.getAuthor())) {
+            for (Long stateId : state.getToStateId()) {
+                toStates.add(stateDAO.load(stateId));
+            }
         }
         return toStates;
     }
@@ -54,4 +62,7 @@ public class StateServiceImpl implements StateService {
     public void setBugDAO(BugDAO bugDAO) {
         this.bugDAO = bugDAO;
     }
+
+    @Inject
+    public void setUserService(UserService userService) {this.userService = userService;}
 }
