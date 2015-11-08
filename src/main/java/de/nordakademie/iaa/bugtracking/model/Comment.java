@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 //@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"EMAIL"}))
 public class Comment implements Serializable {
-    private static final long serialVersionUID = 6925248180274039234L;
+    private static final long serialVersionUID = 7758536242036634910L;
 
     private Long id;
     private Bug bug;
