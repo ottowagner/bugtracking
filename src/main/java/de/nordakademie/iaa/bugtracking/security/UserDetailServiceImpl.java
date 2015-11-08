@@ -1,6 +1,6 @@
 package de.nordakademie.iaa.bugtracking.security;
 import de.nordakademie.iaa.bugtracking.model.User;
-import de.nordakademie.iaa.bugtracking.service.EntityNotFoundException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

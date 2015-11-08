@@ -1,14 +1,15 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
-import de.nordakademie.iaa.bugtracking.model.Bug;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
+import de.nordakademie.iaa.bugtracking.exception.ErrorDetail;
+import de.nordakademie.iaa.bugtracking.exception.StateException;
 import de.nordakademie.iaa.bugtracking.model.State;
 import de.nordakademie.iaa.bugtracking.service.StateService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,6 +19,14 @@ import java.util.List;
  */
 @RestController
 public class StateController {
+    @ExceptionHandler(StateException.class)
+    public ErrorDetail myError(HttpServletRequest request, Exception exception) {
+        ErrorDetail error = new ErrorDetail();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(exception.getLocalizedMessage());
+        error.setUrl(request.getRequestURL().append("/exception/111").toString());
+        return error;
+    }
     /**
      * The state service.
      */
@@ -25,13 +34,17 @@ public class StateController {
 
 
     /**
-     * Load the bug with the given identifier.
+     * Load the state with the given identifier.
      *
      * @param id The bug's identifier.
      */
     @RequestMapping(value = "/states/{id}", method = RequestMethod.GET)
-    public State loadBug(@PathVariable Long id) throws Exception {
-        return stateService.loadState(id);
+    public State loadState(@PathVariable Long id) {
+        try {
+            return stateService.loadState(id);
+        } catch (EntityNotFoundException e) {
+            throw new StateException("Status nicht vorhanden");
+        }
     }
 
     /**
@@ -41,8 +54,9 @@ public class StateController {
      * @return Allowed toStates for user
      */
     @RequestMapping(value = "/bugs/{bugId}/states", method = RequestMethod.GET)
-    public List<State> listToStates(@PathVariable Long bugId) throws Exception {
+    public List<State> listToStates(@PathVariable Long bugId) {
         return stateService.listToStates(bugId);
+
     }
 
     @Inject

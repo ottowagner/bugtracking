@@ -2,6 +2,9 @@ package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
 import de.nordakademie.iaa.bugtracking.dao.StateDAO;
+import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
+import de.nordakademie.iaa.bugtracking.exception.StateException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 import de.nordakademie.iaa.bugtracking.model.State;
@@ -71,7 +74,6 @@ public class BugServiceImpl implements BugService {
             comment.setTitle("Fehler wurde bearbeitet");
             comment.setDescription(description.toString());
         }
-        //TODO: bessere lösung implementieren...
         comment.setAuthor(userService.getLogin());
         commentService.saveComment(bug.getId(), comment);
 
@@ -84,23 +86,21 @@ public class BugServiceImpl implements BugService {
      * @param stateId The stateId to be saved.
      * @return
      * @throws EntityAlreadyPresentException
-     * @throws IlleagalToStateException
+     * @throws StateException
      * @throws EntityNotFoundException
      */
     @Override
-    public Bug setBugState(Long bugId, Long stateId) throws EntityAlreadyPresentException, IlleagalToStateException, EntityNotFoundException {
+    public Bug setBugState(Long bugId, Long stateId) throws EntityNotFoundException, StateException  {
         Bug bug = null;
         Date updateDate = new Date();
-        try {
-            bug = this.loadBug(bugId);
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        bug = this.loadBug(bugId);
+
         State state = stateDAO.load(stateId);
 
         Set<Long> allowedStates =  bug.getState().getToStateId();
         if(!allowedStates.contains(state.getId()))
-            throw new IlleagalToStateException("Statuswechel auf "+ state.getTitle()+ " nicht erlaubt");
+            throw new StateException("Statuswechel auf "+ state.getTitle()+ " nicht erlaubt");
 
         bug.setState(state);
         if (state.getTitle().equals("In Bearbeitung")) {

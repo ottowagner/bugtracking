@@ -1,5 +1,6 @@
 package de.nordakademie.iaa.bugtracking.service;
 
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.State;
 
 import java.util.List;
@@ -25,6 +26,6 @@ public interface StateService {
      * @param id The identifier.
      * @return the found entity
      */
-    List<State> listToStates(Long id) throws EntityNotFoundException;
+    List<State> listToStates(Long id);
 
 }

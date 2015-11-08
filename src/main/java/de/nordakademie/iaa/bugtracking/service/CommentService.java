@@ -1,5 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
+import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 
 import java.util.List;
@@ -17,7 +19,7 @@ public interface CommentService {
      * @param comment The comment to be saved.
      * @throws EntityAlreadyPresentException if a comment with the same comment number is already present in the database.
      */
-    void saveComment(Long bugId, Comment comment) throws EntityAlreadyPresentException, EntityNotFoundException;
+    void saveComment(Long bugId, Comment comment) throws EntityNotFoundException;
 
     /**
      * List all comments currently stored in the database.

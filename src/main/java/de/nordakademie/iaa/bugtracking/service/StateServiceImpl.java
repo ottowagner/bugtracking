@@ -2,6 +2,7 @@ package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
 import de.nordakademie.iaa.bugtracking.dao.StateDAO;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.State;
 import javax.inject.Inject;
@@ -34,7 +35,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public List<State> listToStates(Long bugId) throws EntityNotFoundException {
+    public List<State> listToStates(Long bugId) {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
         List<State> toStates = new ArrayList<State>();
