@@ -104,11 +104,11 @@ public class BugServiceImpl implements BugService {
 
         if (fromState.getTitle().equalsIgnoreCase("In Bearbeitung") &&
                 !userService.getLogin().equals(bug.getDeveloper())) {
-            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Entwickler des Tickets");
+            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Entwickler des Fehlers");
         } else if ((fromState.getTitle().equalsIgnoreCase("Behoben") ||
                 fromState.getTitle().equalsIgnoreCase("Abgelehnt")) &&
                 !userService.getLogin().equals(bug.getAuthor())) {
-            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Autor des Tickets");
+            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Autor des Fehlers");
         }
         bug.setState(state);
 
