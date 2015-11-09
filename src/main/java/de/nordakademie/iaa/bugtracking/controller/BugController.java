@@ -55,7 +55,7 @@ public class BugController {
         try {
             return bugService.loadBug(id);
         } catch (EntityNotFoundException e) {
-            throw new BugException("Bug mit der ID " + id + " nicht vorhanden");
+            throw new BugException("Fehler mit der ID " + id + " nicht vorhanden");
         }
     }
 
@@ -71,7 +71,7 @@ public class BugController {
         try {
             return bugService.saveBug(bug);
         } catch (Exception e) {
-            throw new BugException("Bug ist bereits vorhanden");
+            throw new BugException("Fehler ist bereits vorhanden");
         }
     }
 
@@ -90,7 +90,7 @@ public class BugController {
         } catch (StateException e) {
             throw new BugException(e.getMessage());
         } catch (EntityNotFoundException e) {
-            throw new BugException("Bug mit der ID " + bugId + " nicht vorhanden");
+            throw new BugException("Fehler mit der ID " + bugId + " nicht vorhanden");
         }
     }
 
