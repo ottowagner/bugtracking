@@ -63,15 +63,19 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * @param loginForm The login Form.
          */
         this.login = function (loginForm) {
-            var userForm = new User();
-            userForm.email = loginForm.email.$modelValue;
-            userForm.password = loginForm.password.$modelValue;
-            userService.getUserByMailWithPromise(userForm.email)
-                .success(function (userData) {
-                    mainController.loginWithService(userForm, userData);
-                }).error(function (data) {
-                    errorService.setError(data.message);
-                });
+            var user = new User();
+            user.email = loginForm.email.$modelValue;
+            user.password = loginForm.password.$modelValue;
+            if (loginForm.$valid && user) {
+                userService.getUserByMailWithPromise(user.email)
+                    .success(function (userData) {
+                        mainController.loginWithService(user, userData);
+                    }).error(function (data) {
+                        errorService.setError(data.message);
+                    });
+            } else {
+                errorService.setError("Formular nicht vollständig!");
+            }
         };
 
         /**
@@ -79,26 +83,26 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
          * @param regForm The Register Form.
          */
         this.register = function (regForm) {
-            var userForm = new User();
-            userForm.email = regForm.email.$modelValue;
-            userForm.password = regForm.password.$modelValue;
-            userForm.firstname = regForm.firstname.$modelValue;
-            userForm.lastname = regForm.lastname.$modelValue;
-            if (regForm.$valid && userForm) {
-                userService.saveUserWithPromise(userForm)
+            var user = new User();
+            user.email = regForm.email.$modelValue;
+            user.password = regForm.password.$modelValue;
+            user.firstname = regForm.firstname.$modelValue;
+            user.lastname = regForm.lastname.$modelValue;
+            if (regForm.$valid && user) {
+                userService.saveUserWithPromise(user)
                     .success(function (userData) {
-                        mainController.loginWithService(userForm, userData);
+                        mainController.loginWithService(user, userData);
                     })
                     .error(function (data) {
                         errorService.setError(data.message);
                     });
             } else {
-                alert("Formular nicht vollständig!");
+                errorService.setError("Formular nicht vollständig!");
             }
         };
 
-        this.loginWithService = function (userForm, userData) {
-            sessionService.loginWithPromise(userForm)
+        this.loginWithService = function (user, userData) {
+            sessionService.loginWithPromise(user)
                 .success(function () {
                     sessionService.setLogIn(true);
                     sessionService.user = userData;
