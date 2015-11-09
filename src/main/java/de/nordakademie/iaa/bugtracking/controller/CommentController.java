@@ -53,7 +53,7 @@ public class CommentController {
         try {
             commentService.saveComment(bugId, comment);
         } catch (EntityNotFoundException e) {
-            throw new CommentException("Der Bug mit der ID " + bugId + " ist nicht vorhanden");
+            throw new CommentException("Der Fehler mit der ID " + bugId + " ist nicht vorhanden");
         }
     }
 
