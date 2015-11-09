@@ -108,8 +108,8 @@ controllers.controller('mainController', ['$scope', '$location', 'userService', 
                     sessionService.user = userData;
                     $location.path("/bugs");
                     errorService.closeError();
-                }).error(function (data) {
-                    errorService.setError(data.message);
+                }).error(function () {
+                    errorService.setError("Passwort fehlerhaft!");
                 });
         };
 

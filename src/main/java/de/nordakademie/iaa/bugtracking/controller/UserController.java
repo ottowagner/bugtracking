@@ -19,7 +19,7 @@ import javax.inject.Inject;
  */
 @RestController
 public class UserController {
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.TEMPORARY_REDIRECT)
     @ExceptionHandler(UserException.class)
     public ErrorDetail myError(Exception exception) {
         ErrorDetail error = new ErrorDetail();

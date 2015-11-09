@@ -18,7 +18,7 @@ import java.util.List;
  */
 @RestController
 public class CommentController {
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.TEMPORARY_REDIRECT)
     @ExceptionHandler(CommentException.class)
     public ErrorDetail myError(Exception exception) {
         ErrorDetail error = new ErrorDetail();
