@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -19,13 +18,14 @@ import java.util.List;
  */
 @RestController
 public class StateController {
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(StateException.class)
-    public ErrorDetail myError(HttpServletRequest request, Exception exception) {
+    public ErrorDetail myError(Exception exception) {
         ErrorDetail error = new ErrorDetail();
         error.setMessage(exception.getLocalizedMessage());
         return error;
     }
+
     /**
      * The state service.
      */
@@ -35,7 +35,9 @@ public class StateController {
     /**
      * Load the state with the given identifier.
      *
-     * @param id The bug's identifier.
+     * @param id The state identifier.
+     * @return the State.
+     * @throws StateException when state not exist.
      */
     @RequestMapping(value = "/states/{id}", method = RequestMethod.GET)
     public State loadState(@PathVariable Long id) {
@@ -51,6 +53,7 @@ public class StateController {
      *
      * @param bugId The bug's identifier.
      * @return Allowed toStates for user
+     * @throws StateException when bug not exist.
      */
     @RequestMapping(value = "/bugs/{bugId}/states", method = RequestMethod.GET)
     public List<State> listToStates(@PathVariable Long bugId) {
@@ -59,7 +62,6 @@ public class StateController {
         } catch (EntityNotFoundException e) {
             throw new StateException(e.getMessage());
         }
-
     }
 
     @Inject

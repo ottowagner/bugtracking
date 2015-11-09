@@ -19,8 +19,7 @@ public interface BugService {
      *
      * @param bug The bug to be saved.
      * @return bug The bug which was created
-     * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
-     *                                       combination is already present in the database.
+     * @throws EntityAlreadyPresentException if the bug is already saved
      */
     Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException;
 
@@ -29,16 +28,14 @@ public interface BugService {
      *
      * @param stateId The stateId to be saved.
      * @return bug The bug which was updated
-     * @throws EntityAlreadyPresentException if a bug with the same building/bug number //TODO: eine sinnvolle exception schmeißen!
-     *                                       combination is already present in the database.
+     * @throws EntityNotFoundException if the bug not exist, StateException there is a state exception
      */
     Bug setBugState(Long bugId, Long stateId) throws EntityNotFoundException, StateException;
 
     /**
      * List all bugs currently stored in the database.
      *
-     * @return a list of Bug entities. If no bug was found an empty list is
-     * returned.
+     * @return a list of Bug entities. If no bug was found an empty list is returned.
      */
     List<Bug> listBugs();
 
@@ -47,15 +44,8 @@ public interface BugService {
      *
      * @param id The identifier.
      * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @throws EntityNotFoundException if the bug not exist
      */
     Bug loadBug(Long id) throws EntityNotFoundException;
-
-    /**
-     * Deletes the bug with the given id.
-     *
-     * @param id The identifier.
-     * @throws EntityNotFoundException if no bug could be fount for the given id.
-     */
-    void deleteBug(Long id) throws EntityNotFoundException;
 
 }

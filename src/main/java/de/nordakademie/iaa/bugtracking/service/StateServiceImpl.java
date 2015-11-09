@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * State service implementation.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 public class StateServiceImpl implements StateService {
 
@@ -31,17 +31,31 @@ public class StateServiceImpl implements StateService {
      */
     private UserService userService;
 
+    /**
+     * Returns the State identified by the given id.
+     *
+     * @param id The state identifier.
+     * @return the state
+     * @throws EntityNotFoundException when state not exist.
+     */
     @Override
     public State loadState(Long id) throws EntityNotFoundException {
         State state = stateDAO.load(id);
         if (state == null) {
-            throw new EntityNotFoundException("Kein Status mit der ID gefunden");
+            throw new EntityNotFoundException("Status mit der ID " + id + " nicht vorhanden");
         }
         return state;
     }
 
+    /**
+     * Returns the state identified by the given id.
+     *
+     * @param bugId The Bug identifier.
+     * @return toStates The List with possible toStates
+     * @throws EntityNotFoundException when Bug not exist.
+     */
     @Override
-    public List<State> listToStates(Long bugId) throws EntityNotFoundException{
+    public List<State> listToStates(Long bugId) throws EntityNotFoundException {
         Bug bug = bugDAO.load(bugId);
         State state = bug.getState();
         List<State> toStates = new ArrayList<State>();

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Bug entity.
+ * State entity.
  *
  * @author Otto Wagner, Johan Ahrens
  */
@@ -23,7 +23,7 @@ public class State implements Serializable {
      */
     private String title;
     /**
-     * allowed states
+     * allowed toStates
      */
     private Set<Long> toStateId = new HashSet<Long>();
 

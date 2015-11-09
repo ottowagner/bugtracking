@@ -1,6 +1,9 @@
 package de.nordakademie.iaa.bugtracking.controller;
 
-import de.nordakademie.iaa.bugtracking.exception.*;
+import de.nordakademie.iaa.bugtracking.exception.BugException;
+import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
+import de.nordakademie.iaa.bugtracking.exception.ErrorDetail;
+import de.nordakademie.iaa.bugtracking.exception.StateException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.service.BugService;
 import org.springframework.http.HttpStatus;
@@ -17,13 +20,14 @@ import java.util.List;
  */
 @RestController
 public class BugController {
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BugException.class)
     public ErrorDetail myError(HttpServletRequest request, Exception exception) {
         ErrorDetail error = new ErrorDetail();
         error.setMessage(exception.getLocalizedMessage());
         return error;
     }
+
     /**
      * The bug service.
      */
@@ -43,13 +47,15 @@ public class BugController {
      * Load the bug with the given identifier.
      *
      * @param id The bug's identifier.
+     * @return the Bug.
+     * @throws BugException when bug not exist.
      */
     @RequestMapping(value = "/bugs/{id}", method = RequestMethod.GET)
     public Bug loadBug(@PathVariable Long id) {
         try {
             return bugService.loadBug(id);
         } catch (EntityNotFoundException e) {
-            throw new BugException("Bug nicht vorhanden");
+            throw new BugException("Bug mit der ID " + id + " nicht vorhanden");
         }
     }
 
@@ -57,6 +63,8 @@ public class BugController {
      * Saves the given bug.
      *
      * @param bug The bug to be saved.
+     * @return The saved Bug.
+     * @throws BugException when bug already exist.
      */
     @RequestMapping(value = "/bugs", method = RequestMethod.PUT)
     public Bug saveBug(@RequestBody Bug bug) {
@@ -71,7 +79,9 @@ public class BugController {
     /**
      * Saves the given state.
      *
-     * @param stateId The bug state to be saved.
+     * @param bugId The bug identifier, stateId The bug state to be saved.
+     * @return the bug with new state.
+     * @throws StateException when there is a state exception, BugException when bug not exist.
      */
     @RequestMapping(value = "/bugs/{bugId}/state/change/{stateId}", method = RequestMethod.PUT)
     public Bug setBugState(@PathVariable Long bugId, @PathVariable Long stateId) {
@@ -80,21 +90,7 @@ public class BugController {
         } catch (StateException e) {
             throw new BugException(e.getMessage());
         } catch (EntityNotFoundException e) {
-            throw new BugException("Bug nicht vorhanden");
-        }
-    }
-
-    /**
-     * Deletes the bug with the given identifier.
-     *
-     * @param id The bug's identifier.
-     */
-    @RequestMapping(value = "/bugs/{id}", method = RequestMethod.DELETE)
-    public void deleteBug(@PathVariable Long id) {
-        try {
-            bugService.deleteBug(id);
-        } catch (EntityNotFoundException e) {
-            throw new BugException("Der Bug existiert nicht");
+            throw new BugException("Bug mit der ID " + bugId + " nicht vorhanden");
         }
     }
 

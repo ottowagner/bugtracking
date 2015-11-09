@@ -4,7 +4,6 @@ import de.nordakademie.iaa.bugtracking.dao.UserDAO;
 import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
 import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.User;
-import de.nordakademie.iaa.bugtracking.security.AccountUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.inject.Inject;
@@ -21,41 +20,64 @@ public class UserServiceImpl implements UserService {
      */
     private UserDAO userDAO;
 
+    /**
+     * Stores the given User into the database.
+     *
+     * @param user The user to be saved.
+     * @return the saved user.
+     * @throws EntityAlreadyPresentException if a user with the email is already present in the database.
+     */
     @Override
     public User saveUser(User user) throws EntityAlreadyPresentException {
-        return userDAO.save(user);
+        User loadedUser = userDAO.load(user.getEmail());
+        if (loadedUser != null) {
+            throw new EntityAlreadyPresentException("Die Email-Adresse ist bereits registriert");
+        } else {
+            userDAO.save(user);
+        }
+        return user;
     }
 
+    /**
+     * Returns the User identified by the given email.
+     *
+     * @param email The Users email
+     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @throws EntityNotFoundException When user does not exist
+     */
     @Override
     public User loadUser(String email) throws EntityNotFoundException {
-        return userDAO.load(email);
+        User user = userDAO.load(email);
+        if (user == null) throw new EntityNotFoundException("Benutzer nicht vorhanden");
+        return user;
     }
 
-    @Override
-    public void deleteUser(String email) throws EntityNotFoundException {
-        User user = loadUser(email);
-        userDAO.delete(user);
-    }
-
+    /**
+     * Get the User's role for authentification
+     *
+     * @param email The Users email
+     * @return the Role String
+     * @throws EntityNotFoundException When user does not exist
+     */
     @Override
     public String getRole(String email) throws EntityNotFoundException {
-        User user = loadUser(email);
+        User user = null;
+        user = userDAO.load(email);
+        if (user == null) throw new EntityNotFoundException("Benutzer nicht vorhanden");
         return user.getRole();
     }
 
+    /**
+     * get the user currently logged in
+     *
+     * @return the user logged in
+     * @throws EntityNotFoundException When session is expired.
+     */
     @Override
     public User getLogin() throws EntityNotFoundException {
-        User user=null;
-        try {
-            user = loadUser(SecurityContextHolder.getContext()
-                    .getAuthentication().getName());
-        } catch (EntityNotFoundException e)
-        {
-            //ignore user MUSS vorhanden sein sonst wär er nicht eingeloggt^^
-        }
-        if(user==null) {
-            throw new EntityNotFoundException("Benutzer ist nicht mehr eingeloggt");
-        }
+        User user = null;
+        user = userDAO.load(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (user == null) throw new EntityNotFoundException("Session ist abgelaufen, bitte melden Sie sich an");
         return user;
     }
 

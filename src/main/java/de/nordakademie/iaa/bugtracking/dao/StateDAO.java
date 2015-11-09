@@ -18,17 +18,6 @@ public class StateDAO {
     private EntityManager entityManager;
 
     /**
-     * List all states currently stored in the database.
-     *
-     * @return a list of state entities. If no state was found an empty list is
-     * returned.
-     */
-    @SuppressWarnings("unchecked")
-    public List<State> findAll() {
-        return entityManager.createQuery("select state from State state").getResultList();
-    }
-
-    /**
      * Returns the state identified by the given id.
      *
      * @param id The identifier.
@@ -36,42 +25,6 @@ public class StateDAO {
      */
     public State load(Long id) {
         return entityManager.find(State.class, id);
-    }
-
-    /**
-     * Returns the state identified by the given state.
-     *
-     * @param state The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
-     */
-    public List<State> findByFromState(State state) {
-        List<State> states = entityManager.createQuery(
-                "select s from State s where s.fromState = :fromState"
-        ).setParameter("fromState", state.getId()).getResultList();
-        return states;
-    }
-
-    /**
-     * Stores the given state entity into the database.
-     *
-     * @param state The state to be saved.
-     */
-    public State save(State state) {
-        if (state.getId() == null) {
-            entityManager.persist(state);
-        } else {
-            entityManager.merge(state);
-        }
-        return state;
-    }
-
-    /**
-     * Deletes the given state.
-     *
-     * @param state The state to be deleted.
-     */
-    public void delete(State state) {
-        entityManager.remove(state);
     }
 
     @PersistenceContext

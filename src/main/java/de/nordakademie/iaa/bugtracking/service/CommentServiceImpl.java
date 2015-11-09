@@ -1,7 +1,6 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.CommentDAO;
-import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
 import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
@@ -34,9 +33,9 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * saves a comment under a given bugID
-     * @param bugId
+     *
+     * @param bugId   The identifier of the bug.
      * @param comment The comment to be saved.
-     * @throws EntityAlreadyPresentException
      * @throws EntityNotFoundException
      */
     @Override
@@ -52,39 +51,15 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * lists all comments for a bug
+     *
      * @param bugId The identifier of the bug.
-     * @return
+     * @return List with comments
      * @throws EntityNotFoundException
      */
     @Override
     public List<Comment> listComments(Long bugId) throws EntityNotFoundException {
         Bug bug = bugService.loadBug(bugId);
-
         return commentDAO.findAllByBug(bug);
-    }
-
-    /**
-     * load a comment by id
-     * @param id The identifier.
-     * @return
-     */
-    @Override
-    public Comment loadComment(Long id) {
-        return commentDAO.load(id);
-    }
-
-    /**
-     * delete a comment
-     * @param id The identifier.
-     * @throws EntityNotFoundException
-     */
-    @Override
-    public void deleteComment(Long id) throws EntityNotFoundException {
-        Comment comment = loadComment(id);
-        if (comment == null) {
-            throw new EntityNotFoundException();
-        }
-        commentDAO.delete(comment);
     }
 
     @Inject
@@ -98,6 +73,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Inject
-    public void setUserService(UserService userService) {this.userService = userService;}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
 }

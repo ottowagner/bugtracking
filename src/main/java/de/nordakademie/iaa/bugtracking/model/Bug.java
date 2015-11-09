@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Bug entity.
  *
- * @author Otto Wagner
+ * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class Bug implements Serializable {
@@ -29,7 +29,7 @@ public class Bug implements Serializable {
      */
     private State state;
     /**
-     * the autor
+     * the author
      */
     private User author;
     /**

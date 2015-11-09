@@ -20,10 +20,8 @@ public class BugDAO {
     /**
      * List all bugs currently stored in the database.
      *
-     * @return a list of Bug entities. If no bug was found an empty list is
-     * returned.
+     * @return a list of Bug entities. If no bug was found an empty list is returned.
      */
-    @SuppressWarnings("unchecked")
     public List<Bug> findAll() {
         return entityManager.createQuery("select bug from Bug bug").getResultList();
     }
@@ -50,15 +48,6 @@ public class BugDAO {
             entityManager.merge(bug);
         }
         return bug;
-    }
-
-    /**
-     * Deletes the given bug.
-     *
-     * @param bug The bug to be deleted.
-     */
-    public void delete(Bug bug) {
-        entityManager.remove(bug);
     }
 
     @PersistenceContext

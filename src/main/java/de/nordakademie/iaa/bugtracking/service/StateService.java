@@ -15,17 +15,19 @@ public interface StateService {
     /**
      * Returns the State identified by the given id.
      *
-     * @param id The identifier.
-     * @return the found entity
+     * @param id The state identifier.
+     * @return the State
+     * @throws EntityNotFoundException when state not exist.
      */
     State loadState(Long id) throws EntityNotFoundException;
 
     /**
      * Returns the state identified by the given id.
      *
-     * @param id The identifier.
-     * @return the found entity
+     * @param bugId The Bug identifier.
+     * @return List with possible toStates
+     * @throws EntityNotFoundException when Bug not exist.
      */
-    List<State> listToStates(Long id) throws EntityNotFoundException;
+    List<State> listToStates(Long bugId) throws EntityNotFoundException;
 
 }

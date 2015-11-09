@@ -87,8 +87,8 @@ public class Comment implements Serializable {
         return author;
     }
 
-    public void setAuthor(User autor) {
-        this.author = autor;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @Column(nullable = false)

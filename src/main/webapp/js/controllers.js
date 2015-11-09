@@ -352,6 +352,26 @@ controllers.controller('commentController',
             };
 
             /**
+             * load the states with commentController creation when stateId given
+             */
+            if ($routeParams.stateId) {
+                bugService.loadBugWithPromise($routeParams.bugId)
+                    .success(function (data) {
+                        $scope.commentModel.fromState = data.state;
+                        stateService.loadStateWithPromise($routeParams.stateId)
+                            .success(function (data) {
+                                $scope.commentModel.toState = data;
+                            }).error(function (data) {
+                                errorService.setError(data.message);
+                                $location.path("/bugs/" + $routeParams.bugId);
+                            });
+                    }).error(function (data) {
+                        errorService.setError(data.message);
+                        $location.path("/bugs");
+                    });
+            }
+
+            /**
              * Saves the comment.
              * @param commentForm The commentForm.
              */
@@ -371,27 +391,6 @@ controllers.controller('commentController',
                     errorService.setError("Formular nicht vollständig!");
                 }
             };
-
-            /**
-             * load the states with commentController creation when stateId given
-             */
-            if ($routeParams.stateId) {
-                bugService.loadBugWithPromise($routeParams.bugId)
-                    .success(function (data) {
-                        $scope.commentModel.fromState = data.state;
-                    }).error(function (data) {
-                        errorService.setError(data.message);
-                        $location.path("/bugs");
-                    });
-
-                stateService.loadStateWithPromise($routeParams.stateId)
-                    .success(function (data) {
-                        $scope.commentModel.toState = data;
-                    }).error(function (data) {
-                        errorService.setError(data.message);
-                        $location.path("/bugs/" + $routeParams.bugId);
-                    });
-            }
 
             /**
              * Change State for Bug.

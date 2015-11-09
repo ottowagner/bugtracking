@@ -27,11 +27,11 @@ public class BugServiceImpl implements BugService {
     private UserService userService;
 
     /**
-     * saves a bug
+     * Stores the given bug into the database.
+     *
      * @param bug The bug to be saved.
-     * @return
-     * @throws EntityAlreadyPresentException
-     * @throws EntityNotFoundException
+     * @return bug The bug which was created
+     * @throws EntityAlreadyPresentException if the bug is already saved
      */
     @Override
     public Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException {
@@ -49,7 +49,7 @@ public class BugServiceImpl implements BugService {
 
             savedBug = bugDAO.save(bug);
 
-            description.append("Titel: \n");
+            description.append("Titel: ");
             description.append(bug.getTitle());
             if (bug.getDescription() != null) {
                 description.append("\nBeschreibung: \n");
@@ -60,7 +60,7 @@ public class BugServiceImpl implements BugService {
         } else {
             Bug oldBug = bugDAO.load(bug.getId());
             if (!bug.getTitle().equals(oldBug.getTitle())) {
-                description.append("Titel wurde bearbeitet: \n");
+                description.append("Titel wurde bearbeitet: ");
                 description.append(bug.getTitle());
             }
             if (bug.getDescription() == null && oldBug.getDescription() != null) {
@@ -80,17 +80,16 @@ public class BugServiceImpl implements BugService {
         return savedBug;
     }
 
+
     /**
-     * sets the state of a bug
-     * @param bugId
+     * Update the given bug state into the database.
+     *
      * @param stateId The stateId to be saved.
-     * @return
-     * @throws EntityAlreadyPresentException
-     * @throws StateException
-     * @throws EntityNotFoundException
+     * @return bug The bug which was updated
+     * @throws EntityNotFoundException if the bug not exist, StateException there is a state exception
      */
     @Override
-    public Bug setBugState(Long bugId, Long stateId) throws EntityNotFoundException, StateException  {
+    public Bug setBugState(Long bugId, Long stateId) throws EntityNotFoundException, StateException {
         Bug bug = null;
         Date updateDate = new Date();
 
@@ -99,15 +98,17 @@ public class BugServiceImpl implements BugService {
         State state = stateDAO.load(stateId);
         State fromState = bug.getState();
 
-        Set<Long> allowedStates =  bug.getState().getToStateId();
-        if(!allowedStates.contains(state.getId()))
-            throw new StateException("Statuswechel auf "+ fromState.getTitle()+ " nicht erlaubt");
+        Set<Long> allowedStates = bug.getState().getToStateId();
+        if (!allowedStates.contains(state.getId()))
+            throw new StateException("Statuswechel auf " + state.getTitle() + " nicht erlaubt");
 
-        if (fromState.getTitle().equalsIgnoreCase("In Bearbeitung") && !userService.getLogin().equals(bug.getDeveloper())) {
-            throw new StateException("Statuswechsel nicht erlaubt");
-        } else if ((fromState.getTitle().equalsIgnoreCase("Behoben") || fromState.getTitle().equalsIgnoreCase("Abgelehnt")) &&
+        if (fromState.getTitle().equalsIgnoreCase("In Bearbeitung") &&
+                !userService.getLogin().equals(bug.getDeveloper())) {
+            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Entwickler des Tickets");
+        } else if ((fromState.getTitle().equalsIgnoreCase("Behoben") ||
+                fromState.getTitle().equalsIgnoreCase("Abgelehnt")) &&
                 !userService.getLogin().equals(bug.getAuthor())) {
-            throw new StateException("Statuswechsel nicht erlaubt");
+            throw new StateException("Statuswechsel nicht erlaubt - Sie sind nicht der Autor des Tickets");
         }
         bug.setState(state);
 
@@ -123,8 +124,9 @@ public class BugServiceImpl implements BugService {
     }
 
     /**
-     * list all bugs in DB
-     * @return
+     * List all bugs currently stored in the database.
+     *
+     * @return a list of Bug entities. If no bug was found an empty list is returned.
      */
     @Override
     public List<Bug> listBugs() {
@@ -132,32 +134,19 @@ public class BugServiceImpl implements BugService {
     }
 
     /**
-     * load a bug by id
+     * Returns the bug identified by the given id.
+     *
      * @param id The identifier.
-     * @return
-     * @throws EntityNotFoundException
+     * @return the found entity or {@code null} if no entity was found with given identifier.
+     * @throws EntityNotFoundException if the bug not exist
      */
     @Override
     public Bug loadBug(Long id) throws EntityNotFoundException {
         Bug bug = bugDAO.load(id);
         if (bug == null) {
-            throw new EntityNotFoundException("Kein Bug mit der ID gefunden");
+            throw new EntityNotFoundException("Kein Bug mit der ID " + id + " gefunden");
         }
         return bug;
-    }
-
-    /**
-     * delete a bug by id
-     * @param id The identifier.
-     * @throws EntityNotFoundException
-     */
-    @Override
-    public void deleteBug(Long id) throws EntityNotFoundException {
-        Bug bug = loadBug(id);
-        if (bug == null) {
-            throw new EntityNotFoundException();
-        }
-        bugDAO.delete(bug);
     }
 
     @Inject
@@ -176,5 +165,7 @@ public class BugServiceImpl implements BugService {
     }
 
     @Inject
-    public void setUserService(UserService userService) {this.userService = userService;}
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

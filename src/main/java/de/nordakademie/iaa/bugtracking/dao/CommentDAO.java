@@ -21,21 +21,12 @@ public class CommentDAO {
     /**
      * List all comments currently stored in the database.
      *
-     * @return a list of Comment entities. If no comment was found an empty list is
-     * returned.
+     * @param bug The Bug.
+     * @return a list of Comment entities. If no comment was found an empty list is returned.
      */
     public List<Comment> findAllByBug(Bug bug) {
-        return entityManager.createQuery("select comment from Comment comment Where comment.bug = :bug").setParameter("bug", bug).getResultList();
-    }
-
-    /**
-     * Returns the comment identified by the given id.
-     *
-     * @param id The identifier.
-     * @return the found entity or {@code null} if no entity was found with given identifier.
-     */
-    public Comment load(Long id) {
-        return entityManager.find(Comment.class, id);
+        return entityManager.createQuery("select comment from Comment comment Where comment.bug = :bug")
+                .setParameter("bug", bug).getResultList();
     }
 
     /**
@@ -49,15 +40,6 @@ public class CommentDAO {
         } else {
             entityManager.merge(comment);
         }
-    }
-
-    /**
-     * Deletes the given comment.
-     *
-     * @param comment The comment to be deleted.
-     */
-    public void delete(Comment comment) {
-        entityManager.remove(comment);
     }
 
     @PersistenceContext
