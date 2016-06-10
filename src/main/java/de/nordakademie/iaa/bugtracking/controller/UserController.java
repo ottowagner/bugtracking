@@ -14,8 +14,6 @@ import javax.inject.Inject;
 
 /**
  * REST controller for the user service.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @RestController
 public class UserController {

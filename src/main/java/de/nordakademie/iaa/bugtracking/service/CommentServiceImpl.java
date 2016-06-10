@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * Comment service implementation.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class CommentServiceImpl implements CommentService {
 

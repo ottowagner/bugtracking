@@ -1,6 +1,5 @@
 /**
  * The filters.
- * Created by Otto on 26.10.2015.
  */
 'use strict';
 

@@ -4,24 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.nordakademie.iaa</groupId>
+    <groupId>WaOt</groupId>
     <artifactId>bugtracking</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <description>Bugtracking application</description>
-    <organization>
-        <name>Nordakademie gAG Elmshorn</name>
-        <url>http://www.nordakademie.de</url>
-    </organization>
     <developers>
         <developer>
             <name>Otto Wagner</name>
-            <email>otto.wagner@nordakademie.de</email>
-        </developer>
-        <developer>
-            <name>Johan Ahrens</name>
-            <email>johan.ahrens@nordakademie.de</email>
+            <email>otto-wagner@gmx.net</email>
         </developer>
     </developers>
 

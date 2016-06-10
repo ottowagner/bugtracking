@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.bugtracking.exception;
 
 /**
- * @author Johan Ahrens
+ * Exception
  */
 public class ErrorDetail {
     private String message;

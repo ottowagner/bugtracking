@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @author 13190 Johan Ahrens
+ * AuthSucess for Spring security
  */
 @Component
 public class AuthSuccess extends SimpleUrlAuthenticationSuccessHandler {

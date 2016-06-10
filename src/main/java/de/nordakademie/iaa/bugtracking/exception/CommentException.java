@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * Comment Exception
- *
- * @author Johan Ahrens
  */
 public class CommentException extends RuntimeException {
     /**

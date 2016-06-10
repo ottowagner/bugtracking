@@ -6,8 +6,6 @@ import java.util.Date;
 
 /**
  * Bug entity.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class Bug implements Serializable {

@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * Exception throws if a entity could not be found.
- *
- * @author Johan Ahrens
  */
 public class EntityNotFoundException extends Exception {
     /**

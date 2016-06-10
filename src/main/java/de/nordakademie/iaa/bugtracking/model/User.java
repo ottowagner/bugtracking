@@ -7,8 +7,6 @@ import java.io.Serializable;
 
 /**
  * User entity.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class User implements Serializable {

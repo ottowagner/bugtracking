@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * Exception indicating an already present entity.
- *
- * @author Johan Ahrens
  */
 public class EntityAlreadyPresentException extends Exception {
     /**

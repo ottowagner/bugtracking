@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * AccountUserDetails for Spring security
- * @Author Johan Ahrens
  */
 public class AccountUserDetails implements UserDetails {
     /** the user */

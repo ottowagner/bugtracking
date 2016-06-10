@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * Exception throws if toState of state is not valid.
- *
- * @author Johan Ahrens
  */
 public class StateException extends RuntimeException {
     /**

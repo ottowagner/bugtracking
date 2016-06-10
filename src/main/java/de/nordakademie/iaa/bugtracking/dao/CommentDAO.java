@@ -9,8 +9,6 @@ import java.util.List;
 
 /**
  * The comment DAO that manages all persistence functionality.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class CommentDAO {
     /**

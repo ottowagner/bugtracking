@@ -15,8 +15,6 @@ import java.util.List;
 
 /**
  * REST controller for the bug service.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @RestController
 public class BugController {

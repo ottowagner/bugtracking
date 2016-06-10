@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * User exception
- *
- * @author Johan Ahrens
  */
 public class UserException extends RuntimeException {
     /**

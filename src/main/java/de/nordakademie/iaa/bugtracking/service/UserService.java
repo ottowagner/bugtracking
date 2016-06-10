@@ -6,8 +6,6 @@ import de.nordakademie.iaa.bugtracking.model.User;
 
 /**
  * Interface for the user service.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public interface UserService {
 

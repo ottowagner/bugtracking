@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * Interface for the state service.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public interface StateService {
 

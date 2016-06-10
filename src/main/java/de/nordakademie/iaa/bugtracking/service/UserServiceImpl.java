@@ -10,8 +10,6 @@ import javax.inject.Inject;
 
 /**
  * user service implementation.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class UserServiceImpl implements UserService {
 

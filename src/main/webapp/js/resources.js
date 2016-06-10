@@ -1,6 +1,5 @@
 /**
  * The resources.
- * Created by Otto on 13.10.2015.
  */
 'use strict';
 

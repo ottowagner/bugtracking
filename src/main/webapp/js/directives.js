@@ -1,6 +1,5 @@
 /**
  * The directives.
- * Created by Otto on 15.10.2015.
  */
 'use strict';
 

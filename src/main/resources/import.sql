@@ -18,7 +18,6 @@ insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (4, 6); -- Abgelehnt->Ge
 insert into STATE_TOSTATE (STATE_ID, TOSTATE_ID) values (5, 2); -- Wiedereröffnet->In Bearbeitung
 
 INSERT INTO USER (ID, EMAIL, FIRSTNAME, LASTNAME, PASSWORD) VALUES (1, 'otto-wagner@gmx.net', 'Otto', 'Wagner', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.');
-INSERT INTO USER (ID, EMAIL, FIRSTNAME, LASTNAME, PASSWORD, ROLE) VALUES (2, 'johan-ahrens@gmx.net', 'Johan', 'Ahrens', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'ROLE_ADMIN');
 
 INSERT INTO BUG (ID, CREATIONDATE, DESCRIPTION, LASTUPDATEDATE, TITLE, AUTHOR_ID, DEVELOPER_ID, STATE_STATE_ID) VALUES (1, '2015-10-22 21:32:26.379000000', 'Die Beschreibung des Fehlers!', NULL, 'Ein Fehler!', 1, NULL, 1);
 

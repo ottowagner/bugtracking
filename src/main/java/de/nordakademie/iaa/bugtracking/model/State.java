@@ -7,8 +7,6 @@ import java.util.Set;
 
 /**
  * State entity.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class State implements Serializable {

@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * The user DAO that manages all persistence functionality.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class UserDAO {
     /**

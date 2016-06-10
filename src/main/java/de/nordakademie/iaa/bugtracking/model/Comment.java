@@ -6,8 +6,6 @@ import java.util.Date;
 
 /**
  * Comment entity.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @Entity
 public class Comment implements Serializable {

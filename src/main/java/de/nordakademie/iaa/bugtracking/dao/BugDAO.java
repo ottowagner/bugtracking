@@ -8,8 +8,6 @@ import java.util.List;
 
 /**
  * The bug DAO that manages all persistence functionality.
- *
- * @author Johan Ahrens, Otto Wagner
  */
 public class BugDAO {
     /**

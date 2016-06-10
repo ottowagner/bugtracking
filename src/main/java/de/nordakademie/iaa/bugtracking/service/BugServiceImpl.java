@@ -16,8 +16,6 @@ import java.util.Set;
 
 /**
  * Bug service implementation.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class BugServiceImpl implements BugService {
 

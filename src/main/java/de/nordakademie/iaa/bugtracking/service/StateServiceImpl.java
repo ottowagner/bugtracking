@@ -12,8 +12,6 @@ import java.util.List;
 
 /**
  * State service implementation.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 public class StateServiceImpl implements StateService {
 

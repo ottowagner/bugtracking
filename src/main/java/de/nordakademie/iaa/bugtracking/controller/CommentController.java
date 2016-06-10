@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * REST controller for the comment service.
- *
- * @author Johan Ahrens, Otto Wagner
  */
 @RestController
 public class CommentController {

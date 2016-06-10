@@ -2,8 +2,6 @@ package de.nordakademie.iaa.bugtracking.exception;
 
 /**
  * Bug exception
- *
- * @author Johan Ahrens
  */
 public class BugException extends RuntimeException {
     /**

@@ -18,8 +18,6 @@ import javax.sql.DataSource;
 
 /**
  * Spring Security configuration
- *
- * @autor Johan Ahrens
  */
 @Configuration
 @EnableWebSecurity

@@ -13,8 +13,6 @@ import java.util.List;
 
 /**
  * REST controller for the state service.
- *
- * @author Otto Wagner, Johan Ahrens
  */
 @RestController
 public class StateController {
