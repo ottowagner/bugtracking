@@ -26,7 +26,6 @@ public class UserControllerTest {
 
     User user;
 
-
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);

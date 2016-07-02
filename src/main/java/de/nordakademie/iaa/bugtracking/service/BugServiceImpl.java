@@ -1,13 +1,12 @@
 package de.nordakademie.iaa.bugtracking.service;
 
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
-import de.nordakademie.iaa.bugtracking.dao.StateDAO;
-import de.nordakademie.iaa.bugtracking.exception.EntityAlreadyPresentException;
 import de.nordakademie.iaa.bugtracking.exception.EntityNotFoundException;
 import de.nordakademie.iaa.bugtracking.exception.StateException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 import de.nordakademie.iaa.bugtracking.model.State;
+import de.nordakademie.iaa.bugtracking.model.User;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -20,8 +19,8 @@ import java.util.Set;
 public class BugServiceImpl implements BugService {
 
     private BugDAO bugDAO;
-    private StateDAO stateDAO;
     private CommentService commentService;
+    private StateService stateService;
     private UserService userService;
 
     /**
@@ -29,21 +28,20 @@ public class BugServiceImpl implements BugService {
      *
      * @param bug The bug to be saved.
      * @return bug The bug which was created
-     * @throws EntityAlreadyPresentException if the bug is already saved
+     * @throws EntityNotFoundException
      */
     @Override
-    public Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException {
+    public Bug saveBug(Bug bug) throws EntityNotFoundException {
         Bug savedBug = null;
         Comment comment = new Comment();
         StringBuffer description = new StringBuffer();
-
-
+        User thisUser = userService.getLogin();
         if (bug.getState() == null) {
             Date creationDate = new Date();
             bug.setCreationDate(creationDate);
-            State state = stateDAO.load((long) 1);
+            State state = stateService.loadState((long) 1);
             bug.setState(state);
-            bug.setAuthor(userService.getLogin());
+            bug.setAuthor(thisUser);
 
             savedBug = bugDAO.save(bug);
 
@@ -72,7 +70,7 @@ public class BugServiceImpl implements BugService {
             comment.setTitle("Fehler wurde bearbeitet");
             comment.setDescription(description.toString());
         }
-        comment.setAuthor(userService.getLogin());
+        comment.setAuthor(thisUser);
         commentService.saveComment(bug.getId(), comment);
 
         return savedBug;
@@ -93,7 +91,7 @@ public class BugServiceImpl implements BugService {
 
         bug = this.loadBug(bugId);
 
-        State state = stateDAO.load(stateId);
+        State state = stateService.loadState(stateId);
         State fromState = bug.getState();
 
         Set<Long> allowedStates = bug.getState().getToStateId();
@@ -153,8 +151,8 @@ public class BugServiceImpl implements BugService {
     }
 
     @Inject
-    public void setStateDAO(StateDAO stateDAO) {
-        this.stateDAO = stateDAO;
+    public void setStateService(StateService stateService) {
+        this.stateService = stateService;
     }
 
     @Inject

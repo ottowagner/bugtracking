@@ -17,9 +17,9 @@ public interface BugService {
      *
      * @param bug The bug to be saved.
      * @return bug The bug which was created
-     * @throws EntityAlreadyPresentException if the bug is already saved
+     * @throws EntityNotFoundException
      */
-    Bug saveBug(Bug bug) throws EntityAlreadyPresentException, EntityNotFoundException;
+    Bug saveBug(Bug bug) throws EntityNotFoundException;
 
     /**
      * Update the given bug state into the database.
