@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5db5417e-bbf9-4f38-95dd-58139ac45f1a" name="Default" comment="OW: configuration">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_mockito_mockito_all_1_9_5.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.ids" afterPath="$PROJECT_DIR$/.idea/dataSources.ids" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/bugtracking_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/bugtracking_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
+    <list default="true" id="5db5417e-bbf9-4f38-95dd-58139ac45f1a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="roommgmt-orm.iws" />
@@ -1047,7 +1040,7 @@
       <workItem from="1465642577880" duration="2188000" />
       <workItem from="1466245465941" duration="624000" />
       <workItem from="1467455553376" duration="3054000" />
-      <workItem from="1467461310510" duration="7834000" />
+      <workItem from="1467461310510" duration="7852000" />
     </task>
     <task id="LOCAL-00001" summary="Initial import.">
       <created>1438287518200</created>
@@ -1259,11 +1252,17 @@
       <option name="project" value="LOCAL" />
       <updated>1467469121605</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="OW: configuration">
+      <created>1467469168802</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1467469168802</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78991000" />
+    <option name="totallyTimeSpent" value="79009000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1370,11 +1369,11 @@
     <MESSAGE value="REST API adapted the new backend API" />
     <MESSAGE value="Fixed minor documentation error" />
     <MESSAGE value="Initial for repetitorium" />
-    <MESSAGE value="OW: configuration" />
     <MESSAGE value="OW: INIT" />
     <MESSAGE value="OW: Installationsanleitung angelegt" />
     <MESSAGE value="OW: Added JUnit &amp; Mockito&#10;Added Controller tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="OW: Added JUnit &amp; Mockito&#10;Added Controller tests" />
+    <MESSAGE value="OW: configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="OW: configuration" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
