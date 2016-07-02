@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 public class StateController {
-    @ResponseStatus(value = HttpStatus.TEMPORARY_REDIRECT)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(StateException.class)
     public ErrorDetail myError(Exception exception) {
         ErrorDetail error = new ErrorDetail();
