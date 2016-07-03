@@ -1,7 +1,7 @@
 package de.nordakademie.iaa.bugtracking.service;
 
-import de.nordakademie.iaa.bugtracking.controller.BugController;
 import de.nordakademie.iaa.bugtracking.dao.BugDAO;
+import de.nordakademie.iaa.bugtracking.exception.BugException;
 import de.nordakademie.iaa.bugtracking.model.Bug;
 import de.nordakademie.iaa.bugtracking.model.Comment;
 import de.nordakademie.iaa.bugtracking.model.State;
@@ -13,12 +13,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by otto-wagner on 02.07.2016.
@@ -39,10 +40,8 @@ public class BugServiceImplTest {
     Long bugId;
     Bug bugWithoutState;
     Bug bugWithState;
-    List<Bug> bugList;
     State state;
     User user;
-    Comment comment;
 
     @Before
     public void setup() {
@@ -54,7 +53,7 @@ public class BugServiceImplTest {
         bugWithoutState.setTitle("Bug without state");
 
         state = new State();
-        state.setId((long)1);
+        state.setId((long) 1);
         state.setTitle("State title");
 
         bugWithState = new Bug();
@@ -62,17 +61,9 @@ public class BugServiceImplTest {
         bugWithState.setTitle("Bug with state");
         bugWithState.setState(state);
 
-        bugList = new ArrayList<>();
-        bugList.add(bugWithoutState);
-        bugList.add(bugWithState);
-
         user = new User();
         user.setId(new Long(1));
         user.setEmail("otto-wagner@gmx.net");
-
-        comment = new Comment();
-        comment.setId(bugId);
-        comment.setTitle("Fehler wurde bearbeitet");
     }
 
     @Test
@@ -108,16 +99,60 @@ public class BugServiceImplTest {
 
     @Test
     public void testSetBugState() throws Exception {
-//        TODO
+        State toState = new State();
+        toState.setId((long) 2);
+        toState.setTitle("ToState title");
+
+        Set<Long> toStateIds = new HashSet<Long>();
+        toStateIds.add(toState.getId());
+
+        state.setToStateId(toStateIds);
+
+        when(bugDAOMock.load(bugId)).thenReturn(bugWithState);
+        when(stateServiceMock.loadState(toState.getId())).thenReturn(toState);
+
+        when(userServiceMock.getLogin()).thenReturn(user);
+        when(bugDAOMock.save(bugWithState)).thenReturn(bugWithState);
+
+        Bug result = bugService.setBugState(bugId, toState.getId());
+
+        assertNotNull(result);
+        assertEquals(bugWithState, result);
+        verify(stateServiceMock).loadState(toState.getId());
+        verify(bugDAOMock).save(bugWithState);
     }
 
     @Test
     public void testListBugs() throws Exception {
-//        TODO
+        List<Bug> bugList = new ArrayList<>();
+        bugList.add(bugWithState);
+
+        when(bugDAOMock.findAll()).thenReturn(bugList);
+
+        List<Bug> resultList = bugService.listBugs();
+        assertNotNull(resultList);
+        assertEquals(bugList, resultList);
+
+        verify(bugDAOMock).findAll();
     }
 
     @Test
     public void testLoadBug() throws Exception {
-//        TODO
+        when(bugDAOMock.load(bugId)).thenReturn(bugWithState);
+
+        Bug result = bugService.loadBug(bugId);
+
+        assertNotNull(result);
+        assertEquals(bugWithState, result);
+
+        verify(bugDAOMock).load(bugId);
+    }
+
+    @Test(expected = BugException.class)
+    public void testLoadBug_ThrowsException() throws Exception {
+        doThrow(new BugException()).when(bugDAOMock).load(bugId);
+        Bug result = bugService.loadBug(bugId);
+
+        verify(bugDAOMock).load(bugId);
     }
 }
